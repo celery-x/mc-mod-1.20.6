@@ -1,0 +1,11 @@
+{
+  "scare_self_sound": {
+    "subtitle": "sounds.superx:scare_self_sound",
+    "sounds": [
+      {
+        "name":"superx:scare_self_sound",
+        "stream": true
+      }
+    ]
+  }
+}

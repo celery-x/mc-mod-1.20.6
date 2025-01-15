@@ -1,0 +1,9 @@
+{
+  "item.superx.hucheng_tnt": "TNT",
+  "block.superx.hucheng_tnt": "TNT",
+  "enchantment.superx.hucheng": "互乘",
+  "enchantment.superx.feilei": "飞雷神",
+  "enchantment.superx.scare_self": "自己吓自己",
+  "itemGroup.superx": "半点不小心",
+  "scare.self.tip": "自己吓自己:声音 %1$s"
+}

@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "top.superxuqc.mcmod.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+      "TntEntityRendererMixin",
+		"PlayerEntityMixin",
+		"MinecraftClientMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
