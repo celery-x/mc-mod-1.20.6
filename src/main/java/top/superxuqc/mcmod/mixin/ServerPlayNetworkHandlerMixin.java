@@ -25,7 +25,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
     @Inject(at = @At("HEAD"), method = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;onPlayerInteractEntity(Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket;)V")
     public void onPlayerInteractEntityMixin(PlayerInteractEntityC2SPacket packet, CallbackInfo ci) {
         ServerPlayNetworkHandler h = (ServerPlayNetworkHandler)(Object) this;
-        System.out.println("sever");
+        //System.out.println("sever");
         ServerWorld serverWorld1 = h.player.getServerWorld();
         Entity entity1 = packet.getEntity(serverWorld1);
         if (entity1 == null || (entity1 instanceof NoneEntity || entity1.getId() == -99) ) {

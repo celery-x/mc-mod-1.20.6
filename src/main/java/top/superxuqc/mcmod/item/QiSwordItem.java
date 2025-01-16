@@ -60,16 +60,4 @@ public class QiSwordItem extends SwordItem {
         itemStack.decrementUnlessCreative(1, user);
         return TypedActionResult.success(itemStack, world.isClient());
     }
-
-    @Override
-    public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
-        System.out.println(1);
-        return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
-    }
-
-    @Override
-    public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
-        System.out.println(2);
-        return super.onStackClicked(stack, slot, clickType, player);
-    }
 }

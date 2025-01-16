@@ -23,6 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
 import top.superxuqc.mcmod.enchantment.FeiLeiEnchantment;
 import top.superxuqc.mcmod.keymouse.KeyBindRegister;
+import top.superxuqc.mcmod.register.ModItemRegister;
+import top.superxuqc.mcmod.register.ModTarKeys;
 
 import java.util.Objects;
 import java.util.Set;
@@ -91,12 +93,23 @@ public abstract class PlayerEntityMixin extends LivingEntity{
                 break;
             }
         }
+        float maxHealth = play.getMaxHealth();
+        float health = play.getHealth();
         if (isBanKai) {
-            float maxHealth = play.getMaxHealth();
-            float health = play.getHealth();
             if (health / maxHealth <= 0.25) {
-                System.out.println("11111");
+                //System.out.println("11111");
             }
+        }else if (health / maxHealth > 0.25) {
+            //System.out.println("22222");
+            int slotWithStack = play.getInventory().getSlotWithStack(ModItemRegister.ZHAN_YUE.getDefaultStack());
+            if (slotWithStack != -1){
+                //play.getInventory().removeStack(slotWithStack);
+            }
+
+//            boolean contains = play.getInventory().contains(ModItemRegister.ZHAN_YUE.getDefaultStack());
+//            if (contains) {
+//                System.out.println("contains");
+//            }
         }
     }
 

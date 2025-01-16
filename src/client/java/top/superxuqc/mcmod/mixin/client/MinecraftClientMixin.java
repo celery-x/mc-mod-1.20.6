@@ -20,12 +20,19 @@ import static net.minecraft.item.Items.AIR;
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
 
+    private long lastAddTick = 0;
+
+    private final long step = 5;
+
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;resetLastAttackedTicks()V")
             , method = "Lnet/minecraft/client/MinecraftClient;doAttack()Z")
     public void doAttactMixin(CallbackInfoReturnable ci) {
         MinecraftClient c = (MinecraftClient)(Object)this;
-        System.out.println("client");
-        c.interactionManager.attackEntity(c.player, new NoneEntity(c.world));
+        //System.out.println("client");
+        long now = c.getRenderTime();
+        if (now - lastAddTick > step) {
+            c.interactionManager.attackEntity(c.player, new NoneEntity(c.world));
+        }
     }
 }

@@ -142,17 +142,19 @@ public class SwordQiEntityRenderer<T extends Entity & FlyingItemEntity> extends 
                     addParticle(entity, args);
                 }
             }
+
         }
     }
 
     private void addParticle(T entity, float[] args) {
         Vec3d realPos = toRealPos(entity, args[3], args[4], args[5]);
-//        this.getWorld().addParticle(new DustParticleEffect(Vec3d.unpackRgb(11154228).toVector3f(), 0.5F), this.getX(), this.getY(), this.getZ() , 0.0, 0.0, 0.0);
-        DustParticleEffect effect = new DustParticleEffect(new Vector3f(args[0], args[1], args[2]), 0.75f);
         entity.getWorld().addParticle(
 //                ParticleTypes.END_ROD,
                 new JianQiParticleEffect(new Vector3f(args[0], args[1], args[2])),
                 realPos.x, realPos.y, realPos.z, 0, 0, 0);
+        if (entity instanceof SwordQiEntity && ((SwordQiEntity) entity).passed(realPos.x, realPos.y, realPos.z)) {
+            ((SwordQiEntity) entity).hitEveryThing(realPos.x, realPos.y, realPos.z);
+        }
     }
 
     private Vec3d toRealPos(T entity, float dx, float dy, float dz) {

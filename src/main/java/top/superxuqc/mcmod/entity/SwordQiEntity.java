@@ -44,6 +44,7 @@ import top.superxuqc.mcmod.register.ModEntryTypes;
 import top.superxuqc.mcmod.register.ModItemRegister;
 import top.superxuqc.mcmod.register.ParticleRegister;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
@@ -52,6 +53,8 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 
     private static final TrackedData<Boolean> SIZE = DataTracker.registerData(SwordQiEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
+
+    private HashSet<Vec3i> passedList = new HashSet<Vec3i>();
 
     public SwordQiEntity(EntityType<? extends SwordQiEntity> entityType, World world) {
         super(entityType, world);
@@ -64,6 +67,16 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 
     public SwordQiEntity(EntityType<? extends SwordQiEntity> type, LivingEntity owner, World world) {
         this(type, owner.getX(), owner.getEyeY() - 0.1F, owner.getZ(), world);
+    }
+
+    public boolean passed(double x, double y, double z) {
+        Vec3i index = new Vec3i((int) x, (int) y, (int) z);
+        if (!passedList.contains(index)) {
+            return true;
+        }else {
+            passedList.add(index);
+            return false;
+        }
     }
 
     @Override
@@ -159,22 +172,24 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 //        this.getWorld().addParticle(new DustParticleEffect(Vec3d.unpackRgb(11154228).toVector3f(), 0.5F), x, y, z , 0.0, 0.0, 0.0);
 //    }
 //
-//    public void hitEveryThing(double x, double y, double z) {
-//        World world = this.getWorld();
-//        BlockPos blockPos = new BlockPos((int) x, (int) y, (int) z);
-//        BlockState blockState = world.getBlockState(blockPos);
-//        if (!blockState.isAir()) {
-//            this.setAge(5);
-//            world.breakBlock(blockPos, false, this.getOwner());
-//        }
-//        List<Entity> entities = world.getOtherEntities(null, this.getBoundingBox(), entity -> entity instanceof LivingEntity && !(entity instanceof PlayerEntity));
-//        for (Entity entity : entities) {
-//            if (entity.getBlockPos().equals(blockPos)) {
-//                entity.damage(this.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 15);
-//            }
-//        }
-//
-//    }
+    public void hitEveryThing(double x, double y, double z) {
+        World world = this.getWorld();
+        BlockPos blockPos = new BlockPos((int) x, (int) y, (int) z);
+        BlockState blockState = world.getBlockState(blockPos);
+        if (!blockState.isAir()) {
+            if (!this.getSize()) {
+                this.age = 5;
+            }
+            world.breakBlock(blockPos, false, this.getOwner());
+        }
+        List<Entity> entities = world.getOtherEntities(null, this.getBoundingBox(), entity -> entity instanceof LivingEntity && !(entity instanceof PlayerEntity));
+        for (Entity entity : entities) {
+            if (entity.getBlockPos().equals(blockPos)) {
+                entity.damage(this.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 15);
+            }
+        }
+    }
+
 //    @Override
 //    public boolean isCollidable() {
 //        return true;
