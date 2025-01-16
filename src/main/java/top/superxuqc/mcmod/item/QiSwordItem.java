@@ -46,10 +46,11 @@ public class QiSwordItem extends SwordItem {
         );
         user.getItemCooldownManager().set(this, 20);
         if (!world.isClient) {
-            SwordQiEntity qiEntity = new SwordQiEntity(ModEntryTypes.SWORD_QI_TYPE, user, world, 60, true);
+            SwordQiEntity qiEntity = new SwordQiEntity(ModEntryTypes.SWORD_QI_TYPE, user, world);
             //qiEntity.setItem(itemStack);
 //            qiEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
-            qiEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0F, 0.5F, 1.0F);
+            qiEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0F, 1F, 1.0F);
+            qiEntity.setSize(true);
             //Vec3d velocity = qiEntity.getVelocity();
             //qiEntity.setVelocity(velocity.x * 10 , velocity.y * 10 , velocity.z * 10);
             world.spawnEntity(qiEntity);

@@ -32,13 +32,14 @@ public class MyModInitializer implements ModInitializer {
                 // 注册物品
                 entries.add(ModItemRegister.HUCHENG_TNT_ITEM);
                 entries.add(ModItemRegister.KUWU);
-                entries.add(ModItemRegister.ARROW1);
+                entries.add(ModItemRegister.ZHAN_YUE);
 
 
                 // 注册附魔书
                 Set<TagKey<Item>> set = Set.of(
                         ModTarKeys.MOD_ITEM_ENCHANT_TAG,
-                        ModTarKeys.SCARE_SELF_ENCHANT_TAG
+                        ModTarKeys.SCARE_SELF_ENCHANT_TAG,
+                        ModTarKeys.SWORD_QI_TAG
                 );
                 displayContext.lookup().getOptionalWrapper(RegistryKeys.ENCHANTMENT).ifPresent(registryWrapper -> {
 //                    addMaxLevelEnchantedBooks(entries, registryWrapper, set, ItemGroup.StackVisibility.PARENT_TAB_ONLY, displayContext.enabledFeatures());
@@ -92,12 +93,12 @@ public class MyModInitializer implements ModInitializer {
         ModEnchantmentRegister.init();
         ParticleRegister.init();
         Registry.register(Registries.ITEM_GROUP, CUSTOM_ITEM_GROUP_KEY, CUSTOM_ITEM_GROUP);
-        ItemGroupEvents.modifyEntriesEvent(CUSTOM_ITEM_GROUP_KEY).register(itemGroup -> {
-            itemGroup.add(ModItemRegister.HUCHENG_TNT_ITEM);
-            itemGroup.add(ModItemRegister.KUWU);
-            itemGroup.add(ModItemRegister.ARROW1);
-            // ...
-        });
+//        ItemGroupEvents.modifyEntriesEvent(CUSTOM_ITEM_GROUP_KEY).register(itemGroup -> {
+//            itemGroup.add(ModItemRegister.HUCHENG_TNT_ITEM);
+//            itemGroup.add(ModItemRegister.KUWU);
+//            itemGroup.add(ModItemRegister.ARROW1);
+//            // ...
+//        });
         SoundRegister.init();
     }
 }

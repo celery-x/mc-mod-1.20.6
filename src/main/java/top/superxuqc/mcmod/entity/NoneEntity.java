@@ -13,7 +13,7 @@ public class NoneEntity extends Entity {
 
     @Override
     public int getId() {
-        return -1;
+        return -998;
     }
 
     public NoneEntity(World world) {

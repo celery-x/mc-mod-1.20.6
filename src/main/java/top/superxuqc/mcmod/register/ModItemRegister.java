@@ -22,10 +22,7 @@ public class ModItemRegister {
     public static Item KUWU = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "kuwu"),
             new SwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F))));
 
-    public static Item ARROW1 = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "zhan_yue"),
-            new SwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F))));
-
-    public static Item Qi_Sword = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "qi_sword"),
+    public static Item ZHAN_YUE = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "zhan_yue"),
             new QiSwordItem(new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F))));
 
     public static Item Sword_Qi = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "sword_qi"),

@@ -34,6 +34,15 @@ public class ModEnchantmentRegister {
                     4, EquipmentSlot.MAINHAND)
     );
 
+    public static Enchantment BAN_KAI = new FeiLeiEnchantment(
+            Enchantment.properties(
+                    ModTarKeys.SWORD_QI_TAG,
+                    1, 1,
+                    Enchantment.leveledCost(15, 9),
+                    Enchantment.leveledCost(65, 9),
+                    4, EquipmentSlot.MAINHAND)
+    );
+
     public static Enchantment SCARE_SELF = new ScareSelfEnchantment(
             Enchantment.properties(
 //                    ItemTags.BOW_ENCHANTABLE,
@@ -48,6 +57,7 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "hucheng"),HUCHENG);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "feilei"),FeiLei);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "scare_self"),SCARE_SELF);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "bankai"),BAN_KAI);
     }
 
 }

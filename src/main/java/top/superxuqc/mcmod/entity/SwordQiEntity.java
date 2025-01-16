@@ -17,6 +17,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.FlyingEntity;
 import net.minecraft.entity.passive.BatEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -49,7 +50,8 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 
     private int age = 100;
 
-    private boolean big = false;
+    private static final TrackedData<Boolean> SIZE = DataTracker.registerData(SwordQiEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
 
     public SwordQiEntity(EntityType<? extends SwordQiEntity> entityType, World world) {
         super(entityType, world);
@@ -62,18 +64,19 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 
     public SwordQiEntity(EntityType<? extends SwordQiEntity> type, LivingEntity owner, World world) {
         this(type, owner.getX(), owner.getEyeY() - 0.1F, owner.getZ(), world);
-        this.setOwner(owner);
     }
-
-    public SwordQiEntity(EntityType<? extends SwordQiEntity> type, LivingEntity owner, World world, int age, boolean big) {
-        this(type, owner.getX(), owner.getEyeY() - 0.1F, owner.getZ(), world);
-        this.age = age;
-        this.big = big;
-    }
-
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
+        builder.add(SIZE, false);
+    }
+
+    public void setSize(Boolean size) {
+        this.dataTracker.set(SIZE, size);
+    }
+
+    public Boolean getSize() {
+        return this.dataTracker.get(SIZE);
     }
 
     @Override
@@ -120,70 +123,10 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 //        this.setVelocity(vec3d.multiply((double)h));
         //this.applyGravity();
 //        hitBox();
-        addParticle();
         this.setPosition(d, e, f);
     }
 
-    private void addParticle() {
-//        this.getWorld().addParticle(new DustParticleEffect(Vec3d.unpackRgb(11154228).toVector3f(), 0.5F), this.getX(), this.getY(), this.getZ() , 0.0, 0.0, 0.0);
-//
-//        if (argsParticle1 != null) {
-//            addParticle(argsParticle1[1]);
-//            addParticle(argsParticle1[2]);
-//            addParticle(argsParticle1[3]);
-//            addParticle(argsParticle1[4]);
-//        }
-        if(big) {
-            for (float[] args : JianqiArgs0.ARG) {
-                addParticle(args);
-            }
 
-
-            for (float[] args : JianqiArgs1.ARG) {
-                addParticle(args);
-            }
-
-
-            for (float[] args : JianqiArgs2.ARG) {
-                addParticle(args);
-            }
-        }else {
-            for (float[] args : JianqiArgMini.ARG) {
-                addParticle(args);
-            }
-        }
-    }
-
-    private void addParticle(float[] args) {
-        Vec3d realPos = toRealPos(args[3], args[4], args[5]);
-//        this.getWorld().addParticle(new DustParticleEffect(Vec3d.unpackRgb(11154228).toVector3f(), 0.5F), this.getX(), this.getY(), this.getZ() , 0.0, 0.0, 0.0);
-        DustParticleEffect effect = new DustParticleEffect(new Vector3f(args[0], args[1], args[2]), 0.75f);
-        this.getWorld().addParticle(
-//                ParticleTypes.END_ROD,
-                new JianQiParticleEffect(new Vector3f(args[0], args[1], args[2])),
-                realPos.x, realPos.y, realPos.z, 0, 0, 0);
-    }
-
-    private Vec3d toRealPos(float dx, float dy, float dz) {
-        Vec2f vec2f = this.getRotationClient();
-        vec2f = new Vec2f(-vec2f.x, -vec2f.y);
-        Vec3d vec3d = this.getPos();
-        float f = MathHelper.cos((vec2f.y + 90.0F) * (float) (Math.PI / 180.0));
-        float g = MathHelper.sin((vec2f.y + 90.0F) * (float) (Math.PI / 180.0));
-        float h = MathHelper.cos(-vec2f.x * (float) (Math.PI / 180.0));
-        float i = MathHelper.sin(-vec2f.x * (float) (Math.PI / 180.0));
-        float j = MathHelper.cos((-vec2f.x + 90.0F) * (float) (Math.PI / 180.0));
-        float k = MathHelper.sin((-vec2f.x + 90.0F) * (float) (Math.PI / 180.0));
-        Vec3d vec3d2 = new Vec3d((double)(f * h), (double)i, (double)(g * h));
-        Vec3d vec3d3 = new Vec3d((double)(f * j), (double)k, (double)(g * j));
-        Vec3d vec3d4 = vec3d2.crossProduct(vec3d3).multiply(-1.0);
-        double d = vec3d2.x * dz + vec3d3.x * dy + vec3d4.x * dx;
-        double e = vec3d2.y * dz + vec3d3.y * dy + vec3d4.y * dx;
-        double l = vec3d2.z * dz + vec3d3.z * dy + vec3d4.z * dx;
-        return new Vec3d(vec3d.x + d, vec3d.y + e, vec3d.z + l);
-//        ParticleUtils.genParticle(this.getWorld(), (float) this.getX(), (float) this.getY(), (float) this.getZ());
-
-    }
 //    private void hitBox() {
 //        //System.out.println();
 //        float t = this.prevYaw - 90;

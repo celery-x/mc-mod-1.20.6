@@ -1,19 +1,31 @@
 package top.superxuqc.mcmod.mixin.client;
 
+import com.mojang.authlib.GameProfile;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
+import top.superxuqc.mcmod.enchantment.FeiLeiEnchantment;
 import top.superxuqc.mcmod.keymouse.KeyBindRegister;
+
+import java.util.Objects;
+import java.util.Set;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity{
@@ -27,6 +39,23 @@ public abstract class PlayerEntityMixin extends LivingEntity{
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
     }
+
+
+//    public void replaceMixin() {
+//        // 替换手中附魔后的剑
+//        ItemStack mainHandStack = this.getInventory().getMainHandStack();
+//        Set<RegistryEntry<Enchantment>> enchantments = EnchantmentHelper.getEnchantments(mainHandStack).getEnchantments();
+//        boolean isBanKai = false;
+//        for (RegistryEntry<Enchantment> enchantment : enchantments) {
+//            isBanKai = enchantment.value() instanceof BanKaiEnchantment;
+//            if (isBanKai) {
+//                break;
+//            }
+//        }
+//        if (isBanKai) {
+////            this.getInventory().dropSelectedItem()
+//        }
+//    }
 
     @Inject(at = @At("TAIL"), method = "Lnet/minecraft/entity/player/PlayerEntity;tick()V")
     public void tickMixin(CallbackInfo ci) {
@@ -50,6 +79,23 @@ public abstract class PlayerEntityMixin extends LivingEntity{
             //System.out.println(KeyBindRegister.show);
             if (showTick <= 0) {
                 KeyBindRegister.show = false;
+            }
+        }
+        PlayerEntity play = (PlayerEntity)(Object) this;
+        ItemStack mainHandStack = play.getInventory().getMainHandStack();
+        Set<RegistryEntry<Enchantment>> enchantments = EnchantmentHelper.getEnchantments(mainHandStack).getEnchantments();
+        boolean isBanKai = false;
+        for (RegistryEntry<Enchantment> enchantment : enchantments) {
+            isBanKai = enchantment.value() instanceof BanKaiEnchantment;
+            if (isBanKai) {
+                break;
+            }
+        }
+        if (isBanKai) {
+            float maxHealth = play.getMaxHealth();
+            float health = play.getHealth();
+            if (health / maxHealth <= 0.25) {
+                System.out.println("11111");
             }
         }
     }

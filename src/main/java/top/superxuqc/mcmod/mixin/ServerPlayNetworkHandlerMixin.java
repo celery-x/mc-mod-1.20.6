@@ -28,11 +28,12 @@ public abstract class ServerPlayNetworkHandlerMixin {
         System.out.println("sever");
         ServerWorld serverWorld1 = h.player.getServerWorld();
         Entity entity1 = packet.getEntity(serverWorld1);
-        if (entity1 != null && (entity1 instanceof NoneEntity || entity1.getId() == -1) ) {
-            SwordQiEntity qiEntity = new SwordQiEntity(ModEntryTypes.SWORD_QI_TYPE, h.player, serverWorld1, 60, false);
+        if (entity1 == null || (entity1 instanceof NoneEntity || entity1.getId() == -99) ) {
+            SwordQiEntity qiEntity = new SwordQiEntity(ModEntryTypes.SWORD_QI_TYPE, h.player, serverWorld1);
             //qiEntity.setItem(itemStack);
 //            qiEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
-            qiEntity.setVelocity(h.player, h.player.getPitch(), h.player.getYaw(), 0F, 0.5F, 1.0F);
+            qiEntity.setVelocity(h.player, h.player.getPitch(), h.player.getYaw(), 0F, 2.5F, 1.0F);
+            qiEntity.setSize(false);
             //Vec3d velocity = qiEntity.getVelocity();
             //qiEntity.setVelocity(velocity.x * 10 , velocity.y * 10 , velocity.z * 10);
             serverWorld1.spawnEntity(qiEntity);
