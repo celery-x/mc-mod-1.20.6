@@ -1,6 +1,7 @@
 package top.superxuqc.mcmod;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -99,6 +100,9 @@ public class MyModInitializer implements ModInitializer {
 //            itemGroup.add(ModItemRegister.ARROW1);
 //            // ...
 //        });
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+
+        });
         SoundRegister.init();
     }
 }

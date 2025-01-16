@@ -14,6 +14,8 @@ public class SoundRegister {
     public static AtomicBoolean SCARE_SELF_SOUND_PLAY = new AtomicBoolean(true);
 
     public static SoundEvent SCARE_SELF_SOUND = register(Identifier.of(MyModInitializer.MOD_ID, "scare_self_sound"));
+
+    public static SoundEvent BAN_KAI = register(Identifier.of(MyModInitializer.MOD_ID, "ban_kai"));
     private static SoundEvent register(Identifier id) {
         return register(id, id);
     }

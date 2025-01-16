@@ -137,6 +137,9 @@ public class SwordQiEntityRenderer<T extends Entity & FlyingItemEntity> extends 
                 for (float[] args : JianqiArgs2.ARG) {
                     addParticle(entity, args);
                 }
+                for (float[] args : JianqiArgs3.ARG) {
+                    addParticle(entity, args);
+                }
             }else {
                 for (float[] args : JianqiArgMini.ARG) {
                     addParticle(entity, args);
@@ -152,9 +155,6 @@ public class SwordQiEntityRenderer<T extends Entity & FlyingItemEntity> extends 
 //                ParticleTypes.END_ROD,
                 new JianQiParticleEffect(new Vector3f(args[0], args[1], args[2])),
                 realPos.x, realPos.y, realPos.z, 0, 0, 0);
-        if (entity instanceof SwordQiEntity && ((SwordQiEntity) entity).passed(realPos.x, realPos.y, realPos.z)) {
-            ((SwordQiEntity) entity).hitEveryThing(realPos.x, realPos.y, realPos.z);
-        }
     }
 
     private Vec3d toRealPos(T entity, float dx, float dy, float dz) {

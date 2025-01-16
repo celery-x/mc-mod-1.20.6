@@ -69,13 +69,13 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
         this(type, owner.getX(), owner.getEyeY() - 0.1F, owner.getZ(), world);
     }
 
-    public boolean passed(double x, double y, double z) {
+    public Vec3i passed(double x, double y, double z) {
         Vec3i index = new Vec3i((int) x, (int) y, (int) z);
-        if (!passedList.contains(index)) {
-            return true;
+        if (passedList.contains(index)) {
+            return null;
         }else {
             passedList.add(index);
-            return false;
+            return index;
         }
     }
 
@@ -105,6 +105,28 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
     @Override
     public void tick() {
         super.tick();
+        if(getSize()) {
+            for (float[] args : JianqiArgs0.ARG) {
+                tryHit( args);
+            }
+
+
+            for (float[] args : JianqiArgs1.ARG) {
+                tryHit( args);
+            }
+
+
+            for (float[] args : JianqiArgs2.ARG) {
+                tryHit( args);
+            }
+            for (float[] args : JianqiArgs3.ARG) {
+                tryHit( args);
+            }
+        }else {
+            for (float[] args : JianqiArgMini.ARG) {
+                tryHit( args);
+            }
+        }
         if (age <= 0) {
             this.discard();
         }
@@ -172,20 +194,52 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 //        this.getWorld().addParticle(new DustParticleEffect(Vec3d.unpackRgb(11154228).toVector3f(), 0.5F), x, y, z , 0.0, 0.0, 0.0);
 //    }
 //
-    public void hitEveryThing(double x, double y, double z) {
-        World world = this.getWorld();
-        BlockPos blockPos = new BlockPos((int) x, (int) y, (int) z);
-        BlockState blockState = world.getBlockState(blockPos);
-        if (!blockState.isAir()) {
-            if (!this.getSize()) {
-                this.age = 5;
-            }
-            world.breakBlock(blockPos, false, this.getOwner());
+
+
+
+    private void tryHit(float[] args) {
+        Vec3d realPos = toRealPos(args[3], args[4], args[5]);
+        Vec3i passed = this.passed(realPos.x, realPos.y, realPos.z);
+        if (passed != null) {
+            this.hitEveryThing(passed);
         }
-        List<Entity> entities = world.getOtherEntities(null, this.getBoundingBox(), entity -> entity instanceof LivingEntity && !(entity instanceof PlayerEntity));
-        for (Entity entity : entities) {
-            if (entity.getBlockPos().equals(blockPos)) {
-                entity.damage(this.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 15);
+
+    }
+
+    private Vec3d toRealPos(float dx, float dy, float dz) {
+        Vec2f vec2f = this.getRotationClient();
+        vec2f = new Vec2f(-vec2f.x, -vec2f.y);
+        Vec3d vec3d = this.getPos();
+        float f = MathHelper.cos((vec2f.y + 90.0F) * (float) (Math.PI / 180.0));
+        float g = MathHelper.sin((vec2f.y + 90.0F) * (float) (Math.PI / 180.0));
+        float h = MathHelper.cos(-vec2f.x * (float) (Math.PI / 180.0));
+        float i = MathHelper.sin(-vec2f.x * (float) (Math.PI / 180.0));
+        float j = MathHelper.cos((-vec2f.x + 90.0F) * (float) (Math.PI / 180.0));
+        float k = MathHelper.sin((-vec2f.x + 90.0F) * (float) (Math.PI / 180.0));
+        Vec3d vec3d2 = new Vec3d((double)(f * h), (double)i, (double)(g * h));
+        Vec3d vec3d3 = new Vec3d((double)(f * j), (double)k, (double)(g * j));
+        Vec3d vec3d4 = vec3d2.crossProduct(vec3d3).multiply(-1.0);
+        double d = vec3d2.x * dz + vec3d3.x * dy + vec3d4.x * dx;
+        double e = vec3d2.y * dz + vec3d3.y * dy + vec3d4.y * dx;
+        double l = vec3d2.z * dz + vec3d3.z * dy + vec3d4.z * dx;
+        return new Vec3d(vec3d.x + d, vec3d.y + e, vec3d.z + l);
+//        ParticleUtils.genParticle(this.getWorld(), (float) this.getX(), (float) this.getY(), (float) this.getZ());
+
+    }
+
+    public void hitEveryThing(Vec3i vec3i) {
+        World world = this.getWorld();
+        BlockPos blockPos = new BlockPos(vec3i.getX(), vec3i.getY(), vec3i.getZ());
+        world.breakBlock(blockPos, false);
+        if (!world.isClient()){
+            try {
+                ((ServerWorld) world).iterateEntities().forEach(v -> {
+                    if (v != null && v.getBlockPos().equals(blockPos)) {
+                        v.damage(this.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 15);
+                    }
+                });
+            }catch (ArrayIndexOutOfBoundsException e) {
+                //ignore
             }
         }
     }

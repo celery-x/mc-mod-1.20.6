@@ -6,7 +6,8 @@
   "mixins": [
     "EnderPearItemMixin",
     "ToolItemMixin",
-    "ServerPlayNetworkHandlerMixin"
+    "ServerPlayNetworkHandlerMixin",
+    "SwordItemMixin"
   ],
   "client": [
 

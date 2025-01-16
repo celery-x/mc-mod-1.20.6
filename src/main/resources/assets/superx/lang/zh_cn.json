@@ -1,9 +1,12 @@
 {
   "item.superx.hucheng_tnt": "TNT",
+  "item.superx.zhan_yue": "斩月",
   "block.superx.hucheng_tnt": "TNT",
   "enchantment.superx.hucheng": "互乘",
+  "enchantment.superx.bankai": "卍解",
   "enchantment.superx.feilei": "飞雷神",
   "enchantment.superx.scare_self": "自己吓自己",
   "itemGroup.superx": "半点不小心",
-  "scare.self.tip": "自己吓自己:声音 %1$s"
+  "scare.self.tip": "自己吓自己:声音 %1$s",
+  "ban.kai.tip": "卍解!"
 }

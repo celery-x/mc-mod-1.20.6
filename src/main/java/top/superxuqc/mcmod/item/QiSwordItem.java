@@ -57,7 +57,7 @@ public class QiSwordItem extends SwordItem {
         }
 
         //user.incrementStat(Stats.USED.getOrCreateStat(this));
-        itemStack.decrementUnlessCreative(1, user);
+        //itemStack.decrementUnlessCreative(1, user);
         return TypedActionResult.success(itemStack, world.isClient());
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import top.superxuqc.mcmod.MyModInitializer;
+import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
 import top.superxuqc.mcmod.enchantment.FeiLeiEnchantment;
 import top.superxuqc.mcmod.enchantment.HuChengEnchantment;
 import top.superxuqc.mcmod.enchantment.ScareSelfEnchantment;
@@ -34,7 +35,7 @@ public class ModEnchantmentRegister {
                     4, EquipmentSlot.MAINHAND)
     );
 
-    public static Enchantment BAN_KAI = new FeiLeiEnchantment(
+    public static Enchantment BAN_KAI = new BanKaiEnchantment(
             Enchantment.properties(
                     ModTarKeys.SWORD_QI_TAG,
                     1, 1,
