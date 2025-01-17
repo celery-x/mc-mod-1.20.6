@@ -1,5 +1,6 @@
 package top.superxuqc.mcmod.renderer;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.particle.EndRodParticle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.render.OverlayTexture;
@@ -25,6 +26,7 @@ import org.joml.Quaternionf;
 import top.superxuqc.mcmod.MyModInitializer;
 import top.superxuqc.mcmod.common.*;
 import top.superxuqc.mcmod.entity.SwordQiEntity;
+import top.superxuqc.mcmod.network.payload.HitCheckPayload;
 import top.superxuqc.mcmod.particle.JianQiParticle;
 import top.superxuqc.mcmod.particle.JianQiParticleEffect;
 
@@ -151,6 +153,12 @@ public class SwordQiEntityRenderer<T extends Entity & FlyingItemEntity> extends 
 
     private void addParticle(T entity, float[] args) {
         Vec3d realPos = toRealPos(entity, args[3], args[4], args[5]);
+        if (entity.getWorld().isClient && entity instanceof SwordQiEntity) {
+            Vec3i passed = ((SwordQiEntity) entity).passed(realPos.x, realPos.y, realPos.z);
+            if (passed != null) {
+                ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), ((SwordQiEntity) entity).getAmount()));
+            }
+        }
         entity.getWorld().addParticle(
 //                ParticleTypes.END_ROD,
                 new JianQiParticleEffect(new Vector3f(args[0], args[1], args[2])),

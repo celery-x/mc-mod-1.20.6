@@ -18,6 +18,10 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import top.superxuqc.mcmod.keymouse.KeyBindRegister;
+import top.superxuqc.mcmod.network.C2SPayloadRegister;
+import top.superxuqc.mcmod.network.ClientPayloadHandlerRegister;
+import top.superxuqc.mcmod.network.S2CPayloadRegister;
+import top.superxuqc.mcmod.network.SeverPayloadHandlerRegister;
 import top.superxuqc.mcmod.particle.JianQiParticle;
 import top.superxuqc.mcmod.particle.JianQiParticleEffect;
 import top.superxuqc.mcmod.register.ModBlocksRegister;
@@ -42,6 +46,11 @@ public class TemplateModClient implements ClientModInitializer {
 		ServerLifecycleEvents.SERVER_STOPPING.register((client) -> KeyBindRegister.resetBlock());
 		ParticleFactoryRegistry.getInstance().register(ParticleRegister.JIANQI, JianQiParticle.Factory::new);
 
+		// init network
+		C2SPayloadRegister.init();
+		S2CPayloadRegister.init();
+		ClientPayloadHandlerRegister.init();
+		SeverPayloadHandlerRegister.init();
 		KeyBindRegister.init();
 	}
 

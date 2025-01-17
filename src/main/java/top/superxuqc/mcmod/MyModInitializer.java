@@ -15,6 +15,8 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import top.superxuqc.mcmod.network.S2CPayloadRegister;
+import top.superxuqc.mcmod.network.SeverPayloadHandlerRegister;
 import top.superxuqc.mcmod.register.*;
 
 import java.util.Set;
@@ -104,5 +106,9 @@ public class MyModInitializer implements ModInitializer {
 
         });
         SoundRegister.init();
+        // 初始化通信
+
+
+
     }
 }

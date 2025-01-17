@@ -51,6 +51,8 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 
     private int age = 100;
 
+    private final int amount = 15;
+
     private static final TrackedData<Boolean> SIZE = DataTracker.registerData(SwordQiEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 
@@ -67,6 +69,10 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 
     public SwordQiEntity(EntityType<? extends SwordQiEntity> type, LivingEntity owner, World world) {
         this(type, owner.getX(), owner.getEyeY() - 0.1F, owner.getZ(), world);
+    }
+
+    public int getAmount() {
+        return amount;
     }
 
     public Vec3i passed(double x, double y, double z) {
@@ -105,28 +111,28 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
     @Override
     public void tick() {
         super.tick();
-        if(getSize()) {
-            for (float[] args : JianqiArgs0.ARG) {
-                tryHit( args);
-            }
-
-
-            for (float[] args : JianqiArgs1.ARG) {
-                tryHit( args);
-            }
-
-
-            for (float[] args : JianqiArgs2.ARG) {
-                tryHit( args);
-            }
-            for (float[] args : JianqiArgs3.ARG) {
-                tryHit( args);
-            }
-        }else {
-            for (float[] args : JianqiArgMini.ARG) {
-                tryHit( args);
-            }
-        }
+//        if(getSize()) {
+//            for (float[] args : JianqiArgs0.ARG) {
+//                tryHit( args);
+//            }
+//
+//
+//            for (float[] args : JianqiArgs1.ARG) {
+//                tryHit( args);
+//            }
+//
+//
+//            for (float[] args : JianqiArgs2.ARG) {
+//                tryHit( args);
+//            }
+//            for (float[] args : JianqiArgs3.ARG) {
+//                tryHit( args);
+//            }
+//        }else {
+//            for (float[] args : JianqiArgMini.ARG) {
+//                tryHit( args);
+//            }
+//        }
         if (age <= 0) {
             this.discard();
         }
