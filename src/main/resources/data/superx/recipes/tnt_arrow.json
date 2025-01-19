@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:arrow"
+    },
+    "X":
+      {
+        "item": "superx:hucheng_tnt"
+      }
+  },
+  "pattern": [
+    "X",
+    "#"
+  ],
+  "result": {
+    "count": 4,
+    "id": "superx:tnt_arrow"
+  }
+}

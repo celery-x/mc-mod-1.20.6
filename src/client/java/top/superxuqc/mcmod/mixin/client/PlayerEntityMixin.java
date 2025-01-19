@@ -59,6 +59,14 @@ public abstract class PlayerEntityMixin extends LivingEntity{
 //        }
 //    }
 
+
+//    @Inject(at = @At("TAIL"), method = "Lnet/minecraft/entity/player/PlayerEntity;getProjectileType(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;")
+//    public void getProjectileTypeMixin() {
+//
+//
+//    }
+
+
     @Inject(at = @At("TAIL"), method = "Lnet/minecraft/entity/player/PlayerEntity;tick()V")
     public void tickMixin(CallbackInfo ci) {
         if (KeyBindRegister.show && showTick <= 0) {

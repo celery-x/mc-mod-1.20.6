@@ -9,6 +9,8 @@ import top.superxuqc.mcmod.register.ModEntryTypes;
 public class HuChengTnTEntity extends TntEntity {
 
     private Integer step = 1;
+
+    private Integer preStep = 1;
     public static void init(){}
 
     public HuChengTnTEntity(EntityType<? extends HuChengTnTEntity> entityType, World world) {
@@ -26,9 +28,10 @@ public class HuChengTnTEntity extends TntEntity {
         this.prevZ = z;
     }
 
-    public HuChengTnTEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter, Integer step) {
+    public HuChengTnTEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter, Integer step, Integer preStep) {
         this(world, x, y, z, igniter);
         this.step = step;
+        this.preStep = preStep;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class HuChengTnTEntity extends TntEntity {
                 float f = 4.0F;
 
                 World world = this.getWorld();
-                for (int j = 0; j < 4; j++) {
+                for (int j = 0; j < preStep; j++) {
                     newTnt(world);
                 }
                 //world.setBlockState(new BlockPos(nwex, nwey ,nwez), ModBlocksRegister.HUCHENG_TNT_BLOCK.getDefaultState(), Block.NOTIFY_ALL);
@@ -70,7 +73,7 @@ public class HuChengTnTEntity extends TntEntity {
         int nwey = (int) this.getY() + world.random.nextInt(16) - 8;
         int nwez = (int) this.getZ() + world.random.nextInt(16) - 8;
 
-        HuChengTnTEntity tntEntity = new HuChengTnTEntity(world, (double)nwex + 0.5, (double)nwey, (double)nwez + 0.5, this.getOwner(), step - 1);
+        HuChengTnTEntity tntEntity = new HuChengTnTEntity(world, (double)nwex + 0.5, (double)nwey, (double)nwez + 0.5, this.getOwner(), step - 1, preStep);
         int i2 = tntEntity.getFuse();
         tntEntity.setFuse((short)(world.random.nextInt(i2 / 4) + i2 / 8));
         world.spawnEntity(tntEntity);
