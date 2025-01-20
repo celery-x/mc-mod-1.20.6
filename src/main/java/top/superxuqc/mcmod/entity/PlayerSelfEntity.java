@@ -6,10 +6,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.*;
@@ -31,7 +33,7 @@ public class PlayerSelfEntity extends TameableEntity {
     private static final TrackedData<ItemStack> MAIN_ITEM = DataTracker.registerData(PlayerSelfEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
     private static final TrackedData<ItemStack> OFF_ITEM = DataTracker.registerData(PlayerSelfEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
 
-    private final int MAX_AGE = 200;
+    private final int MAX_AGE = 0;
 
     private int age = 0;
 
@@ -84,7 +86,7 @@ public class PlayerSelfEntity extends TameableEntity {
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
         this.targetSelector.add(3, new RevengeGoal(this).setGroupRevenge());
-        this.targetSelector.add(7, new ActiveTargetGoal(this, AbstractSkeletonEntity.class, false));
+        this.targetSelector.add(7, new ActiveTargetGoal<>(this, HostileEntity.class, false));
         this.targetSelector.add(8, new UniversalAngerGoal(this, true));
         this.targetSelector.add(5, new UseToolGoal(this, getWorld(), 5));
     }
@@ -103,7 +105,7 @@ public class PlayerSelfEntity extends TameableEntity {
     @Override
     protected void mobTick() {
         super.mobTick();
-        if (age > MAX_AGE) {
+        if (MAX_AGE != 0 && age > MAX_AGE) {
             this.discard();
         }
         age++;

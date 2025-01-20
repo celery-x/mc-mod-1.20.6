@@ -1,12 +1,16 @@
 package top.superxuqc.mcmod.register;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import top.superxuqc.mcmod.entity.PlayerSelfEntity;
+import top.superxuqc.mcmod.entity.goal.playself.UseToolGoal;
 
 import java.util.UUID;
 
@@ -30,6 +34,15 @@ public class ModSeverEventRegister {
                     fatherUuid = null;
                 }
 
+            }
+        });
+
+        ServerEntityEvents.ENTITY_UNLOAD.register(new ServerEntityEvents.Unload() {
+            @Override
+            public void onUnload(Entity entity, ServerWorld serverWorld) {
+                if (entity instanceof PlayerSelfEntity) {
+                    UseToolGoal.workingMap.remove(entity.getId());
+                }
             }
         });
     }

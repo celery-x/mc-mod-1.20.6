@@ -1,5 +1,6 @@
 package top.superxuqc.mcmod.mixin.client;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -15,6 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +26,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
 import top.superxuqc.mcmod.enchantment.FollowProjectileEnchantment;
 import top.superxuqc.mcmod.entity.NoneEntity;
+import top.superxuqc.mcmod.entity.SwordQiEntity;
 import top.superxuqc.mcmod.item.QiSwordItem;
+import top.superxuqc.mcmod.network.payload.FollowProjectilePayload;
+import top.superxuqc.mcmod.network.payload.HitCheckPayload;
 import top.superxuqc.mcmod.util.ViewUtils;
 
 import java.util.Set;
@@ -69,7 +74,7 @@ public abstract class MinecraftClientMixin {
             if (entity != null) {
                 c.player.sendMessage(Text.translatable("target.get.result", entity.getDisplayName().getString()));
 //                System.out.println(entity.getDisplayName().getString());
-                FollowProjectileEnchantment.TARGET = entity;
+                ClientPlayNetworking.send(new FollowProjectilePayload(entity.getId()));
             }
         }
 

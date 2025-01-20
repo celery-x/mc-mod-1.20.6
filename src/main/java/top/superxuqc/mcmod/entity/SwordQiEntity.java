@@ -73,11 +73,6 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
     protected void onBlockHit(BlockHitResult blockHitResult) {
     }
 
-    @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-    }
-
-
 
     @Override
     public void tick() {

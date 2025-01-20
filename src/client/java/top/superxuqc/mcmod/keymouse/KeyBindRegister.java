@@ -2,6 +2,7 @@ package top.superxuqc.mcmod.keymouse;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.option.KeyBinding;
@@ -31,6 +32,7 @@ import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
 import top.superxuqc.mcmod.entity.FeiLeiShenEntity;
 import top.superxuqc.mcmod.entity.PlayerSelfEntity;
 import top.superxuqc.mcmod.entity.SwordQiEntity;
+import top.superxuqc.mcmod.network.payload.PlayerSelfSpawnPayload;
 import top.superxuqc.mcmod.register.ModItemRegister;
 import top.superxuqc.mcmod.register.ModSeverEventRegister;
 import top.superxuqc.mcmod.register.SoundRegister;
@@ -161,7 +163,7 @@ public class KeyBindRegister {
                 UUID uuid = client.player.getUuid();
 //                World entityWorld = client.player.getEntityWorld();
 //                entityWorld.spawnEntity(new PlayerSelfEntity(null, entityWorld, uuid));
-                ModSeverEventRegister.fatherUuid = uuid;
+                ClientPlayNetworking.send(new PlayerSelfSpawnPayload(uuid));
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
