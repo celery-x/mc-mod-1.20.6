@@ -42,6 +42,11 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
         this(type, owner.getX(), owner.getEyeY() - 0.1F, owner.getZ(), world);
     }
 
+    @Override
+    public boolean isFireImmune() {
+        return true;
+    }
+
     public int getAmount() {
         return amount;
     }

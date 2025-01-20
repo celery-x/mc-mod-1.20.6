@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
+/**
+ *
+ */
 public class UseToolGoal extends Goal {
 
     public TameableEntity entity;
@@ -67,28 +70,21 @@ public class UseToolGoal extends Goal {
         }
         pos = entity.getBlockPos();
         if (handItemStack.isIn(ModTarKeys.SCARE_SELF_ENCHANT_TAG)) {
-            for (int i = 1; i <= width; i++) {
-                if (testAttack(pos.add(i, 0, 0)) ||
-                        testAttack(pos.add(0, i, 0)) ||
-                        testAttack(pos.add(0, 0, i)) ||
-                        testAttack(pos.add(i, i, 0)) ||
-                        testAttack(pos.add(i, 0, i)) ||
-                        testAttack(pos.add(0, i, i)) ||
-                        testAttack(pos.add(i, i, i))
-
-                ) {
-                    break;
+            double dis = Double.MAX_VALUE;
+//            world.getBlockCollisions()
+            for (int i = -width; i < width; i++) {
+                for (int j = -width; j < width; j++) {
+                    for (int k = -width; k < width; k++) {
+                        if (testAttack(pos.add(i, j, k)) && pos.getSquaredDistance(pos.add(i, j ,k)) < dis) {
+                            dis = pos.getSquaredDistance(pos.add(i, j ,k));
+                            target = pos.add(i, j , k);
+                        }
+                    }
                 }
-                if (testAttack(pos.add(-i, 0, 0)) ||
-                        testAttack(pos.add(0, -i, 0)) ||
-                        testAttack(pos.add(0, 0, -i)) ||
-                        testAttack(pos.add(-i, -i, 0)) ||
-                        testAttack(pos.add(-i, 0, -i)) ||
-                        testAttack(pos.add(0, -i, -i)) ||
-                        testAttack(pos.add(-i, -i, -i))
-                ) {
-                    break;
-                }
+            }
+            if (dis != Double.MAX_VALUE) {
+                workingMap.put(entity.getId(), target);
+                return true;
             }
         }
         return false;
@@ -98,19 +94,20 @@ public class UseToolGoal extends Goal {
         if (workingMap.contains(t)) {
             return false;
         }
-        if (navigation.findPathTo(t, 0) == null) {
+        BlockState blockState = world.getBlockState(t);
+        if (blockState.isAir()) {
             return false;
         }
-        BlockState blockState = world.getBlockState(t);
-        boolean in = blockState.isIn(ModTarKeys.SELF_BLACK_LIST);
+         boolean in = blockState.isIn(ModTarKeys.SELF_BLACK_LIST);
         if (in) {
             return false;
         }
         if (handItemStack.getComponents().get(DataComponentTypes.TOOL).isCorrectForDrops(blockState)) {
+            if (navigation.findPathTo(t, 1) == null) {
+                return false;
+            }
             System.out.println("发现: " + t);
             System.out.println("内容: " + blockState);
-            target = t;
-            workingMap.put(entity.getId(), t);
             return true;
         }
         return false;

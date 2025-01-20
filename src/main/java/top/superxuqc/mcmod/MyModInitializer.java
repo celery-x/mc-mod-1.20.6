@@ -106,6 +106,7 @@ public class MyModInitializer implements ModInitializer {
         ParticleRegister.init();
         LivingEntityRegister.init();
         ModSeverEventRegister.init();
+        ModEffectRegister.init();
         Registry.register(Registries.ITEM_GROUP, CUSTOM_ITEM_GROUP_KEY, CUSTOM_ITEM_GROUP);
 //        ItemGroupEvents.modifyEntriesEvent(CUSTOM_ITEM_GROUP_KEY).register(itemGroup -> {
 //            itemGroup.add(ModItemRegister.HUCHENG_TNT_ITEM);

@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.MobEntityRenderer;
@@ -15,8 +16,10 @@ import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.SkinTextures;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.Angerable;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import top.superxuqc.mcmod.entity.PlayerSelfEntity;
 
@@ -46,6 +49,24 @@ public class PlayerSelfEntityRenderer extends MobEntityRenderer<PlayerSelfEntity
         this.addFeature(new StuckStingersFeatureRenderer(this));
     }
 
+    @Override
+    public void render(PlayerSelfEntity mobEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+        Integer tickTime = mobEntity.getTickTime();
+        tickTime++;
+        mobEntity.setTickTime(tickTime);
+        super.render(mobEntity, f, g, matrixStack, vertexConsumerProvider, i);
+        if (tickTime < 4) {
+            mobEntity.getWorld().addParticle(
+                    ParticleTypes.EXPLOSION,
+                    mobEntity.getX(),
+                    mobEntity.getY(),
+                    mobEntity.getZ(),
+                    0,
+                    0,
+                    0
+            );
+        }
+    }
 
     @Override
     public Identifier getTexture(PlayerSelfEntity entity) {

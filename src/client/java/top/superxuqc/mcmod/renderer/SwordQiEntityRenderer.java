@@ -221,10 +221,35 @@ public class SwordQiEntityRenderer<T extends Entity & FlyingItemEntity> extends 
     private void addParticle(T entity, float[] args) {
         Vec3d realPos = toRealPos(entity, args[3], args[4], args[5]);
         if (entity.getWorld().isClient && entity instanceof SwordQiEntity) {
-            Vec3i passed = ((SwordQiEntity) entity).passed(realPos.x, realPos.y, realPos.z);
-            if (passed != null) {
-                ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), ((SwordQiEntity) entity).getAmount()));
+            Vec3i passed;
+            for (int i = 0; i < 3; i++) {
+                passed = ((SwordQiEntity) entity).passed(realPos.x, realPos.y + i, realPos.z);
+                if (passed != null) {
+                    ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), ((SwordQiEntity) entity).getAmount()));
+                }
+                passed = ((SwordQiEntity) entity).passed(realPos.x, realPos.y - i, realPos.z);
+                if (passed != null) {
+                    ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), ((SwordQiEntity) entity).getAmount()));
+                }
+                passed = ((SwordQiEntity) entity).passed(realPos.x + i, realPos.y, realPos.z);
+                if (passed != null) {
+                    ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), ((SwordQiEntity) entity).getAmount()));
+                }
+                passed = ((SwordQiEntity) entity).passed(realPos.x - i, realPos.y, realPos.z);
+                if (passed != null) {
+                    ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), ((SwordQiEntity) entity).getAmount()));
+                }
+                passed = ((SwordQiEntity) entity).passed(realPos.x, realPos.y, realPos.z + i);
+                if (passed != null) {
+                    ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), ((SwordQiEntity) entity).getAmount()));
+                }
+                passed = ((SwordQiEntity) entity).passed(realPos.x, realPos.y, realPos.z- i);
+                if (passed != null) {
+                    ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), ((SwordQiEntity) entity).getAmount()));
+                }
             }
+
+
         }
         entity.getWorld().addParticle(
 //                ParticleTypes.END_ROD,

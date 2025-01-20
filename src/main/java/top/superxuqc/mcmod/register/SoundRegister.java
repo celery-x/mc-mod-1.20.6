@@ -16,6 +16,10 @@ public class SoundRegister {
     public static SoundEvent SCARE_SELF_SOUND = register(Identifier.of(MyModInitializer.MOD_ID, "scare_self_sound"));
 
     public static SoundEvent BAN_KAI = register(Identifier.of(MyModInitializer.MOD_ID, "ban_kai"));
+
+    public static SoundEvent FEN_SHEN_KAI = register(Identifier.of(MyModInitializer.MOD_ID, "fenshenkai"));
+
+    public static SoundEvent FEN_SHEN_GUAN = register(Identifier.of(MyModInitializer.MOD_ID, "fenshenguan"));
     private static SoundEvent register(Identifier id) {
         return register(id, id);
     }

@@ -1,7 +1,12 @@
 package top.superxuqc.mcmod.entity;
 
 import com.google.common.collect.Lists;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -17,15 +22,26 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.EntityView;
+import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
+import top.superxuqc.mcmod.enchantment.FollowProjectileEnchantment;
 import top.superxuqc.mcmod.entity.goal.playself.UseToolGoal;
+import top.superxuqc.mcmod.network.payload.PlayerSelfSpawnPayload;
 import top.superxuqc.mcmod.register.ModEntryTypes;
+import top.superxuqc.mcmod.register.ModItemRegister;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class PlayerSelfEntity extends TameableEntity {
@@ -33,9 +49,19 @@ public class PlayerSelfEntity extends TameableEntity {
     private static final TrackedData<ItemStack> MAIN_ITEM = DataTracker.registerData(PlayerSelfEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
     private static final TrackedData<ItemStack> OFF_ITEM = DataTracker.registerData(PlayerSelfEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
 
-    private final int MAX_AGE = 0;
+    private static final TrackedData<Integer> TICK_TIME = DataTracker.registerData(PlayerSelfEntity.class, TrackedDataHandlerRegistry.INTEGER);
+
+    private int MAX_AGE = 0;
 
     private int age = 0;
+
+    public void setTickTime(Integer tickTime) {
+        this.dataTracker.set(TICK_TIME, tickTime);
+    }
+
+    public Integer getTickTime() {
+        return this.dataTracker.get(TICK_TIME);
+    }
 
     public void setMainItem(ItemStack stack) {
         this.dataTracker.set(MAIN_ITEM, stack == null ? ItemStack.EMPTY : stack);
@@ -76,6 +102,11 @@ public class PlayerSelfEntity extends TameableEntity {
     }
 
 
+    public void initEquipment(Random random, LocalDifficulty localDifficulty) {
+        super.initEquipment(random, localDifficulty);
+        this.equipStack(EquipmentSlot.MAINHAND, getMainHandStack());
+    }
+
     @Override
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
@@ -88,7 +119,7 @@ public class PlayerSelfEntity extends TameableEntity {
         this.targetSelector.add(3, new RevengeGoal(this).setGroupRevenge());
         this.targetSelector.add(7, new ActiveTargetGoal<>(this, HostileEntity.class, false));
         this.targetSelector.add(8, new UniversalAngerGoal(this, true));
-        this.targetSelector.add(5, new UseToolGoal(this, getWorld(), 5));
+//        this.targetSelector.add(5, new UseToolGoal(this, getWorld(), 5));
     }
 
     List<UUID> getTrustedUuids() {
@@ -106,9 +137,22 @@ public class PlayerSelfEntity extends TameableEntity {
     protected void mobTick() {
         super.mobTick();
         if (MAX_AGE != 0 && age > MAX_AGE) {
-            this.discard();
+            if (!preDiscard) {
+                this.preToDiscard();
+            } else {
+                this.discard();
+            }
         }
         age++;
+    }
+
+    private boolean preDiscard = false;
+
+    public void preToDiscard() {
+        ServerPlayNetworking.send((ServerPlayerEntity) getOwner(), new PlayerSelfSpawnPayload(getOwnerUuid()));
+        MAX_AGE = 4;
+        age = 0;
+        preDiscard = true;
     }
 
     @Override
@@ -121,6 +165,28 @@ public class PlayerSelfEntity extends TameableEntity {
         super.initDataTracker(builder);
         builder.add(MAIN_ITEM, ItemStack.EMPTY);
         builder.add(OFF_ITEM, ItemStack.EMPTY);
+        builder.add(TICK_TIME, 0);
+    }
+
+    @Override
+    public boolean tryAttack(Entity target) {
+        if (!getWorld().isClient) {
+            Set<RegistryEntry<Enchantment>> enchantments = EnchantmentHelper.getEnchantments(getMainHandStack()).getEnchantments();
+            boolean isBanKai = false;
+            for (RegistryEntry<Enchantment> enchantment : enchantments) {
+                isBanKai = enchantment.value() instanceof BanKaiEnchantment;
+                if (isBanKai) {
+                    break;
+                }
+            }
+            if (isBanKai || getMainItem().isOf(ModItemRegister.ZHAN_YUE)) {
+                SwordQiEntity qiEntity = new SwordQiEntity(ModEntryTypes.SWORD_QI_TYPE, this, getWorld());
+                qiEntity.setVelocity(this, this.getPitch(), this.getYaw(), 0F, 2.5F, 1.0F);
+                qiEntity.setSize(false);
+                getWorld().spawnEntity(qiEntity);
+            }
+        }
+        return super.tryAttack(target);
     }
 
     @Override

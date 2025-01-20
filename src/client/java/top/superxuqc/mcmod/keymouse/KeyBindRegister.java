@@ -163,6 +163,17 @@ public class KeyBindRegister {
                 UUID uuid = client.player.getUuid();
 //                World entityWorld = client.player.getEntityWorld();
 //                entityWorld.spawnEntity(new PlayerSelfEntity(null, entityWorld, uuid));
+//                boolean start = true;
+//                for (Entity entity : client.world.getEntities()) {
+//                    if (entity instanceof PlayerSelfEntity) {
+//                        start = !((PlayerSelfEntity) entity).getOwnerUuid().equals(uuid);
+//                    }
+//                }
+//                if (start) {
+//                    client.player.playSound(SoundRegister.FEN_SHEN_KAI);
+//                } else {
+//                    client.player.playSound(SoundRegister.FEN_SHEN_GUAN);
+//                }
                 ClientPlayNetworking.send(new PlayerSelfSpawnPayload(uuid));
             }
         });

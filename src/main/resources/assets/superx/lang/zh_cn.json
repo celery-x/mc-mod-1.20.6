@@ -11,5 +11,6 @@
   "target.get.result": "锁定实体: %1$s",
   "ban.kai.tip": "卍解!",
   "item.superx.arrow_tnt": "TNT箭",
-  "item.superx.tnt_arrow": "箭TNT"
+  "item.superx.tnt_arrow": "箭TNT",
+  "effect.superx.cha_ke_la_effect": "查克拉"
 }

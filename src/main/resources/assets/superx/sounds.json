@@ -7,5 +7,23 @@
         "stream": true
       }
     ]
+  },
+  "fenshenkai": {
+    "subtitle": "sounds.superx:fenshenkai",
+    "sounds": [
+      {
+        "name":"superx:fenshenkai",
+        "stream": true
+      }
+    ]
+  },
+  "fenshenguan": {
+    "subtitle": "sounds.superx:fenshenguan",
+    "sounds": [
+      {
+        "name":"superx:fenshenguan",
+        "stream": true
+      }
+    ]
   }
 }
