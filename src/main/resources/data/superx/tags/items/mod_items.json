@@ -2,6 +2,11 @@
   "replace": false,
   "values": [
     "superx:hucheng_tnt",
-    "minecraft:ender_pearl"
+    "superx:arrow_tnt",
+    "superx:tnt_arrow",
+    "minecraft:ender_pearl",
+    "minecraft:arrow",
+    "minecraft:tipped_arrow",
+    "minecraft:spectral_arrow"
   ]
 }

@@ -1,51 +1,22 @@
 package top.superxuqc.mcmod.entity;
 
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.EndRodBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.EndGatewayBlockEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.FlyingEntity;
-import net.minecraft.entity.passive.BatEntity;
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileUtil;
-import net.minecraft.entity.projectile.thrown.ThrownEntity;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.DustParticleEffect;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
-import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
-import top.superxuqc.mcmod.common.*;
-import top.superxuqc.mcmod.particle.JianQiParticleEffect;
-import top.superxuqc.mcmod.register.ModEntryTypes;
+import top.superxuqc.mcmod.common.particle.*;
 import top.superxuqc.mcmod.register.ModItemRegister;
-import top.superxuqc.mcmod.register.ParticleRegister;
 
 import java.util.HashSet;
-import java.util.List;
 
 public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
 
@@ -241,6 +212,14 @@ public class SwordQiEntity extends ProjectileEntity implements FlyingItemEntity{
             try {
                 ((ServerWorld) world).iterateEntities().forEach(v -> {
                     if (v != null && v.getBlockPos().equals(blockPos)) {
+                        v.damage(this.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 15);
+                    }
+                    BlockPos pos2 = new BlockPos(blockPos.getX(), blockPos.getY() - 1, blockPos.getZ());
+                    if (v != null && v.getBlockPos().equals(pos2)) {
+                        v.damage(this.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 15);
+                    }
+                    BlockPos pos3 = new BlockPos(blockPos.getX(), blockPos.getY() - 2, blockPos.getZ());
+                    if (v != null && v.getBlockPos().equals(pos3)) {
                         v.damage(this.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 15);
                     }
                 });

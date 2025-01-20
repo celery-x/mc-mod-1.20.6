@@ -2,6 +2,7 @@ package top.superxuqc.mcmod.keymouse;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -11,6 +12,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -27,11 +29,14 @@ import top.superxuqc.mcmod.MyModInitializer;
 import top.superxuqc.mcmod.common.PositionDouble;
 import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
 import top.superxuqc.mcmod.entity.FeiLeiShenEntity;
+import top.superxuqc.mcmod.entity.PlayerSelfEntity;
 import top.superxuqc.mcmod.entity.SwordQiEntity;
 import top.superxuqc.mcmod.register.ModItemRegister;
+import top.superxuqc.mcmod.register.ModSeverEventRegister;
 import top.superxuqc.mcmod.register.SoundRegister;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static top.superxuqc.mcmod.register.SoundRegister.SCARE_SELF_SOUND_PLAY;
@@ -42,6 +47,13 @@ public class KeyBindRegister {
             "scare.self.sound", // The translation key of the keybinding's name
             InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
             GLFW.GLFW_KEY_KP_ADD, // The keycode of the key
+            "category.examplemod.test" // The translation key of the keybinding's category.
+    ));
+
+    private static KeyBinding keyRBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key.add.self", // The translation key of the keybinding's name
+            InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
+            GLFW.GLFW_KEY_R, // The keycode of the key
             "category.examplemod.test" // The translation key of the keybinding's category.
     ));
 
@@ -139,8 +151,19 @@ public class KeyBindRegister {
     }
 
 
+    public static int type = 1;
 
     public static void init() {
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while (keyRBinding.wasPressed()) {
+                //client.player.teleport();
+//                resetBlock();
+                UUID uuid = client.player.getUuid();
+//                World entityWorld = client.player.getEntityWorld();
+//                entityWorld.spawnEntity(new PlayerSelfEntity(null, entityWorld, uuid));
+                ModSeverEventRegister.fatherUuid = uuid;
+            }
+        });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyKP0Binding.wasPressed()) {
                 //client.player.teleport();
@@ -150,25 +173,29 @@ public class KeyBindRegister {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyKP1Binding.wasPressed()) {
                 //client.player.teleport();
-                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[0]);
+//                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[0]);
+                type = 1;
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyKP2Binding.wasPressed()) {
                 //client.player.teleport();
-                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[1]);
+                //tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[1]);
+                type = 2;
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyKP3Binding.wasPressed()) {
                 //client.player.teleport();
-                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[2]);
+//                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[2]);
+                type = 3;
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyKP4Binding.wasPressed()) {
                 //client.player.teleport();
-                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[3]);
+//                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[3]);
+                type = 4;
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

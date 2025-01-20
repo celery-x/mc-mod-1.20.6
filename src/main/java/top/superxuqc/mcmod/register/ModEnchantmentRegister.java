@@ -11,10 +11,7 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import top.superxuqc.mcmod.MyModInitializer;
-import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
-import top.superxuqc.mcmod.enchantment.FeiLeiEnchantment;
-import top.superxuqc.mcmod.enchantment.HuChengEnchantment;
-import top.superxuqc.mcmod.enchantment.ScareSelfEnchantment;
+import top.superxuqc.mcmod.enchantment.*;
 
 public class ModEnchantmentRegister {
     public static Enchantment HUCHENG = new HuChengEnchantment(
@@ -54,11 +51,22 @@ public class ModEnchantmentRegister {
                     4, EquipmentSlot.MAINHAND)
     );
 
+    public static Enchantment FOLLOW_PROJECTILE = new FollowProjectileEnchantment(
+            Enchantment.properties(
+//                    ItemTags.BOW_ENCHANTABLE,
+                    ModTarKeys.MOD_ITEM_ENCHANT_TAG,
+                    1, 1,
+                    Enchantment.leveledCost(15, 9),
+                    Enchantment.leveledCost(65, 9),
+                    4, EquipmentSlot.MAINHAND)
+    );
+
     public static void init() {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "hucheng"),HUCHENG);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "feilei"),FeiLei);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "scare_self"),SCARE_SELF);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "bankai"),BAN_KAI);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "follow_projectile"),FOLLOW_PROJECTILE);
     }
 
 }

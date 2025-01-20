@@ -90,7 +90,7 @@ public class HuChengTnTBlock extends TntBlock {
     @Override
     public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
         if (!world.isClient) {
-            HuChengTnTEntity tntEntity = new HuChengTnTEntity(world, (double)pos.getX() + 0.5, (double)pos.getY(), (double)pos.getZ() + 0.5, explosion.getCausingEntity(),getStep());
+            HuChengTnTEntity tntEntity = new HuChengTnTEntity(world, (double)pos.getX() + 0.5, (double)pos.getY(), (double)pos.getZ() + 0.5, explosion.getCausingEntity(),getStep(),getStep());
             int i = tntEntity.getFuse();
             tntEntity.setFuse((short)(world.random.nextInt(i / 4) + i / 8));
             world.spawnEntity(tntEntity);
@@ -104,7 +104,7 @@ public class HuChengTnTBlock extends TntBlock {
     private static void primeTnt(World world, BlockPos pos, @Nullable LivingEntity igniter) {
         if (!world.isClient) {
 
-            HuChengTnTEntity tntEntity = new HuChengTnTEntity(world, (double)pos.getX() + 0.5, (double)pos.getY(), (double)pos.getZ() + 0.5, igniter, ((HuChengTnTBlock)world.getBlockState(pos).getBlock()).getStep());
+            HuChengTnTEntity tntEntity = new HuChengTnTEntity(world, (double)pos.getX() + 0.5, (double)pos.getY(), (double)pos.getZ() + 0.5, igniter, ((HuChengTnTBlock)world.getBlockState(pos).getBlock()).getStep(), ((HuChengTnTBlock)world.getBlockState(pos).getBlock()).getStep());
             world.spawnEntity(tntEntity);
             world.playSound(null, tntEntity.getX(), tntEntity.getY(), tntEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
             world.emitGameEvent(igniter, GameEvent.PRIME_FUSE, pos);

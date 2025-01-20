@@ -1,5 +1,6 @@
 package top.superxuqc.mcmod.item;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -8,6 +9,7 @@ import net.minecraft.inventory.StackReference;
 import net.minecraft.item.*;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -27,6 +29,8 @@ import java.util.function.Predicate;
 import static net.minecraft.util.BlockRotation.CLOCKWISE_180;
 
 public class QiSwordItem extends SwordItem {
+
+    public static Entity TARGET;
     public QiSwordItem(Settings settings) {
         super(ToolMaterials.DIAMOND, settings);
     }

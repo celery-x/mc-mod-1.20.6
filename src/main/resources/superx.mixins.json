@@ -7,7 +7,10 @@
     "EnderPearItemMixin",
     "ToolItemMixin",
     "ServerPlayNetworkHandlerMixin",
-    "SwordItemMixin"
+    "SwordItemMixin",
+    "ArrowEntityMixin",
+    "ArrowItemMixin",
+    "PersistentProjectileEntityMixin"
   ],
   "client": [
 

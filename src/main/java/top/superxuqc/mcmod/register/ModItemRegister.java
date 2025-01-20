@@ -1,10 +1,7 @@
 package top.superxuqc.mcmod.register;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterials;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -28,6 +25,13 @@ public class ModItemRegister {
     public static Item Sword_Qi = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "sword_qi"),
             new SwordQIItem(new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F))));
 
+    // 携带TNT的箭, 可分裂
+    public static Item ARROW_TNT = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "arrow_tnt"),
+            new ArrowItem(new Item.Settings()));
+
+    // 携带TNT的箭, 不可分裂,但爆炸可分裂
+    public static Item TNT_ARROW = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "tnt_arrow"),
+            new ArrowItem(new Item.Settings()));
 
     private static Item registerBlockItem(String name, Block block) {
         return Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, name),

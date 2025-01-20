@@ -8,5 +8,8 @@
   "enchantment.superx.scare_self": "自己吓自己",
   "itemGroup.superx": "半点不小心",
   "scare.self.tip": "自己吓自己:声音 %1$s",
-  "ban.kai.tip": "卍解!"
+  "target.get.result": "锁定实体: %1$s",
+  "ban.kai.tip": "卍解!",
+  "item.superx.arrow_tnt": "TNT箭",
+  "item.superx.tnt_arrow": "箭TNT"
 }

@@ -22,6 +22,13 @@ import top.superxuqc.mcmod.register.*;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+
+/**
+ * 求方向
+ * double d = vec3d.horizontalLength();
+ * 			this.setYaw((float)(MathHelper.atan2(vec3d.x, vec3d.z) * 180.0F / (float)Math.PI));  水平转向角度 +z为0度
+ * 			this.setPitch((float)(MathHelper.atan2(vec3d.y, d) * 180.0F / (float)Math.PI));  垂直转向角
+ */
 public class MyModInitializer implements ModInitializer {
     public static  final String MOD_ID = "superx";
 
@@ -36,6 +43,8 @@ public class MyModInitializer implements ModInitializer {
                 entries.add(ModItemRegister.HUCHENG_TNT_ITEM);
                 entries.add(ModItemRegister.KUWU);
                 entries.add(ModItemRegister.ZHAN_YUE);
+                entries.add(ModItemRegister.ARROW_TNT);
+                entries.add(ModItemRegister.TNT_ARROW);
 
 
                 // 注册附魔书
@@ -95,6 +104,8 @@ public class MyModInitializer implements ModInitializer {
         ModEntryTypes.init();
         ModEnchantmentRegister.init();
         ParticleRegister.init();
+        LivingEntityRegister.init();
+        ModSeverEventRegister.init();
         Registry.register(Registries.ITEM_GROUP, CUSTOM_ITEM_GROUP_KEY, CUSTOM_ITEM_GROUP);
 //        ItemGroupEvents.modifyEntriesEvent(CUSTOM_ITEM_GROUP_KEY).register(itemGroup -> {
 //            itemGroup.add(ModItemRegister.HUCHENG_TNT_ITEM);

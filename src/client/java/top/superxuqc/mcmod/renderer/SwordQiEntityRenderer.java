@@ -7,25 +7,19 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.FlyingItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.DustParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
-import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import top.superxuqc.mcmod.MyModInitializer;
 import top.superxuqc.mcmod.common.*;
+import top.superxuqc.mcmod.common.particle.*;
 import top.superxuqc.mcmod.entity.SwordQiEntity;
+import top.superxuqc.mcmod.keymouse.KeyBindRegister;
 import top.superxuqc.mcmod.network.payload.HitCheckPayload;
 import top.superxuqc.mcmod.particle.JianQiParticle;
 import top.superxuqc.mcmod.particle.JianQiParticleEffect;
@@ -125,29 +119,102 @@ public class SwordQiEntityRenderer<T extends Entity & FlyingItemEntity> extends 
 //            addParticle(argsParticle1[4]);
 //        }
         if (entity instanceof SwordQiEntity) {
-            if(((SwordQiEntity) entity).getSize()) {
-                for (float[] args : JianqiArgs0.ARG) {
-                    addParticle(entity, args);
+            if (KeyBindRegister.type == 1) {
+                red(entity);
+            } else if (KeyBindRegister.type == 2) {
+                yellow(entity);
+            } else if (KeyBindRegister.type == 3) {
+                int i = entity.getWorld().random.nextInt(2);
+                if (i < 1) {
+                    yellow(entity);
+                } else {
+                    red(entity);
                 }
-
-
-                for (float[] args : JianqiArgs1.ARG) {
-                    addParticle(entity, args);
-                }
-
-
-                for (float[] args : JianqiArgs2.ARG) {
-                    addParticle(entity, args);
-                }
-                for (float[] args : JianqiArgs3.ARG) {
-                    addParticle(entity, args);
-                }
-            }else {
-                for (float[] args : JianqiArgMini.ARG) {
-                    addParticle(entity, args);
-                }
+            } else if (KeyBindRegister.type == 4) {
+                name(entity);
             }
 
+        }
+    }
+
+    private void name(T entity) {
+        if (((SwordQiEntity) entity).getSize()) {
+            for (float[] args : Name0.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Name1.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Name2.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Name3.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Name5.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Name4.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Name6.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Name7.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Name8.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Name9.ARG) {
+                addParticle(entity, args);
+            }
+        } else {
+            for (float[] args : JianqiArgMini.ARG) {
+                addParticle(entity, args);
+            }
+        }
+    }
+
+    private void red(T entity) {
+        if (((SwordQiEntity) entity).getSize()) {
+            for (float[] args : JianqiArgs0.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : JianqiArgs1.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : JianqiArgs2.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : JianqiArgs3.ARG) {
+                addParticle(entity, args);
+            }
+        } else {
+            for (float[] args : JianqiArgMini.ARG) {
+                addParticle(entity, args);
+            }
+        }
+    }
+
+    private void yellow(T entity) {
+        if (((SwordQiEntity) entity).getSize()) {
+            for (float[] args : Yellow1.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Yellow2.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Yellow3.ARG) {
+                addParticle(entity, args);
+            }
+            for (float[] args : Yellow4.ARG) {
+                addParticle(entity, args);
+            }
+        } else {
+            for (float[] args : YellowMini.ARG) {
+                addParticle(entity, args);
+            }
         }
     }
 
