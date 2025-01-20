@@ -9,17 +9,13 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.explosion.Explosion;
+import top.superxuqc.mcmod.entity.PlayerSelfEntity;
 import top.superxuqc.mcmod.network.payload.HitCheckPayload;
+import top.superxuqc.mcmod.network.payload.PlayerSelfSpawnPayload;
 
 import java.util.Optional;
 
 public class SeverHitCheckPayloadHandler implements ServerPlayNetworking.PlayPayloadHandler<HitCheckPayload> {
-
-    public Optional<Float> getBlastResistance(BlockState blockState, FluidState fluidState) {
-        return blockState.isAir() && fluidState.isEmpty()
-                ? Optional.empty()
-                : Optional.of(Math.max(blockState.getBlock().getBlastResistance(), fluidState.getBlastResistance()));
-    }
 
 
     @Override
@@ -35,7 +31,7 @@ public class SeverHitCheckPayloadHandler implements ServerPlayNetworking.PlayPay
             if (!world.isClient()) {
                 try {
                     world.iterateEntities().forEach(v -> {
-                        if (v != null && v.getBlockPos().equals(hitCheckPayload.blockPos())) {
+                        if (v != null && !(v instanceof PlayerSelfEntity) && v.getBlockPos().equals(hitCheckPayload.blockPos())) {
                             v.damage(context.player().getDamageSources().mobProjectile(context.player(), context.player()), hitCheckPayload.amount());
                         }
                     });
