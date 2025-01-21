@@ -3,20 +3,14 @@ package top.superxuqc.mcmod.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.superxuqc.mcmod.TemplateMod;
 import top.superxuqc.mcmod.common.EnchantmentHandle;
-import top.superxuqc.mcmod.enchantment.HuChengEnchantment;
-import top.superxuqc.mcmod.entity.HuChengTnTEntity;
 import top.superxuqc.mcmod.entity.ModArrowEntity;
 import top.superxuqc.mcmod.register.ModEnchantmentRegister;
 import top.superxuqc.mcmod.register.ModEntryTypes;
@@ -39,12 +33,14 @@ public abstract class ArrowEntityMixin {
 
             ItemStack itemStack = entity.getItemStack();
             boolean enchantmentHandle = EnchantmentHandle.isEnchantmentHandle(itemStack, ModEnchantmentRegister.HUCHENG);
+            boolean tianZai = EnchantmentHandle.isEnchantmentHandle(itemStack, ModEnchantmentRegister.TIAN_ZAI);
 
             if (enchantmentHandle) {
                 int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.HUCHENG, itemStack);
                 ModArrowEntity arrow = new ModArrowEntity(entity.getWorld(), entity.getX(),
                         entity.getY(), entity.getZ(),
                         entity.getItemStack().copyWithCount(1), level, level);
+                arrow.setTianZai(tianZai);
                 arrow.setVelocity(entity.getVelocity());
                 entity.getWorld().spawnEntity(arrow);
             }
@@ -59,8 +55,12 @@ public abstract class ArrowEntityMixin {
             index = 0)
     private static EntityType<? extends ArrowEntity> arrowEntityMixin(EntityType<? extends ArrowEntity> entityType, @Local ItemStack stack) {
         if (stack.getItem().getTranslationKey().equals(ModItemRegister.ARROW_TNT.getTranslationKey())) {
-            System.out.println("替换");
+            System.out.println("替换ARROW_TNT");
             return ModEntryTypes.ARROW_TNT;
+        }
+        if (stack.getItem().getTranslationKey().equals(ModItemRegister.ARROW_TNT.getTranslationKey())) {
+            System.out.println("替换TNT_ARROW");
+            return ModEntryTypes.TNT_ARROW;
         }
         return entityType;
     }

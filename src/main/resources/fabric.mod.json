@@ -19,7 +19,7 @@
 			"top.superxuqc.mcmod.MyModInitializer"
 		],
 		"client": [
-			"top.superxuqc.mcmod.TemplateModClient"
+			"top.superxuqc.mcmod.ModClientInitializer"
 		],
 		"fabric-datagen": [
 			"top.superxuqc.mcmod.TemplateModDataGenerator"

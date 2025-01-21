@@ -61,12 +61,23 @@ public class ModEnchantmentRegister {
                     4, EquipmentSlot.MAINHAND)
     );
 
+    public static Enchantment TIAN_ZAI = new ScareSelfEnchantment(
+            Enchantment.properties(
+//                    ItemTags.BOW_ENCHANTABLE,
+                    ModTarKeys.MOD_ITEM_ENCHANT_TAG,
+                    1, 255,
+                    Enchantment.leveledCost(15, 9),
+                    Enchantment.leveledCost(65, 9),
+                    4, EquipmentSlot.MAINHAND)
+    );
+
     public static void init() {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "hucheng"),HUCHENG);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "feilei"),FeiLei);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "scare_self"),SCARE_SELF);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "bankai"),BAN_KAI);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "follow_projectile"),FOLLOW_PROJECTILE);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "tianzai"), TIAN_ZAI);
     }
 
 }

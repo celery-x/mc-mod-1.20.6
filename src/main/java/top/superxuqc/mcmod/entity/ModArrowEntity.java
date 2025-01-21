@@ -31,6 +31,16 @@ public class ModArrowEntity extends ArrowEntity {
 
     public int preStep = 0;
 
+    public boolean isTianZai = false;
+
+    public boolean isTianZai() {
+        return isTianZai;
+    }
+
+    public void setTianZai(boolean tianZai) {
+        isTianZai = tianZai;
+    }
+
     public int getModAge() {
         return modAge;
     }
@@ -78,7 +88,7 @@ public class ModArrowEntity extends ArrowEntity {
             double nwey = father.getY() + father.getWorld().random.nextInt(16) - 8;
             double nwez = father.getZ() + father.getWorld().random.nextInt(16) - 8;
             ModArrowEntity arrow = new ModArrowEntity(father.getWorld(), nwex, nwey, nwez, this.getItemStack().copyWithCount(1), step - 1, preStep);
-            System.out.println("shengcheng");
+//            System.out.println("shengcheng");
             arrow.setVelocity(this.getVelocity());
             father.getWorld().spawnEntity(arrow);
         }

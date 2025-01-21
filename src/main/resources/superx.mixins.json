@@ -10,7 +10,8 @@
     "SwordItemMixin",
     "ArrowEntityMixin",
     "ArrowItemMixin",
-    "PersistentProjectileEntityMixin"
+    "PersistentProjectileEntityMixin",
+    "EntityMixin"
   ],
   "client": [
 

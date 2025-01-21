@@ -6,10 +6,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.BlockPos;
@@ -20,16 +17,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.superxuqc.mcmod.common.SpawnLivingEntityUtils;
 import top.superxuqc.mcmod.enchantment.ScareSelfEnchantment;
 import top.superxuqc.mcmod.register.SoundRegister;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Mixin(Item.class)
 public class ToolItemMixin {
@@ -62,9 +57,9 @@ public class ToolItemMixin {
         //System.out.println(isScareSelf);
         if (ifSpawn(isScareSelf)) {
             if (isScareSelf >= 5) {
-                spawnScareSelf(scareSelfHostileEntityType, world, pos);
+                liveEntity.addAll(SpawnLivingEntityUtils.spawnScareSelf(SpawnLivingEntityUtils.canSpawnHostileEntityType, world, pos));
             } else  {
-                spawnScareSelf(scareSelfEntityType, world, pos);
+                liveEntity.addAll(SpawnLivingEntityUtils.spawnScareSelf(SpawnLivingEntityUtils.canSpawnEntityType, world, pos));
             }
         }
     }
@@ -78,9 +73,9 @@ public class ToolItemMixin {
         //System.out.println(isScareSelf);
         if (ifSpawn(isScareSelf)) {
             if (isScareSelf >= 5) {
-                spawnScareSelf(scareSelfHostileEntityType, target.getWorld(), target.getBlockPos());
+                liveEntity.addAll(SpawnLivingEntityUtils.spawnScareSelf(SpawnLivingEntityUtils.canSpawnHostileEntityType, target.getWorld(), target.getBlockPos()));
             } else  {
-                spawnScareSelf(scareSelfEntityType, target.getWorld(), target.getBlockPos());
+                liveEntity.addAll(SpawnLivingEntityUtils.spawnScareSelf(SpawnLivingEntityUtils.canSpawnEntityType, target.getWorld(), target.getBlockPos()));
             }
 
         }
