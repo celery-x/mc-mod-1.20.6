@@ -6,6 +6,9 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 
+/**
+ * 参考net.minecraft.item.CrossbowItem#calcVelocity(net.minecraft.entity.LivingEntity, net.minecraft.util.math.Vec3d, float)
+ */
 public class VelocityUtils {
 
 

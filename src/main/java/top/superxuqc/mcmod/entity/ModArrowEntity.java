@@ -140,8 +140,14 @@ public class ModArrowEntity extends ArrowEntity {
     }
 
     @Override
-    protected void onHit(LivingEntity target) {
+    public void onHit(LivingEntity target) {
         super.onHit(target);
-        explosion();
+        if (this.getItemStack().getItem().getTranslationKey().equals(ModItemRegister.ARROW_TNT.getTranslationKey())
+                || this.getItemStack().getItem().getTranslationKey().equals(ModItemRegister.TNT_ARROW.getTranslationKey())
+        ) {
+            explosion();
+        } else {
+            discard();
+        }
     }
 }

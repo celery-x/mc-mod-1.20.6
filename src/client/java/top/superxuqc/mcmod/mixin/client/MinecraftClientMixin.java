@@ -56,8 +56,8 @@ public abstract class MinecraftClientMixin {
         boolean isBanKai = false;
         boolean isFollowProjectile = false;
         for (RegistryEntry<Enchantment> enchantment : enchantments) {
-            isBanKai = enchantment.value() instanceof BanKaiEnchantment;
-            isFollowProjectile = enchantment.value() instanceof FollowProjectileEnchantment;
+            isBanKai = isBanKai || enchantment.value() instanceof BanKaiEnchantment;
+            isFollowProjectile = isFollowProjectile || enchantment.value() instanceof FollowProjectileEnchantment;
             if (isBanKai && isFollowProjectile) {
                 break;
             }

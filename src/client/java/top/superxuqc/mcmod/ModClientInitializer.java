@@ -4,8 +4,11 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.minecraft.client.MinecraftClient;
 import top.superxuqc.mcmod.entity.ModArrowEntity;
 import top.superxuqc.mcmod.keymouse.KeyBindRegister;
+import top.superxuqc.mcmod.listener.PlayerEventListener;
 import top.superxuqc.mcmod.network.C2SPayloadRegister;
 import top.superxuqc.mcmod.network.ClientPayloadHandlerRegister;
 import top.superxuqc.mcmod.network.S2CPayloadRegister;
@@ -41,6 +44,7 @@ public class ModClientInitializer implements ClientModInitializer {
 			});
 		}
 		);
+
 		ParticleFactoryRegistry.getInstance().register(ParticleRegister.JIANQI, JianQiParticle.Factory::new);
 
 		// init network

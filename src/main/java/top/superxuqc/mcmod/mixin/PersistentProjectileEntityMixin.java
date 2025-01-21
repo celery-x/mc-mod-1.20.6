@@ -47,6 +47,7 @@ public class PersistentProjectileEntityMixin {
 //            index = 0)
 
     private int myAge = 0;
+    private Vec3d lastPos = new Vec3d(0, 0 ,0);
     @Inject(method = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;tick()V",
             at = @At("HEAD"))
     public void tickMixin(CallbackInfo ci) {
@@ -62,40 +63,22 @@ public class PersistentProjectileEntityMixin {
                         break;
                     }
                 }
-                if(!isFollowProjectile || !FollowProjectileEnchantment.TARGET.isAlive()) {
+                if(!isFollowProjectile || !FollowProjectileEnchantment.TARGET.isAlive() ) {
                     //entity.setVelocity(0, 0, 0);
                 } else {
-                    Vector3f calculate = VelocityUtils.calculate(entity, FollowProjectileEnchantment.TARGET);
-                    entity.setVelocity(new Vec3d(calculate));
+                    System.out.println(entity.getPos().squaredDistanceTo(lastPos));
+                    if (entity.getPos().squaredDistanceTo(lastPos) < 0.1 && entity instanceof ModArrowEntity) {
+                        ((ModArrowEntity) entity).onHit((LivingEntity) FollowProjectileEnchantment.TARGET);
+                    }else {
+                        Vector3f calculate = VelocityUtils.calculate(entity, FollowProjectileEnchantment.TARGET);
+                        entity.setVelocity(new Vec3d(calculate));
+                    }
+                    lastPos = entity.getPos();
                 }
             }
         }
     }
 
-    @Inject(method = "Lnet/minecraft/entity/projectile/ProjectileEntity;onCollision(Lnet/minecraft/util/hit/HitResult;)V"
-            , at = @At("HEAD")
-    )
-    public void onCollisionMixin(HitResult hitResult, CallbackInfo ci) {
-        HitResult.Type type = hitResult.getType();
-        if (type != HitResult.Type.MISS) {
-            PersistentProjectileEntity entity = (PersistentProjectileEntity) (Object) this;
-            int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.TIAN_ZAI, entity.getItemStack());
-            if (level > 0) {
-                generateRandomEntity(entity, level);
-            }
-        }
-    }
 
-    public void generateRandomEntity(PersistentProjectileEntity father, int times) {
-        List<Entity> entityModIS = SpawnLivingEntityUtils.spawnHostileByPlayerTimes(father.getWorld(), father.getBlockPos(), father.getOwner().getUuid(), times);
-        for (Entity entityModI : entityModIS) {
-            double newx = father.getX() + father.getWorld().random.nextInt(+16) - 8;
-            double newy = father.getY() + father.getWorld().random.nextInt(16) - 8;
-            double newz = father.getZ() + father.getWorld().random.nextInt(16) - 8;
-            System.out.println("Tian zai shengcheng");
-            entityModI.setPosition(newx, newy, newz);
-            father.getWorld().spawnEntity(entityModI);
-        }
-    }
 
 }

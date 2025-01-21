@@ -26,7 +26,7 @@ public class SpawnLivingEntityUtils {
 
     //    public static CopyOnWriteArrayList<Entity> liveEntity = new CopyOnWriteArrayList<>();
     public static List<Entity> spawn(CopyOnWriteArrayList<EntityType> list, World world, BlockPos pos) {
-        return spawnTimes(list, world, pos, 1);
+        return spawnTimes(list, world, pos, 1, null);
     }
 
 
@@ -48,45 +48,40 @@ public class SpawnLivingEntityUtils {
 
 
     public static List<Entity> spawnByPlayer(CopyOnWriteArrayList<EntityType> list, World world, BlockPos pos, UUID playerUuid) {
-        return spawnTimes(list, world, pos, 1).stream().map(v -> {
-            ((EntityModI) v).setByPlayer(playerUuid);
-            return v;
-        }).collect(Collectors.toList());
+        return spawnTimes(list, world, pos, 1, playerUuid);
     }
 
     public static List<Entity> spawnByPlayerTimes(CopyOnWriteArrayList<EntityType> list, World world, BlockPos pos, UUID playerUuid, int times) {
-        return spawnTimes(list, world, pos, times).stream().map(v -> {
-            ((EntityModI) v).setByPlayer(playerUuid);
-            return v;
-        }).collect(Collectors.toList());
+        return spawnTimes(list, world, pos, times, playerUuid);
     }
 
-    public static List<Entity> spawnTimes(CopyOnWriteArrayList<EntityType> list, World world, BlockPos pos, int times) {
+    public static List<Entity> spawnTimes(CopyOnWriteArrayList<EntityType> list, World world, BlockPos pos, int times,  UUID playerUuid) {
         initScareSelfEntityType();
         List<Entity> entities = new ArrayList<>();
         for (int i = 0; i < times; i++) {
-            Entity entity = trySpawn(list, random.nextInt(list.size()), world);
+            Entity entity = trySpawn(list, random.nextInt(list.size()), world, playerUuid);
             if (entity != null) {
-                entity.setPosition(pos.getX(), pos.getY(), pos.getZ());
-                world.spawnEntity(entity);
+                //entity.setPosition(pos.getX(), pos.getY(), pos.getZ());
+                //world.spawnEntity(entity);
                 entities.add(entity);
             }
         }
         return entities;
     }
 
-    private static Entity trySpawn(List<EntityType> entities, int random, World world) {
+    private static Entity trySpawn(List<EntityType> entities, int random, World world,  UUID playerUuid) {
         int times = entities.size();
         int time = 0;
         while (time < times) {
             EntityType entityType = entities.get(random);
             Entity entity = entityType.create(world);
-            if (entity == null) {
+            if (entity == null || !(entity instanceof EntityModI)) {
                 random++;
                 if (random >= entities.size()) {
                     random = 0;
                 }
             } else {
+                ((EntityModI)entity).setByPlayer(playerUuid);
                 return entity;
             }
             time++;

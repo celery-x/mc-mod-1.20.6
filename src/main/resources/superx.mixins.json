@@ -11,7 +11,9 @@
     "ArrowEntityMixin",
     "ArrowItemMixin",
     "PersistentProjectileEntityMixin",
-    "EntityMixin"
+    "EntityMixin",
+    "ActiveTargetGoalMixin",
+    "ProjectileEntityMixin"
   ],
   "client": [
 
