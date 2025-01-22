@@ -13,7 +13,8 @@
     "PersistentProjectileEntityMixin",
     "EntityMixin",
     "ActiveTargetGoalMixin",
-    "ProjectileEntityMixin"
+    "ProjectileEntityMixin",
+    "EnderPearlEntityMixin"
   ],
   "client": [
 

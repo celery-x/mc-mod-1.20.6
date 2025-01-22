@@ -19,12 +19,12 @@ import top.superxuqc.mcmod.register.ModEnchantmentRegister;
 import java.util.List;
 import java.util.function.Predicate;
 
-@Mixin(RangedWeaponItem.class)
+//@Mixin(RangedWeaponItem.class)
 public class RangedWeaponItemMixin{
 
 
-    @Inject(method = "Lnet/minecraft/item/RangedWeaponItem;shootAll(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/item/ItemStack;Ljava/util/List;FFZLnet/minecraft/entity/LivingEntity;)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
+    //    @Inject(method = "Lnet/minecraft/item/RangedWeaponItem;shootAll(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/item/ItemStack;Ljava/util/List;FFZLnet/minecraft/entity/LivingEntity;)V",
+//            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
     public void shootAllMixin(World world,
                               LivingEntity shooter,
                               Hand hand,
