@@ -15,6 +15,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import top.superxuqc.mcmod.listener.ModServerEventListener;
 import top.superxuqc.mcmod.network.S2CPayloadRegister;
 import top.superxuqc.mcmod.network.SeverPayloadHandlerRegister;
 import top.superxuqc.mcmod.register.*;
@@ -107,6 +108,7 @@ public class MyModInitializer implements ModInitializer {
         LivingEntityRegister.init();
         ModSeverEventRegister.init();
         ModEffectRegister.init();
+        ModServerEventListener.init();
         Registry.register(Registries.ITEM_GROUP, CUSTOM_ITEM_GROUP_KEY, CUSTOM_ITEM_GROUP);
 //        ItemGroupEvents.modifyEntriesEvent(CUSTOM_ITEM_GROUP_KEY).register(itemGroup -> {
 //            itemGroup.add(ModItemRegister.HUCHENG_TNT_ITEM);

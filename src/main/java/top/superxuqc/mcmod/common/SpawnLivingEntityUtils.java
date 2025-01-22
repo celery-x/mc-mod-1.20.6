@@ -3,8 +3,10 @@ package top.superxuqc.mcmod.common;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import top.superxuqc.mcmod.listener.handle.ClearAbleEntityHandler;
 import top.superxuqc.mcmod.register.SoundRegister;
 
 import java.lang.reflect.Field;
@@ -141,5 +143,14 @@ public class SpawnLivingEntityUtils {
                 //System.out.println(e.getMessage());
             }
         }
+    }
+
+    public static void addClearableEntity(Entity entity) {
+        World world = entity.getWorld();
+        if (world.isClient()) {
+            return;
+        }
+        RegistryKey<World> registryKey = world.getRegistryKey();
+        ClearAbleEntityHandler.entitiesIds.computeIfAbsent(registryKey, v -> new CopyOnWriteArrayList<>()).add(entity.getId());
     }
 }
