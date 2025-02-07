@@ -42,6 +42,7 @@ public class MyModInitializer implements ModInitializer {
 
                 // 注册物品
                 entries.add(ModItemRegister.HUCHENG_TNT_ITEM);
+                entries.add(ModItemRegister.FALL_STONE);
                 entries.add(ModItemRegister.KUWU);
                 entries.add(ModItemRegister.ZHAN_YUE);
                 entries.add(ModItemRegister.ARROW_TNT);
@@ -52,7 +53,8 @@ public class MyModInitializer implements ModInitializer {
                 Set<TagKey<Item>> set = Set.of(
                         ModTarKeys.MOD_ITEM_ENCHANT_TAG,
                         ModTarKeys.SCARE_SELF_ENCHANT_TAG,
-                        ModTarKeys.SWORD_QI_TAG
+                        ModTarKeys.SWORD_QI_TAG,
+                        ModTarKeys.CAN_HIT_ENTITY_ITEMS
                 );
                 displayContext.lookup().getOptionalWrapper(RegistryKeys.ENCHANTMENT).ifPresent(registryWrapper -> {
 //                    addMaxLevelEnchantedBooks(entries, registryWrapper, set, ItemGroup.StackVisibility.PARENT_TAB_ONLY, displayContext.enabledFeatures());

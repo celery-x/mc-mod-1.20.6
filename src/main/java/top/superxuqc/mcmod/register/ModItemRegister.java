@@ -16,6 +16,8 @@ public class ModItemRegister {
 
     public static Item HUCHENG_TNT_ITEM = registerBlockItem("hucheng_tnt", HUCHENG_TNT_BLOCK);
 
+    public static Item FALL_STONE = registerBlockItem("fall_stone", ModBlocksRegister.FALL_STONE);
+
     public static Item KUWU = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "kuwu"),
             new SwordItem(ToolMaterials.DIAMOND, new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.DIAMOND, 3, -2.4F))));
 

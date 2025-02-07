@@ -23,6 +23,14 @@ public class ModEnchantmentRegister {
                     4, EquipmentSlot.MAINHAND)
     );
 
+    public static final Enchantment CHENG_JIAN =
+            new Enchantment(
+            Enchantment.properties(ModTarKeys.CAN_HIT_ENTITY_ITEMS,
+                    1, 10,
+                    Enchantment.constantCost(25),
+                    Enchantment.constantCost(50),
+                    8, EquipmentSlot.MAINHAND));
+
     public static Enchantment FeiLei = new FeiLeiEnchantment(
             Enchantment.properties(
                     ModTarKeys.MOD_ITEM_ENCHANT_TAG,
@@ -78,6 +86,7 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "bankai"),BAN_KAI);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "follow_projectile"),FOLLOW_PROJECTILE);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "tianzai"), TIAN_ZAI);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "cheng_jian"), CHENG_JIAN);
     }
 
 }

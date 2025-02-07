@@ -76,6 +76,13 @@ public class SpawnLivingEntityUtils {
         int time = 0;
         while (time < times) {
             EntityType entityType = entities.get(random);
+            if (EntityType.WITHER.getTranslationKey().equals(entityType.getTranslationKey()) ||
+                    EntityType.HOGLIN.getTranslationKey().equals(entityType.getTranslationKey()) ||
+                    EntityType.ZOGLIN.getTranslationKey().equals(entityType.getTranslationKey())
+            ) {
+                time++;
+                continue;
+            }
             Entity entity = entityType.create(world);
             if (entity == null || !(entity instanceof EntityModI)) {
                 random++;

@@ -11,10 +11,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import top.superxuqc.mcmod.MyModInitializer;
-import top.superxuqc.mcmod.entity.HuChengTnTEntity;
-import top.superxuqc.mcmod.entity.ModArrowEntity;
-import top.superxuqc.mcmod.entity.PlayerSelfEntity;
-import top.superxuqc.mcmod.entity.SwordQiEntity;
+import top.superxuqc.mcmod.entity.*;
 
 
 public class ModEntryTypes {
@@ -64,6 +61,16 @@ public class ModEntryTypes {
                     .maxTrackingRange(32)
                     .trackingTickInterval(2).build()
     );
+
+    public static final EntityType<ChuanXinZhouEntity> CHUAN_XIN_ZHOU_TYPR = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MyModInitializer.MOD_ID, "chuan_xin_zhou"),
+            EntityType.Builder.<ChuanXinZhouEntity>create(ChuanXinZhouEntity::new, SpawnGroup.MISC)
+                    .dimensions(0.1F, 0.1F)
+                    .eyeHeight(0.13F)
+                    .maxTrackingRange(4)
+                    .trackingTickInterval(20).build());
+
     public static void init() {
 
     }

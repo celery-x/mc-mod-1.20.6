@@ -13,6 +13,7 @@ import top.superxuqc.mcmod.network.SeverPayloadHandlerRegister;
 import top.superxuqc.mcmod.particle.JianQiParticle;
 import top.superxuqc.mcmod.register.ModBlocksRegister;
 import top.superxuqc.mcmod.register.ModEntryTypes;
+import top.superxuqc.mcmod.register.ModRendererRegister;
 import top.superxuqc.mcmod.register.ParticleRegister;
 import top.superxuqc.mcmod.renderer.*;
 
@@ -23,12 +24,10 @@ public class ModClientInitializer implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		//System.out.println("client init");
-		EntityRendererRegistry.register(ModEntryTypes.HUCHENG_TNT,  (context) -> new HuChengTnTRenderer(ModBlocksRegister.HUCHENG_TNT_BLOCK, context));
-		EntityRendererRegistry.register(ModEntryTypes.SWORD_QI_TYPE, SwordQiEntityRenderer::new);
-        EntityRendererRegistry.register(ModEntryTypes.ARROW_TNT, (context) -> new TNTArrowEntityRenderer(context, 0));
-        EntityRendererRegistry.register(ModEntryTypes.TNT_ARROW, (context) -> new TNTArrowEntityRenderer(context, 1));
-		EntityRendererRegistry.register(ModEntryTypes.PLAYER_SELF, (context) -> new PlayerSelfEntityRenderer(context, false));
+		ModRendererRegister.init();
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
+
+
 
         // 此处代码在服务器可能会崩溃
 		ServerLifecycleEvents.SERVER_STOPPING.register((server) ->
