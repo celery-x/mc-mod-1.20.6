@@ -2,7 +2,6 @@ package top.superxuqc.mcmod.mixin;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
@@ -10,12 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.superxuqc.mcmod.common.SpawnLivingEntityUtils;
 import top.superxuqc.mcmod.enchantment.ChengJianEnchantment;
 import top.superxuqc.mcmod.register.ModEnchantmentRegister;
@@ -29,25 +29,43 @@ public class ProjectileEntityMixin {
 
 
 
+
     @Unique
     List<BlockPos> fallStoneList = new ArrayList<>();
 
     @Inject(at = @At("TAIL"),
             method = "Lnet/minecraft/entity/projectile/ProjectileEntity;onEntityHit(Lnet/minecraft/util/hit/EntityHitResult;)V")
-    public void postHitMixin(EntityHitResult entityHitResult, CallbackInfo ci) {
-        ItemStack stack;
+    public void onEntityHitMixin(EntityHitResult entityHitResult, CallbackInfo ci) {
+        ThrownItemEntity entity;
+
         if ((Object)this instanceof ThrownItemEntity) {
-            stack = ((ThrownItemEntity)(Object) this).getStack();
+            entity = (ThrownItemEntity) (Object) this;
         } else {
             return;
         }
+        ItemStack stack = entity.getStack();
         int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.CHENG_JIAN, stack);
         if (level > 0) {
             ChengJianEnchantment.generateMountain(entityHitResult.getEntity().getWorld(), entityHitResult.getEntity().getBlockPos(), fallStoneList, level);
             //entityHitResult.getEntity().damage(entityHitResult.getEntity().getDamageSources().cramming(), level * 10);
         }
+        int level1 = EnchantmentHelper.getLevel(ModEnchantmentRegister.SHUTTLECOC_KKICKING, stack);
+        if (level1 > 0) {
+            //ChengJianEnchantment.generateMountain(entityHitResult.getEntity().getWorld(), entityHitResult.getEntity().getBlockPos(), fallStoneList, level1);
+            Entity target = entityHitResult.getEntity();
+            target.damage(entity.getDamageSources().thrown(entity, entity.getOwner()), 20);
+            Vec3d vec3d = calVelocity(entity.prevPitch, entity.prevYaw, 0);
+            target.setVelocity(target.getVelocity().add(entity.calculateVelocity(vec3d.x, vec3d.y, vec3d.z, 15F, 0)));
+        }
     }
 
+    @Unique
+    private Vec3d calVelocity(float pitch, float yaw, float roll) {
+        float f = -MathHelper.sin(yaw * (float) (Math.PI / 180.0)) * MathHelper.cos(pitch * (float) (Math.PI / 180.0));
+        float g = -MathHelper.sin((pitch + roll) * (float) (Math.PI / 180.0));
+        float h = MathHelper.cos(yaw * (float) (Math.PI / 180.0)) * MathHelper.cos(pitch * (float) (Math.PI / 180.0));
+        return new Vec3d(f, g, h);
+    }
 
     @Inject(method = "Lnet/minecraft/entity/projectile/ProjectileEntity;onCollision(Lnet/minecraft/util/hit/HitResult;)V"
             , at = @At("HEAD")

@@ -2,6 +2,7 @@ package top.superxuqc.mcmod.register;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.InfinityEnchantment;
+import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -79,6 +80,21 @@ public class ModEnchantmentRegister {
                     4, EquipmentSlot.MAINHAND)
     );
 
+    public static Enchantment SHUTTLECOC_KKICKING = new ShuttlecockKickingEnchantment(
+            Enchantment.properties(
+//                    ItemTags.BOW_ENCHANTABLE,
+                    ModTarKeys.CAN_HIT_ENTITY_ITEMS,
+                    1, 1,
+                    Enchantment.leveledCost(15, 9),
+                    Enchantment.leveledCost(65, 9),
+                    4, EquipmentSlot.MAINHAND)
+    );
+
+    public static Enchantment WU_JIANG_PROTECTION = new WuJiangEnchantment(
+            Enchantment.properties(ItemTags.ARMOR_ENCHANTABLE, 5, 4, Enchantment.leveledCost(3, 6), Enchantment.leveledCost(9, 6), 2, EquipmentSlot.CHEST),
+            ProtectionEnchantment.Type.PROJECTILE
+    );
+
     public static void init() {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "hucheng"),HUCHENG);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "feilei"),FeiLei);
@@ -87,6 +103,8 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "follow_projectile"),FOLLOW_PROJECTILE);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "tianzai"), TIAN_ZAI);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "cheng_jian"), CHENG_JIAN);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "shuttlecock_kicking"), SHUTTLECOC_KKICKING);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "wu_jiang_protection"), WU_JIANG_PROTECTION);
     }
 
 }

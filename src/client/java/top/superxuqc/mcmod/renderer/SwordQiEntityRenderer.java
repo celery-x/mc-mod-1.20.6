@@ -109,6 +109,12 @@ public class SwordQiEntityRenderer<T extends Entity & FlyingItemEntity> extends 
         addParticle(entity);
     }
 
+    /**
+     * 见分支jian_qi，当前代码为开发版，发布版在单独的分支。
+     * 改为从配置文件获取剑气样式
+     *
+     * @param entity
+     */
     private void addParticle(T entity) {
 //        this.getWorld().addParticle(new DustParticleEffect(Vec3d.unpackRgb(11154228).toVector3f(), 0.5F), this.getX(), this.getY(), this.getZ() , 0.0, 0.0, 0.0);
 //
