@@ -91,7 +91,7 @@ public class ModEnchantmentRegister {
     );
 
     public static Enchantment WU_JIANG_PROTECTION = new WuJiangEnchantment(
-            Enchantment.properties(ItemTags.ARMOR_ENCHANTABLE, 5, 4, Enchantment.leveledCost(3, 6), Enchantment.leveledCost(9, 6), 2, EquipmentSlot.CHEST),
+            Enchantment.properties(ItemTags.ARMOR_ENCHANTABLE, 5, 1, Enchantment.leveledCost(3, 6), Enchantment.leveledCost(9, 6), 2, EquipmentSlot.CHEST),
             ProtectionEnchantment.Type.PROJECTILE
     );
 
