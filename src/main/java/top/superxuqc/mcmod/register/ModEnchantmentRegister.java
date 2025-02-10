@@ -95,6 +95,16 @@ public class ModEnchantmentRegister {
             ProtectionEnchantment.Type.PROJECTILE
     );
 
+    public static Enchantment CHENG_JIAN_PROTECTION = new ProtectionEnchantment(
+            Enchantment.properties(ItemTags.ARMOR_ENCHANTABLE, 5, 4, Enchantment.leveledCost(3, 6), Enchantment.leveledCost(9, 6), 2, EquipmentSlot.CHEST),
+            ProtectionEnchantment.Type.ALL
+    ) {
+        @Override
+        public boolean isCursed() {
+            return true;
+        }
+    };
+
     public static void init() {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "hucheng"),HUCHENG);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "feilei"),FeiLei);
@@ -105,6 +115,7 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "cheng_jian"), CHENG_JIAN);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "shuttlecock_kicking"), SHUTTLECOC_KKICKING);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "wu_jiang_protection"), WU_JIANG_PROTECTION);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "cheng_jian_protection"), CHENG_JIAN_PROTECTION);
     }
 
 }
