@@ -8,6 +8,8 @@
     "minecraft:arrow",
     "minecraft:tipped_arrow",
     "minecraft:spectral_arrow",
+    "minecraft:snowball",
+    "minecraft:egg",
     "minecraft:ender_pearl"
   ]
 }

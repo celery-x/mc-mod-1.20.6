@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -60,8 +61,10 @@ public class PersistentProjectileEntityMixin {
             method = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;onHit(Lnet/minecraft/entity/LivingEntity;)V")
     public void onHitMixin(LivingEntity target, CallbackInfo ci) {
         ItemStack stack;
+        PersistentProjectileEntity entity;
         if ((Object)this instanceof PersistentProjectileEntity) {
-            stack = ((PersistentProjectileEntity)(Object) this).getItemStack();
+            entity = ((PersistentProjectileEntity)(Object) this);
+            stack = entity.getItemStack();
         } else {
             return;
         }
@@ -69,6 +72,21 @@ public class PersistentProjectileEntityMixin {
         if (level > 0) {
             ChengJianEnchantment.generateMountain(target.getWorld(), target.getBlockPos(), fallStoneList, level);
             //target.damage(target.getDamageSources().cramming(), level * 10);
+        }
+        int level1 = EnchantmentHelper.getLevel(ModEnchantmentRegister.SHUTTLECOC_KKICKING, stack);
+        if (level1 > 0) {
+            boolean wuJiang = false;
+            if (target instanceof LivingEntity) {
+                ItemStack equippedStack = ((LivingEntity) target).getEquippedStack(EquipmentSlot.CHEST);
+                wuJiang = equippedStack.getEnchantments().getLevel(ModEnchantmentRegister.WU_JIANG_PROTECTION) > 0;
+            }
+            if (wuJiang) {
+                target.damage(entity.getDamageSources().thrown(entity, entity.getOwner()), 0);
+                Vec3d vec3d = entity.getVelocity();
+                target.setVelocity(target.getVelocity().add(entity.calculateVelocity(vec3d.x, vec3d.y, vec3d.z, 13F, 0)));
+            }else {
+                target.damage(entity.getDamageSources().thrown(entity, entity.getOwner()), 20);
+            }
         }
     }
 
