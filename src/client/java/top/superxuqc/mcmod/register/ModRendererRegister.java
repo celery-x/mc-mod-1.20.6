@@ -16,6 +16,7 @@ public class ModRendererRegister {
         EntityRendererRegistry.register(ModEntryTypes.TNT_ARROW, (context) -> new TNTArrowEntityRenderer(context, 1));
         EntityRendererRegistry.register(ModEntryTypes.PLAYER_SELF, (context) -> new PlayerSelfEntityRenderer(context, false));
         EntityRendererRegistry.register(ModEntryTypes.CHUAN_XIN_ZHOU_TYPR, ChuanXinZhouRenderer::new);
+        EntityRendererRegistry.register(ModEntryTypes.NoneViewEntity, NoneViewEntityRenderer::new);
     }
 
     public static void modelInit() {

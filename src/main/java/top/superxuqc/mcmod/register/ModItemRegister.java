@@ -9,6 +9,7 @@ import top.superxuqc.mcmod.MyModInitializer;
 import top.superxuqc.mcmod.item.HuchengTnTItem;
 import top.superxuqc.mcmod.item.QiSwordItem;
 import top.superxuqc.mcmod.item.SwordQIItem;
+import top.superxuqc.mcmod.item.TempItem;
 
 import static top.superxuqc.mcmod.register.ModBlocksRegister.HUCHENG_TNT_BLOCK;
 
@@ -34,6 +35,9 @@ public class ModItemRegister {
     // 携带TNT的箭, 不可分裂,但爆炸可分裂
     public static Item TNT_ARROW = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "tnt_arrow"),
             new ArrowItem(new Item.Settings()));
+
+    public static Item TEMP = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "temp"),
+            new TempItem(new Item.Settings()));
 
     private static Item registerBlockItem(String name, Block block) {
         return Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, name),
