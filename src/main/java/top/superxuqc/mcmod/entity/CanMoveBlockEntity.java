@@ -29,6 +29,8 @@ public class CanMoveBlockEntity extends FallingBlockEntity {
 
     private BooleanHelper using;
 
+    private BlockState mBlock;
+
     private List<FallingBlockEntity> transformBlocks = new CopyOnWriteArrayList<>();
 
     public CanMoveBlockEntity(EntityType<? extends FallingBlockEntity> entityType, World world) {
@@ -38,6 +40,7 @@ public class CanMoveBlockEntity extends FallingBlockEntity {
     public CanMoveBlockEntity(World world, double x, double y, double z, BlockState block, List<BlockPos> blockList, BooleanHelper using, List<FallingBlockEntity> transformBlocks) {
         this(EntityType.FALLING_BLOCK, world);
         accessBlock(block);
+        mBlock = block;
         this.intersectionChecked = true;
         this.setPosition(x, y, z);
         this.setVelocity(Vec3d.ZERO);
@@ -48,6 +51,11 @@ public class CanMoveBlockEntity extends FallingBlockEntity {
         this.blockList = blockList;
         this.using = using;
         this.transformBlocks = transformBlocks;
+    }
+
+    @Override
+    public BlockState getBlockState() {
+        return mBlock;
     }
 
     @Override
