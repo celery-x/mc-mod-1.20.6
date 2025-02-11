@@ -24,16 +24,13 @@ public class AttractionItem extends Item {
         super(settings);
     }
 
-    private BooleanHelper using = new BooleanHelper(false);
-
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         System.out.println(1);
         ItemStack itemStack = user.getStackInHand(hand);
         if (world instanceof ServerWorld) {
             int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.AMPLIFY, itemStack) + 5;
-            using.setTrue();
-            AttractionEntity attractionEntity = new AttractionEntity(world, level, using);
+            AttractionEntity attractionEntity = new AttractionEntity(world, level, new BooleanHelper(true));
             attractionEntity.setPosition(user.getX(), user.getY(), user.getZ());
             attractionEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(attractionEntity);

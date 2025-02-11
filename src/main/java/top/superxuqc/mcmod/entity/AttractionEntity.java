@@ -8,6 +8,7 @@ import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -46,6 +47,14 @@ public class AttractionEntity extends ThrownItemEntity {
     private int ageStep = 0;
 
     @Override
+    protected void onCollision(HitResult hitResult) {
+        super.onCollision(hitResult);
+        blockList.add(new BlockPos(getBlockPos()));
+        this.setVelocity(Vec3d.ZERO);
+        this.setNoGravity(true);
+    }
+
+    @Override
     public void tick() {
         ageStep++;
         super.tick();
@@ -53,16 +62,14 @@ public class AttractionEntity extends ThrownItemEntity {
             if (using == null) {
                 discard();
             }
-            if (ageStep > 20 * 5) {
+            if (ageStep > 20 * 6 + level * 2) {
                 using.setFalse();
             }
             if (ageStep < 10) {
                 // 先飞10个tick
                 super.tick();
             } else if (ageStep == 10) {
-                blockList.add(new BlockPos(getBlockPos()));
-                this.setVelocity(Vec3d.ZERO);
-                this.setNoGravity(true);
+
             } else {
                 if (using != null && !getWorld().isClient() && !using.isB()) {
                     if (transformBlocks.isEmpty()) {
@@ -77,7 +84,9 @@ public class AttractionEntity extends ThrownItemEntity {
                 if (getWorld() instanceof ServerWorld serverWorld) {
                     effectEntity(this, serverWorld, level);
                     effectBlock();
-                    effectTransformBlocks();
+                    if (ageStep % 60 == 0) {
+                        effectTransformBlocks();
+                    }
                 }
                 if (step <= level) {
 //                discard();
