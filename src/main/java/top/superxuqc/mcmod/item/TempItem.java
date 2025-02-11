@@ -16,6 +16,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import top.superxuqc.mcmod.entity.RepulsiveForceEntity;
 
+/**
+ * 测试使用的临时物品
+ */
 public class TempItem extends Item {
 
     public TempItem(Settings settings) {

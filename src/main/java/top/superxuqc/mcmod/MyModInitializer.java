@@ -49,6 +49,7 @@ public class MyModInitializer implements ModInitializer {
                 entries.add(ModItemRegister.TNT_ARROW);
                 entries.add(ModItemRegister.REPULSIVE_FORCE_ITEM);
                 entries.add(ModItemRegister.TEMP);
+                entries.add(ModItemRegister.ATTRACTION_ITEM);
 
 
                 // 注册附魔书

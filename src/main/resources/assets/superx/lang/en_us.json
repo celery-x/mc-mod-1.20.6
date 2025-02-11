@@ -1,8 +1,22 @@
 {
   "item.superx.hucheng_tnt": "TNT",
+  "item.superx.zhan_yue": "斩月",
   "block.superx.hucheng_tnt": "TNT",
-  "enchantment.superx.hucheng": "Hu Cheng",
-  "enchantment.superx.feilei": "Fei Lei Shen",
-  "enchantment.superx.scare_self": "Scare Self",
-  "itemGroup.superx": "半点不小心"
+  "enchantment.superx.hucheng": "互乘",
+  "enchantment.superx.bankai": "卍解",
+  "enchantment.superx.feilei": "飞雷神",
+  "enchantment.superx.scare_self": "自己吓自己",
+  "enchantment.superx.tianzai": "天灾",
+  "enchantment.superx.follow_projectile": "制导",
+  "enchantment.superx.cheng_jian": "成见",
+  "enchantment.superx.shuttlecock_kicking": "一起踢毽子",
+  "enchantment.superx.wu_jiang_protection": "堂堂武将",
+  "itemGroup.superx": "半点不小心",
+  "scare.self.tip": "自己吓自己:声音 %1$s",
+  "target.get.result": "锁定实体: %1$s",
+  "ban.kai.tip": "卍解!",
+  "item.superx.arrow_tnt": "TNT箭",
+  "item.superx.tnt_arrow": "箭TNT",
+  "effect.superx.cha_ke_la_effect": "查克拉",
+  "entity.sueprx.player": "分身"
 }

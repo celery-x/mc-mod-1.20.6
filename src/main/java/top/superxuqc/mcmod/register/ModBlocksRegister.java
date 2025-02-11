@@ -21,6 +21,7 @@ public class ModBlocksRegister {
 
     public static Map<Integer, Block> FALLING_DAMAGE_BLOCKS = new HashMap<>();
 
+    //创建伤害不同的落石
     static {
         for (int i = 0; i < ChengJianEnchantment.MAX_LEVE; i++) {
             FALLING_DAMAGE_BLOCKS.put(i, registerBlock("falling_damage_blocks_" + i,

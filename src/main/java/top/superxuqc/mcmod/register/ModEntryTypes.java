@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -76,6 +77,12 @@ public class ModEntryTypes {
             Registries.ENTITY_TYPE,
             new Identifier(MyModInitializer.MOD_ID, "none_view_entity"),
             EntityType.Builder.<Entity>create(RepulsiveForceEntity::new, SpawnGroup.MISC)
+                    .dimensions(2.0F, 2.0F).maxTrackingRange(4).trackingTickInterval(10).build());
+
+    public static final EntityType<AttractionEntity> ATTRACTION_ENTITY_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MyModInitializer.MOD_ID, "attraction_entity"),
+            EntityType.Builder.<AttractionEntity>create(AttractionEntity::new, SpawnGroup.MISC)
                     .dimensions(2.0F, 2.0F).maxTrackingRange(4).trackingTickInterval(10).build());
 
     public static void init() {
