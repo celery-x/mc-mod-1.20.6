@@ -26,7 +26,7 @@ public class AttractionItem extends Item {
             int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.AMPLIFY, itemStack) + 5;
             AttractionEntity attractionEntity = new AttractionEntity(world, level);
             attractionEntity.setPosition(user.getX(), user.getY(), user.getZ());
-            attractionEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
+            attractionEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 0.5F, 1.0F);
             world.spawnEntity(attractionEntity);
         }
         user.incrementStat(Stats.USED.getOrCreateStat(this));

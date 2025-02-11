@@ -20,6 +20,7 @@ import top.superxuqc.mcmod.register.ModItemRegister;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AttractionEntity extends ThrownItemEntity {
 
@@ -27,6 +28,8 @@ public class AttractionEntity extends ThrownItemEntity {
 
     private int level;
 
+
+    private List<FallingBlockEntity> transformBlocks = new CopyOnWriteArrayList<>();
 
     public AttractionEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
@@ -54,16 +57,19 @@ public class AttractionEntity extends ThrownItemEntity {
                 return;
             }
             System.out.println(step);
-            if (step > level) {
-                discard();
-                return;
-            }
+
 
             if (getWorld() instanceof ServerWorld serverWorld) {
                 effectEntity(this, serverWorld, level);
                 effectBlock();
+                effectTransformBlocks();
             }
-            step++;
+            if (step <= level) {
+//                discard();
+//                return;
+                step++;
+            }
+
         }
     }
 
@@ -84,13 +90,26 @@ public class AttractionEntity extends ThrownItemEntity {
 
 
         FallingBlockEntity fallingBlockEntity = FallingBlockEntity.spawnFromBlock(world, targetPos, blockState);
+        Vec3d p = fallingBlockEntity.getPos().add(0.5d, 1.1d, 0.5d);
+        fallingBlockEntity.setPos(p.x, p.y, p.z);
+        Vector3f calculate = VelocityUtils.calculate(this, fallingBlockEntity);
+        fallingBlockEntity.setVelocity(new Vec3d(calculate).multiply(-1.5));
+
         if (blockEntity != null) {
             NbtCompound nbt = blockEntity.createNbt(this.getRegistryManager());
             if (!nbt.isEmpty()) {
                 fallingBlockEntity.blockEntityData = nbt;
             }
         }
+        transformBlocks.add(fallingBlockEntity);
         world.breakBlock(targetPos, false);
+    }
+
+    private void effectTransformBlocks() {
+        this.transformBlocks.forEach(v -> {
+            Vector3f calculate = VelocityUtils.calculate(this, v);
+            v.setVelocity(new Vec3d(calculate).multiply(-0.5));
+        });
     }
 
     private void effectBlock() {
