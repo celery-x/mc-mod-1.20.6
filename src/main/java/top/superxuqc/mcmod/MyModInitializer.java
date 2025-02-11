@@ -47,6 +47,7 @@ public class MyModInitializer implements ModInitializer {
                 entries.add(ModItemRegister.ZHAN_YUE);
                 entries.add(ModItemRegister.ARROW_TNT);
                 entries.add(ModItemRegister.TNT_ARROW);
+                entries.add(ModItemRegister.REPULSIVE_FORCE_ITEM);
                 entries.add(ModItemRegister.TEMP);
 
 

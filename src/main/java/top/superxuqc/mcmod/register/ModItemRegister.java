@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import top.superxuqc.mcmod.MyModInitializer;
 import top.superxuqc.mcmod.item.HuchengTnTItem;
 import top.superxuqc.mcmod.item.QiSwordItem;
+import top.superxuqc.mcmod.item.RepulsiveForceItem;
 import top.superxuqc.mcmod.item.SwordQIItem;
 import top.superxuqc.mcmod.item.TempItem;
 
@@ -38,6 +39,10 @@ public class ModItemRegister {
 
     public static Item TEMP = Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "temp"),
             new TempItem(new Item.Settings()));
+
+    public static Item REPULSIVE_FORCE_ITEM =
+            Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, "repulsive_force_ball"),
+                    new RepulsiveForceItem(new Item.Settings()));
 
     private static Item registerBlockItem(String name, Block block) {
         return Registry.register(Registries.ITEM, new Identifier(MyModInitializer.MOD_ID, name),

@@ -24,7 +24,6 @@ public class TempItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        System.out.println("1");
         return ItemUsage.consumeHeldItem(world, user, hand);
     }
 

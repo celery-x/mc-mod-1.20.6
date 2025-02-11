@@ -12,6 +12,13 @@ import org.joml.Vector3f;
 public class VelocityUtils {
 
 
+    /**
+     * 算出来的值，是从shooter 向target位移的向量
+     *
+     * @param shooter
+     * @param target
+     * @return
+     */
     public static Vector3f calculate(Entity shooter, Entity target) {
         org.joml.Vector3f vector3f;
         double d = target.getX() - shooter.getX();

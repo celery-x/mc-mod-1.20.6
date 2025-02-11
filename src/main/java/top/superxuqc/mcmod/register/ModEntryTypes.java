@@ -76,7 +76,7 @@ public class ModEntryTypes {
             Registries.ENTITY_TYPE,
             new Identifier(MyModInitializer.MOD_ID, "none_view_entity"),
             EntityType.Builder.<Entity>create(RepulsiveForceEntity::new, SpawnGroup.MISC)
-                    .dimensions(0.0F, 0.0F).maxTrackingRange(4).trackingTickInterval(10).build());
+                    .dimensions(2.0F, 2.0F).maxTrackingRange(4).trackingTickInterval(10).build());
 
     public static void init() {
 

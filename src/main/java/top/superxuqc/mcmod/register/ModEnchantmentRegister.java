@@ -15,6 +15,9 @@ import top.superxuqc.mcmod.MyModInitializer;
 import top.superxuqc.mcmod.enchantment.*;
 
 public class ModEnchantmentRegister {
+
+    private static final EquipmentSlot[] ALL_ARMOR = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+    private static final EquipmentSlot[] ALL_SLOT = new EquipmentSlot[]{EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     public static Enchantment HUCHENG = new HuChengEnchantment(
             Enchantment.properties(
                     ModTarKeys.MOD_ITEM_ENCHANT_TAG,
@@ -31,6 +34,15 @@ public class ModEnchantmentRegister {
                     Enchantment.constantCost(25),
                     Enchantment.constantCost(50),
                     8, EquipmentSlot.MAINHAND));
+
+    public static final Enchantment AMPLIFY =
+            new Enchantment(
+                    Enchantment.properties(ModTarKeys.CAN_HIT_ENTITY_ITEMS,
+                            1, 10,
+                            Enchantment.constantCost(25),
+                            Enchantment.constantCost(50),
+                            8, ALL_SLOT)
+            );
 
     public static Enchantment FeiLei = new FeiLeiEnchantment(
             Enchantment.properties(
@@ -74,7 +86,7 @@ public class ModEnchantmentRegister {
             Enchantment.properties(
 //                    ItemTags.BOW_ENCHANTABLE,
                     ModTarKeys.MOD_ITEM_ENCHANT_TAG,
-                    1, 255,
+                    1, 10,
                     Enchantment.leveledCost(15, 9),
                     Enchantment.leveledCost(65, 9),
                     4, EquipmentSlot.MAINHAND)
@@ -116,6 +128,7 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "shuttlecock_kicking"), SHUTTLECOC_KKICKING);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "wu_jiang_protection"), WU_JIANG_PROTECTION);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "cheng_jian_protection"), CHENG_JIAN_PROTECTION);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "amplify"), AMPLIFY);
     }
 
 }

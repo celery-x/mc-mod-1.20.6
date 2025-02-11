@@ -4,13 +4,20 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
+import top.superxuqc.mcmod.common.VelocityUtils;
 import top.superxuqc.mcmod.register.ModEntryTypes;
 
 import java.util.BitSet;
+import java.util.List;
 
 public class RepulsiveForceEntity extends Entity {
 
@@ -41,7 +48,15 @@ public class RepulsiveForceEntity extends Entity {
             discard();
             return;
         }
-        int distanceEffect = step;
+
+        if (getWorld() instanceof ServerWorld serverWorld) {
+            effectEntity(this, serverWorld, level);
+            effectBlock();
+        }
+        step++;
+    }
+
+    private void effectBlock() {
         BlockPos pos = this.getBlockPos();
 
         int x1 = pos.getX();
@@ -98,7 +113,23 @@ public class RepulsiveForceEntity extends Entity {
                 breakTheBlock(x, y, z, pos);
             }
         }
-        step++;
+    }
+
+    private void effectEntity(Entity user, ServerWorld serverWorld, int level) {
+        List<LivingEntity> effectEntities = serverWorld.getEntitiesByClass(LivingEntity.class,
+                user.getBoundingBox().expand(5 * level),
+                livingEntity -> calculateDistance(user, livingEntity) <= level * 5);
+        effectEntities.forEach(v -> {
+            Vector3f calculate = VelocityUtils.calculate(user, v);
+            v.setVelocity(new Vec3d(calculate).multiply(2));
+        });
+    }
+
+    private double calculateDistance(Entity self, Entity target) {
+        double x = self.getX() - target.getX();
+        double y = self.getY() - target.getY();
+        double z = self.getZ() - target.getZ();
+        return Math.sqrt(x * x + z * z + y * y);
     }
 
     private void breakTheBlock(int x, int y, int z, BlockPos pos) {
