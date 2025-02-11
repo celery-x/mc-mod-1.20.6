@@ -4,8 +4,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.*;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
@@ -14,12 +12,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.joml.Vector3f;
+import top.superxuqc.mcmod.common.BooleanHelper;
 import top.superxuqc.mcmod.common.VelocityUtils;
+import top.superxuqc.mcmod.block.interfaces.WithTag;
 import top.superxuqc.mcmod.register.ModEntryTypes;
 import top.superxuqc.mcmod.register.ModItemRegister;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AttractionEntity extends ThrownItemEntity {
@@ -28,48 +27,65 @@ public class AttractionEntity extends ThrownItemEntity {
 
     private int level;
 
+    private BooleanHelper using;
+
+    private List<BlockPos> blockList = new CopyOnWriteArrayList<>();
 
     private List<FallingBlockEntity> transformBlocks = new CopyOnWriteArrayList<>();
 
     public AttractionEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
-        super(entityType, world);
+        super(ModEntryTypes.ATTRACTION_ENTITY_TYPE, world);
     }
 
-    public AttractionEntity(World world, int level) {
+    public AttractionEntity(World world, int level, BooleanHelper using) {
         this(ModEntryTypes.ATTRACTION_ENTITY_TYPE, world);
         setLevel(level);
+        this.using = using;
     }
 
     private int ageStep = 0;
 
-
     @Override
     public void tick() {
         ageStep++;
-        if (ageStep < 10) {
-            // 先飞10个tick
-            super.tick();
-        } else if (ageStep == 10) {
-            this.setVelocity(Vec3d.ZERO);
-            this.setNoGravity(true);
-        } else {
-            if (ageStep % 4 != 0) {
-                return;
+        super.tick();
+        if (!getWorld().isClient()) {
+            if (using == null) {
+                discard();
             }
-            System.out.println(step);
+            if (ageStep > 20 * 5) {
+                using.setFalse();
+            }
+            if (ageStep < 10) {
+                // 先飞10个tick
+                super.tick();
+            } else if (ageStep == 10) {
+                blockList.add(new BlockPos(getBlockPos()));
+                this.setVelocity(Vec3d.ZERO);
+                this.setNoGravity(true);
+            } else {
+                if (using != null && !getWorld().isClient() && !using.isB()) {
+                    if (transformBlocks.isEmpty()) {
+                        discard();
+                    }
+                }
+                if (ageStep % 4 != 0) {
+                    return;
+                }
 
 
-            if (getWorld() instanceof ServerWorld serverWorld) {
-                effectEntity(this, serverWorld, level);
-                effectBlock();
-                effectTransformBlocks();
-            }
-            if (step <= level) {
+                if (getWorld() instanceof ServerWorld serverWorld) {
+                    effectEntity(this, serverWorld, level);
+                    effectBlock();
+                    effectTransformBlocks();
+                }
+                if (step <= level) {
 //                discard();
 //                return;
-                step++;
-            }
+                    step++;
+                }
 
+            }
         }
     }
 
@@ -88,13 +104,12 @@ public class AttractionEntity extends ThrownItemEntity {
         }
         BlockEntity blockEntity = world.getBlockEntity(targetPos);
 
-
-        FallingBlockEntity fallingBlockEntity = FallingBlockEntity.spawnFromBlock(world, targetPos, blockState);
+        CanMoveBlockEntity fallingBlockEntity = new CanMoveBlockEntity(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), blockState, blockList, using, transformBlocks);
         Vec3d p = fallingBlockEntity.getPos().add(0.5d, 1.1d, 0.5d);
         fallingBlockEntity.setPos(p.x, p.y, p.z);
+        fallingBlockEntity.setNoGravity(true);
         Vector3f calculate = VelocityUtils.calculate(this, fallingBlockEntity);
-        fallingBlockEntity.setVelocity(new Vec3d(calculate).multiply(-1.5));
-
+        fallingBlockEntity.setVelocity(new Vec3d(calculate).multiply(-0.1));
         if (blockEntity != null) {
             NbtCompound nbt = blockEntity.createNbt(this.getRegistryManager());
             if (!nbt.isEmpty()) {
@@ -103,12 +118,13 @@ public class AttractionEntity extends ThrownItemEntity {
         }
         transformBlocks.add(fallingBlockEntity);
         world.breakBlock(targetPos, false);
+        world.spawnEntity(fallingBlockEntity);
     }
 
     private void effectTransformBlocks() {
         this.transformBlocks.forEach(v -> {
             Vector3f calculate = VelocityUtils.calculate(this, v);
-            v.setVelocity(new Vec3d(calculate).multiply(-0.5));
+            v.setVelocity(new Vec3d(calculate).multiply(-0.1).addRandom(getWorld().getRandom(), 0.03F * level));
         });
     }
 

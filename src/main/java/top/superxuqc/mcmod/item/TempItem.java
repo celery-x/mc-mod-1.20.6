@@ -27,6 +27,7 @@ public class TempItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        System.out.println("use");
         return ItemUsage.consumeHeldItem(world, user, hand);
     }
 
@@ -40,16 +41,17 @@ public class TempItem extends Item {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        if (world.isClient()) {
-            return;
-        }
-        if (remainingUseTicks % interval != 0){
-            return;
-        }
-        int distanceEffect = 255;
-        RepulsiveForceEntity repulsiveForceEntity = new RepulsiveForceEntity(world, distanceEffect);
-        repulsiveForceEntity.setPos(user.getX(), user.getY(), user.getZ());
-        world.spawnEntity(repulsiveForceEntity);
+        System.out.println("tick");
+//        if (world.isClient()) {
+//            return;
+//        }
+//        if (remainingUseTicks % interval != 0){
+//            return;
+//        }
+//        int distanceEffect = 255;
+//        RepulsiveForceEntity repulsiveForceEntity = new RepulsiveForceEntity(world, distanceEffect);
+//        repulsiveForceEntity.setPos(user.getX(), user.getY(), user.getZ());
+//        world.spawnEntity(repulsiveForceEntity);
     }
 
     @Override
@@ -57,4 +59,9 @@ public class TempItem extends Item {
         return UseAction.BOW;
     }
 
+    @Override
+    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        System.out.println("finish");
+        return super.finishUsing(stack, world, user);
+    }
 }
