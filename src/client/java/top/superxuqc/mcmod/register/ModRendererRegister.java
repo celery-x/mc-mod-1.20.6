@@ -18,7 +18,7 @@ public class ModRendererRegister {
         EntityRendererRegistry.register(ModEntryTypes.PLAYER_SELF, (context) -> new PlayerSelfEntityRenderer(context, false));
         EntityRendererRegistry.register(ModEntryTypes.CHUAN_XIN_ZHOU_TYPR, ChuanXinZhouRenderer::new);
         EntityRendererRegistry.register(ModEntryTypes.NoneViewEntity, NoneViewEntityRenderer::new);
-        EntityRendererRegistry.register(ModEntryTypes.ATTRACTION_ENTITY_TYPE, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntryTypes.ATTRACTION_ENTITY_TYPE, (c) -> new FlyingItemEntityRenderer<>(c, 3, false));
     }
 
     public static void modelInit() {

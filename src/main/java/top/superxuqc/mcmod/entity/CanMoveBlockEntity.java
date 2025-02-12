@@ -88,9 +88,10 @@ public class CanMoveBlockEntity extends FallingBlockEntity {
             if (!this.getWorld().isClient) {
                 BlockPos blockPos = this.getBlockPos();
 
-                if (!using.isB() && this.isCanTransform2Block()) {
+//                if (!using.isB() && this.isCanTransform2Block()) {  //取消using限制，尽早方块化，减少实体卡顿
+                if (age > 60 && this.isCanTransform2Block()) {
                     BlockState blockState = this.getWorld().getBlockState(blockPos);
-                    this.setVelocity(this.getVelocity().multiply(0.7, -0.5, 0.7));
+                    this.setVelocity(this.getVelocity().multiply(0.7, 0.7, 0.7));
                     if (!blockState.isOf(Blocks.MOVING_PISTON)) {
                         if (this.getWorld().setBlockState(blockPos, getBlockState(), Block.NOTIFY_ALL)) {
                             blockList.add(blockPos);

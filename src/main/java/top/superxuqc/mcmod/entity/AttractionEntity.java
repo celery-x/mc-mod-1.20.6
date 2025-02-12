@@ -28,6 +28,24 @@ public class AttractionEntity extends ThrownItemEntity {
 
     private int level;
 
+    public boolean hasUsing() {
+        return using != null;
+    }
+
+    public boolean getUsing() {
+        if (using == null) {
+            return false;
+        }
+        return using.isB();
+    }
+
+    public void setUsing(boolean using) {
+        if (this.using == null) {
+            return;
+        }
+        this.using.setB(using);
+    }
+
     private BooleanHelper using;
 
     private List<BlockPos> blockList = new CopyOnWriteArrayList<>();
@@ -49,44 +67,39 @@ public class AttractionEntity extends ThrownItemEntity {
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-        blockList.add(new BlockPos(getBlockPos()));
-        this.setVelocity(Vec3d.ZERO);
-        this.setNoGravity(true);
+        setUsing(false);
     }
 
     @Override
     public void tick() {
-        ageStep++;
+//        ageStep++;
         super.tick();
         if (!getWorld().isClient()) {
             if (using == null) {
                 discard();
             }
-            if (ageStep > 20 * 6 + level * 2) {
-                using.setFalse();
-            }
-            if (ageStep < 10) {
-                // 先飞10个tick
-                super.tick();
-            } else if (ageStep == 10) {
-
-            } else {
-                if (using != null && !getWorld().isClient() && !using.isB()) {
+//            if (ageStep > 20 * 6 + level * 2) {
+//                using.setFalse();
+//            }
+            if (!getUsing()) {
+                if (!getVelocity().equals(Vec3d.ZERO)) {
+                    blockList.add(new BlockPos(getBlockPos()));
+                    this.setVelocity(Vec3d.ZERO);
+                    this.setNoGravity(true);
+                }
+                if (using != null && !getWorld().isClient() && !using.isB() && ageStep > 400) {
                     if (transformBlocks.isEmpty()) {
                         discard();
                     }
                 }
-                if (ageStep % 4 != 0) {
+                if (age % 4 != 0) {
                     return;
                 }
-
-
                 if (getWorld() instanceof ServerWorld serverWorld) {
+                    ageStep++;
                     effectEntity(this, serverWorld, level);
                     effectBlock();
-                    if (ageStep % 60 == 0) {
-                        effectTransformBlocks();
-                    }
+                    effectTransformBlocks();
                 }
                 if (step <= level) {
 //                discard();
