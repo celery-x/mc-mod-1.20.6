@@ -1,5 +1,6 @@
 package top.superxuqc.mcmod.item;
 
+import net.minecraft.client.item.TooltipType;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -12,6 +13,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -27,6 +30,8 @@ import top.superxuqc.mcmod.register.ModEnchantmentRegister;
 import javax.sound.sampled.BooleanControl;
 import java.util.List;
 import java.util.function.Predicate;
+
+import static top.superxuqc.mcmod.register.SoundRegister.SCARE_SELF_SOUND_PLAY;
 
 public class AttractionItem extends Item {
 
@@ -83,6 +88,11 @@ public class AttractionItem extends Item {
     @Override
     public UseAction getUseAction(ItemStack stack) {
         return UseAction.BOW;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        tooltip.add(Text.translatable("item.superx.attraction_ball.tip").formatted(Formatting.YELLOW));
     }
 
     @Override
