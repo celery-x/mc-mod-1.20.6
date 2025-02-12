@@ -68,7 +68,7 @@ public class AttractionItem extends Item {
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         super.usageTick(world, user, stack, remainingUseTicks);
         if (controlEntity != null && controlEntity.getUsing()) {
-            controlEntity.setVelocity(calculateVelocity(user.getPitch(), user.getYaw(), 0F, 0.1F));
+            controlEntity.setVelocity(calculateVelocity(user.getPitch(), user.getYaw(), 0F, 0.3F));
         }
     }
 
@@ -104,7 +104,7 @@ public class AttractionItem extends Item {
                 AttractionEntity attractionEntity = new AttractionEntity(world, level, new BooleanHelper(true));
                 attractionEntity.setPosition(user.getX(), user.getY(), user.getZ());
                 attractionEntity.setNoGravity(true);
-                attractionEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 0.5F, 1F);
+                attractionEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 0.3F, 1F);
                 world.spawnEntity(attractionEntity);
                 this.controlEntity = attractionEntity;
             }

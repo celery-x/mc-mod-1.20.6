@@ -42,14 +42,14 @@ public class MyModInitializer implements ModInitializer {
 
                 // 注册物品
                 entries.add(ModItemRegister.HUCHENG_TNT_ITEM);
-                entries.add(ModItemRegister.FALL_STONE);
-                entries.add(ModItemRegister.KUWU);
+//                entries.add(ModItemRegister.FALL_STONE);
+//                entries.add(ModItemRegister.KUWU);
                 entries.add(ModItemRegister.ZHAN_YUE);
                 entries.add(ModItemRegister.ARROW_TNT);
                 entries.add(ModItemRegister.TNT_ARROW);
                 entries.add(ModItemRegister.REPULSIVE_FORCE_ITEM);
-                entries.add(ModItemRegister.TEMP);
                 entries.add(ModItemRegister.ATTRACTION_ITEM);
+                entries.add(ModItemRegister.TEMP);
 
 
                 // 注册附魔书

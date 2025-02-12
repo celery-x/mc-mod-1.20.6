@@ -2,6 +2,7 @@ package top.superxuqc.mcmod.register;
 
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import top.superxuqc.mcmod.model.ChuanXinZhouModel;
 import top.superxuqc.mcmod.renderer.*;
@@ -19,6 +20,8 @@ public class ModRendererRegister {
         EntityRendererRegistry.register(ModEntryTypes.CHUAN_XIN_ZHOU_TYPR, ChuanXinZhouRenderer::new);
         EntityRendererRegistry.register(ModEntryTypes.NoneViewEntity, NoneViewEntityRenderer::new);
         EntityRendererRegistry.register(ModEntryTypes.ATTRACTION_ENTITY_TYPE, (c) -> new FlyingItemEntityRenderer<>(c, 3, false));
+        EntityRendererRegistry.register(ModEntryTypes.XIAN_JIAN_TYPE, XianJianEntityRenderer::new);
+//        EntityRendererRegistry.register(ModEntryTypes.XIAN_JIAN_TYPE, FlyingItemEntityRenderer::new);
     }
 
     public static void modelInit() {

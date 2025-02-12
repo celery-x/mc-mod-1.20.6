@@ -135,7 +135,8 @@ public class RepulsiveForceEntity extends Entity {
     private void breakTheBlock(int x, int y, int z, BlockPos pos) {
         BlockPos pos1 = new BlockPos(x, y, z);
         BlockState blockState = getWorld().getBlockState(pos1);
-        if (!blockState.isAir() && !pos.add(0, -1, 0).equals(pos1) && calculateDistance(pos, pos1) < level) {
+//        if (!blockState.isAir() && !pos.add(0, -1, 0).equals(pos1) && calculateDistance(pos, pos1) < level) {
+        if (!blockState.isAir() && calculateDistance(pos, pos1) < level) {
             if (blockState.isOf(Blocks.WATER)) {
                 getWorld().setBlockState(pos1, Blocks.AIR.getDefaultState());
                 return;

@@ -11,6 +11,7 @@
   "enchantment.superx.cheng_jian": "成见",
   "enchantment.superx.shuttlecock_kicking": "一起踢毽子",
   "enchantment.superx.wu_jiang_protection": "堂堂武将",
+  "enchantment.superx.amplify": "增幅",
   "itemGroup.superx": "半点不小心",
   "scare.self.tip": "自己吓自己:声音 %1$s",
   "target.get.result": "锁定实体: %1$s",
@@ -18,9 +19,9 @@
   "item.superx.arrow_tnt": "TNT箭",
   "item.superx.tnt_arrow": "箭TNT",
   "item.superx.attraction_ball": "引力球",
-  "item.superx.attraction_ball.tip": "曾经有一个男人，对着一只红色狐狸，喊出了：\n\n起巴克天塞！",
+  "item.superx.attraction_ball.tip": "我的画风在你之上!",
   "item.superx.repulsive_force_ball": "斥力球",
-  "item.superx.repulsive_force_ball.tip": "前面忘了，中间忘了，只记得一句：\n\n辛辣天塞！",
+  "item.superx.repulsive_force_ball.tip": "感受痛楚吧!",
   "effect.superx.cha_ke_la_effect": "查克拉",
   "entity.sueprx.player": "分身"
 }

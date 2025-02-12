@@ -85,6 +85,14 @@ public class ModEntryTypes {
             EntityType.Builder.<AttractionEntity>create(AttractionEntity::new, SpawnGroup.MISC)
                     .dimensions(2.0F, 2.0F).maxTrackingRange(4).trackingTickInterval(10).build());
 
+    public static final EntityType<XianJianEntity> XIAN_JIAN_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MyModInitializer.MOD_ID, "chuan_xin_zhou"),
+            EntityType.Builder.<XianJianEntity>create(XianJianEntity::new, SpawnGroup.MISC)
+                    .dimensions(1F, 4F)
+                    .maxTrackingRange(4)
+                    .trackingTickInterval(20).build());
+
     public static void init() {
 
     }
