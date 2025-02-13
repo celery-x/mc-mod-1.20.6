@@ -17,6 +17,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,6 +27,9 @@ import top.superxuqc.mcmod.common.SpawnLivingEntityUtils;
 import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
 import top.superxuqc.mcmod.enchantment.ScareSelfEnchantment;
 import top.superxuqc.mcmod.entity.SwordQiEntity;
+import top.superxuqc.mcmod.entity.XianJianEntity;
+import top.superxuqc.mcmod.item.interfaces.ItemWithEntity;
+import top.superxuqc.mcmod.register.ModEnchantmentRegister;
 import top.superxuqc.mcmod.register.ModEntryTypes;
 import top.superxuqc.mcmod.register.SoundRegister;
 
@@ -35,12 +39,30 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Mixin(Item.class)
-public class ItemMixin {
+public abstract class ItemMixin implements ItemWithEntity {
 
+
+    @Shadow
+    public abstract TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand);
 
     private int nowTick = 0;
 
     private final int MAX_TICK = 20;
+
+    @Unique
+    private Entity entityOfItem;
+
+    @Unique
+    @Override
+    public Entity getEntityOfItem() {
+        return entityOfItem;
+    }
+
+    @Unique
+    @Override
+    public void setEntityOfItem(Entity entityOfItem) {
+        this.entityOfItem = entityOfItem;
+    }
 
     @Unique
     Random scareSelfRandom = new Random();
@@ -62,14 +84,8 @@ public class ItemMixin {
         Item item = (Item) ((Object)this);
         if ( item instanceof SwordItem) {
             ItemStack stackInHand = user.getStackInHand(hand);
-            Set<RegistryEntry<Enchantment>> enchantments = EnchantmentHelper.getEnchantments(stackInHand).getEnchantments();
-            boolean isBanKai = false;
-            for (RegistryEntry<Enchantment> enchantment : enchantments) {
-                isBanKai = enchantment.value() instanceof BanKaiEnchantment;
-                if (isBanKai) {
-                    break;
-                }
-            }
+            boolean isBanKai = EnchantmentHelper.getLevel(ModEnchantmentRegister.BAN_KAI, stackInHand) > 0;
+            boolean isXianJian = EnchantmentHelper.getLevel(ModEnchantmentRegister.XIAN_JIAN, stackInHand) > 0;
             if (isBanKai) {
                 world.playSound(
                         null,
@@ -91,6 +107,14 @@ public class ItemMixin {
                     //Vec3d velocity = qiEntity.getVelocity();
                     //qiEntity.setVelocity(velocity.x * 10 , velocity.y * 10 , velocity.z * 10);
                     world.spawnEntity(qiEntity);
+                }
+            }
+            if (isXianJian) {
+                if (this.entityOfItem == null) {
+                    XianJianEntity xianJianEntity = new XianJianEntity(user, world, user.getStackInHand(hand));
+                    xianJianEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0F, 0.1F, 1.0F);
+                    world.spawnEntity(xianJianEntity);
+                    this.entityOfItem = xianJianEntity;
                 }
             }
             ItemStack itemStack = user.getStackInHand(hand);

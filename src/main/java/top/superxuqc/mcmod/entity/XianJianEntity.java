@@ -1,5 +1,6 @@
 package top.superxuqc.mcmod.entity;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -8,8 +9,13 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
+import top.superxuqc.mcmod.common.VelocityUtils;
+import top.superxuqc.mcmod.enchantment.FollowProjectileEnchantment;
+import top.superxuqc.mcmod.register.ModEnchantmentRegister;
 import top.superxuqc.mcmod.register.ModEntryTypes;
 
 import java.util.HashSet;
@@ -17,6 +23,8 @@ import java.util.HashSet;
 public class XianJianEntity extends ThrownEntity implements FlyingItemEntity {
 
     private int amount;
+
+    private ItemStack stack = this.getDefaultItemStack();
 
     public int getAmount() {
         return amount;
@@ -35,8 +43,9 @@ public class XianJianEntity extends ThrownEntity implements FlyingItemEntity {
         resetPos();
     }
 
-    public XianJianEntity(LivingEntity owner, World world) {
+    public XianJianEntity(LivingEntity owner, World world, ItemStack itemStack) {
         this(owner.getX(), owner.getY(), owner.getZ(), world);
+        this.stack = itemStack.copy();
     }
 
     private void resetPos() {
@@ -50,6 +59,26 @@ public class XianJianEntity extends ThrownEntity implements FlyingItemEntity {
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
 
+    }
+
+    public ItemStack getDefaultItemStack() {
+        return Items.DIAMOND_SWORD.getDefaultStack();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!getWorld().isClient()) {
+            int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.FOLLOW_PROJECTILE, this.getStack());
+            if (level > 0) {
+                if (!FollowProjectileEnchantment.TARGET.isAlive()) {
+                    //entity.setVelocity(0, 0, 0);
+                } else {
+                    Vector3f calculate = VelocityUtils.calculate(this, FollowProjectileEnchantment.TARGET);
+                    this.setVelocity(new Vec3d(calculate));
+                }
+            }
+        }
     }
 
     private HashSet<Vec3i> passedList = new HashSet<Vec3i>();
@@ -66,6 +95,6 @@ public class XianJianEntity extends ThrownEntity implements FlyingItemEntity {
 
     @Override
     public ItemStack getStack() {
-        return Items.DIAMOND_SWORD.getDefaultStack();
+        return stack;
     }
 }

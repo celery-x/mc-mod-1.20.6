@@ -33,7 +33,7 @@ public class TempItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         System.out.println("use");
         if (world instanceof ServerWorld) {
-            XianJianEntity entity = new XianJianEntity(user, world);
+            XianJianEntity entity = new XianJianEntity(user, world, user.getStackInHand(hand));
             entity.setVelocity(user, user.getPitch(), user.getYaw(), 0F, 1F, 1.0F);
             world.spawnEntity(entity);
         }

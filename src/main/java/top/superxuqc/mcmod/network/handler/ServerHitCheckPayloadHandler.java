@@ -1,21 +1,11 @@
 package top.superxuqc.mcmod.network.handler;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.explosion.Explosion;
 import top.superxuqc.mcmod.entity.PlayerSelfEntity;
 import top.superxuqc.mcmod.network.payload.HitCheckPayload;
-import top.superxuqc.mcmod.network.payload.PlayerSelfSpawnPayload;
 
-import java.util.Optional;
-
-public class SeverHitCheckPayloadHandler implements ServerPlayNetworking.PlayPayloadHandler<HitCheckPayload> {
+public class ServerHitCheckPayloadHandler implements ServerPlayNetworking.PlayPayloadHandler<HitCheckPayload> {
 
 
     @Override

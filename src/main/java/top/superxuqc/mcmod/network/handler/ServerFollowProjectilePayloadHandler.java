@@ -5,9 +5,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import top.superxuqc.mcmod.enchantment.FollowProjectileEnchantment;
 import top.superxuqc.mcmod.network.payload.FollowProjectilePayload;
-import top.superxuqc.mcmod.network.payload.HitCheckPayload;
 
-public class SeverFollowProjectilePayloadHandler implements ServerPlayNetworking.PlayPayloadHandler<FollowProjectilePayload> {
+public class ServerFollowProjectilePayloadHandler implements ServerPlayNetworking.PlayPayloadHandler<FollowProjectilePayload> {
 
 
     @Override

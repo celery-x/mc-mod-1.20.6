@@ -44,6 +44,15 @@ public class ModEnchantmentRegister {
                             8, ALL_SLOT)
             );
 
+    public static final Enchantment XIAN_JIAN =
+            new Enchantment(
+                    Enchantment.properties(ModTarKeys.CAN_HIT_ENTITY_ITEMS,
+                            1, 1,
+                            Enchantment.constantCost(25),
+                            Enchantment.constantCost(50),
+                            8, EquipmentSlot.MAINHAND)
+            );
+
     public static Enchantment FeiLei = new FeiLeiEnchantment(
             Enchantment.properties(
                     ModTarKeys.MOD_ITEM_ENCHANT_TAG,
