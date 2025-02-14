@@ -138,6 +138,7 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "wu_jiang_protection"), WU_JIANG_PROTECTION);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "cheng_jian_protection"), CHENG_JIAN_PROTECTION);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "amplify"), AMPLIFY);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "xian_jian"), XIAN_JIAN);
     }
 
 }

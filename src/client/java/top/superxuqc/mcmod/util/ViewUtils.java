@@ -21,6 +21,17 @@ public class ViewUtils {
         return null;
     }
 
+    public static Vec3d findTargetPos(MinecraftClient client, double blockLength, double entityLength, float tickDelta) {
+        Entity entity = client.getCameraEntity();
+        if (entity != null) {
+
+            HitResult hitResult = findCrosshairTarget(entity, blockLength, entityLength, tickDelta);
+            return hitResult.getPos();
+
+        }
+        return null;
+    }
+
     private static HitResult findCrosshairTarget(Entity camera, double blockInteractionRange, double entityInteractionRange, float tickDelta) {
         double d = Math.max(blockInteractionRange, entityInteractionRange);
         double e = MathHelper.square(d);

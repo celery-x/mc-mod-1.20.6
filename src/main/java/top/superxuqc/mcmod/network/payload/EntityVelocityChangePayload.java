@@ -7,7 +7,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import top.superxuqc.mcmod.MyModInitializer;
 
-
+/**
+ * @param vec3d
+ * @param entityID -1时表示vec3d为目标点， 需要自行计算向量， 且entity为手中物品产生的entity
+ */
 public record EntityVelocityChangePayload(Vec3d vec3d, Integer entityID) implements CustomPayload {
     public static final Id<EntityVelocityChangePayload> ID = new CustomPayload.Id<>(Identifier.of(MyModInitializer.MOD_ID, "entity_velocity_change_payload"));
 

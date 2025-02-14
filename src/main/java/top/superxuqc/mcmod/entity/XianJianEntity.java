@@ -9,6 +9,7 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -54,6 +55,11 @@ public class XianJianEntity extends ThrownEntity implements FlyingItemEntity {
         double z = this.getZ() + getWorld().random.nextInt(16) - 8;
         setPosition(x, y, z);
         setNoGravity(true);
+    }
+
+    @Override
+    protected void onCollision(HitResult hitResult) {
+        super.onCollision(hitResult);
     }
 
     @Override

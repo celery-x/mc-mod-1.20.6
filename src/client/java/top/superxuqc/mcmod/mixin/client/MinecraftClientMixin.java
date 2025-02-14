@@ -17,19 +17,23 @@ import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.superxuqc.mcmod.common.VelocityUtils;
 import top.superxuqc.mcmod.enchantment.BanKaiEnchantment;
 import top.superxuqc.mcmod.enchantment.FollowProjectileEnchantment;
 import top.superxuqc.mcmod.entity.NoneEntity;
 import top.superxuqc.mcmod.entity.SwordQiEntity;
 import top.superxuqc.mcmod.item.QiSwordItem;
+import top.superxuqc.mcmod.network.payload.EntityVelocityChangePayload;
 import top.superxuqc.mcmod.network.payload.FollowProjectilePayload;
 import top.superxuqc.mcmod.network.payload.HitCheckPayload;
+import top.superxuqc.mcmod.register.ModEnchantmentRegister;
 import top.superxuqc.mcmod.util.ViewUtils;
 
 import java.util.Set;
@@ -76,6 +80,11 @@ public abstract class MinecraftClientMixin {
 //                System.out.println(entity.getDisplayName().getString());
                 ClientPlayNetworking.send(new FollowProjectilePayload(entity.getId()));
             }
+        }
+        int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.XIAN_JIAN, mainHandStack);
+        if (level > 0) {
+            Vec3d targetPos = ViewUtils.findTargetPos(MinecraftClient.getInstance(), 20, 20, c.getTickDelta());
+            ClientPlayNetworking.send(new EntityVelocityChangePayload(targetPos, -1));
         }
 
     }

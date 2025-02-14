@@ -50,18 +50,30 @@ public abstract class ItemMixin implements ItemWithEntity {
     private final int MAX_TICK = 20;
 
     @Unique
-    private Entity entityOfItem;
+    private List<Entity> entityOfItem;
 
-    @Unique
+
     @Override
-    public Entity getEntityOfItem() {
+    @Unique
+    public List<Entity> getEntitesOfItem() {
         return entityOfItem;
     }
 
-    @Unique
     @Override
-    public void setEntityOfItem(Entity entityOfItem) {
+    @Unique
+    public void setEntitiesOfItem(List<Entity> entityOfItem) {
         this.entityOfItem = entityOfItem;
+    }
+
+    @Override
+    @Unique
+    public void addEntitiesOfItem(Entity entityOfItem) {
+        if (this.entityOfItem != null) {
+            this.entityOfItem.add(entityOfItem);
+        } else {
+            this.entityOfItem = new CopyOnWriteArrayList<>();
+            this.entityOfItem.add(entityOfItem);
+        }
     }
 
     @Unique
@@ -109,13 +121,19 @@ public abstract class ItemMixin implements ItemWithEntity {
                     world.spawnEntity(qiEntity);
                 }
             }
+            System.out.println(isXianJian);
             if (isXianJian) {
-                if (this.entityOfItem == null) {
+                if (this.entityOfItem == null || this.entityOfItem.isEmpty()) {
                     XianJianEntity xianJianEntity = new XianJianEntity(user, world, user.getStackInHand(hand));
                     xianJianEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0F, 0.1F, 1.0F);
+                    System.out.println(xianJianEntity.getPos());
                     world.spawnEntity(xianJianEntity);
-                    this.entityOfItem = xianJianEntity;
+                    this.addEntitiesOfItem(xianJianEntity);
                 }
+                // TODO 互乘
+//                else if () {
+//
+//                }
             }
             ItemStack itemStack = user.getStackInHand(hand);
             cr.setReturnValue(TypedActionResult.success(itemStack, world.isClient()));
