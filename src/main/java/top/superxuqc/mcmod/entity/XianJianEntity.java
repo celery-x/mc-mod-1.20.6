@@ -5,11 +5,15 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -21,50 +25,68 @@ import top.superxuqc.mcmod.register.ModEntryTypes;
 
 import java.util.HashSet;
 
-public class XianJianEntity extends ThrownEntity implements FlyingItemEntity {
+public class XianJianEntity extends PersistentProjectileEntity implements FlyingItemEntity {
 
-    private int amount;
+    private static final TrackedData<Integer> AMOUNT = DataTracker.registerData(XianJianEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     private ItemStack stack = this.getDefaultItemStack();
 
-    public int getAmount() {
-        return amount;
-    }
+    public NoneEntity targetEntity;
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public XianJianEntity(EntityType<? extends ThrownEntity> entityType, World world) {
+    public XianJianEntity(EntityType<XianJianEntity> xianJianEntityEntityType, World world) {
         super(ModEntryTypes.XIAN_JIAN_TYPE, world);
     }
 
-    public XianJianEntity(double x, double y, double z, World world) {
-        super(ModEntryTypes.XIAN_JIAN_TYPE, x, y, z, world);
-        resetPos();
+    public int getAmount() {
+        return this.dataTracker.get(AMOUNT);
     }
 
-    public XianJianEntity(LivingEntity owner, World world, ItemStack itemStack) {
-        this(owner.getX(), owner.getY(), owner.getZ(), world);
+    public void setAmount(int amount) {
+        this.dataTracker.set(AMOUNT, amount);
+    }
+
+
+    public XianJianEntity(LivingEntity owner, World world, ItemStack itemStack, int amount) {
+        super(ModEntryTypes.XIAN_JIAN_TYPE,owner, world, itemStack);
         this.stack = itemStack.copy();
+        resetPos();
+        setAmount(amount);
+    }
+
+    @Override
+    protected float getDragInWater() {
+        return 1;
     }
 
     private void resetPos() {
         double x = this.getX() + getWorld().random.nextInt( + 16) - 8;
         double y = this.getY() + getWorld().random.nextInt(16) - 8;
         double z = this.getZ() + getWorld().random.nextInt(16) - 8;
+        int Max = 10;
+        int times = 0;
+        while (!getWorld().getBlockState(new BlockPos((int) x, (int) y, (int) z)).isAir()) {
+            x = this.getX() + getWorld().random.nextInt( + 16) - 8;
+            y = this.getY() + getWorld().random.nextInt(16) - 8;
+            z = this.getZ() + getWorld().random.nextInt(16) - 8;
+            times++;
+            if (times > Max) {
+                break;
+            }
+        }
         setPosition(x, y, z);
         setNoGravity(true);
     }
 
+//    private void lookupTarget() {
+//        raycast()
+//    }
+
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-    }
-
-    @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-
+        if (hitResult.getType() != HitResult.Type.MISS) {
+            discard();
+        }
     }
 
     public ItemStack getDefaultItemStack() {
@@ -72,19 +94,14 @@ public class XianJianEntity extends ThrownEntity implements FlyingItemEntity {
     }
 
     @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(AMOUNT, 5);
+    }
+
+    @Override
     public void tick() {
         super.tick();
-        if (!getWorld().isClient()) {
-            int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.FOLLOW_PROJECTILE, this.getStack());
-            if (level > 0) {
-                if (!FollowProjectileEnchantment.TARGET.isAlive()) {
-                    //entity.setVelocity(0, 0, 0);
-                } else {
-                    Vector3f calculate = VelocityUtils.calculate(this, FollowProjectileEnchantment.TARGET);
-                    this.setVelocity(new Vec3d(calculate));
-                }
-            }
-        }
     }
 
     private HashSet<Vec3i> passedList = new HashSet<Vec3i>();

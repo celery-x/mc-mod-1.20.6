@@ -9,6 +9,8 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.FlyingItemEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
@@ -21,7 +23,7 @@ import top.superxuqc.mcmod.keymouse.KeyBindRegister;
 import top.superxuqc.mcmod.network.payload.HitCheckPayload;
 import top.superxuqc.mcmod.particle.JianQiParticleEffect;
 
-public class XianJianEntityRenderer<T extends ThrownEntity> extends EntityRenderer<T> {
+public class XianJianEntityRenderer<T extends PersistentProjectileEntity> extends EntityRenderer<T> {
     private static final float MIN_DISTANCE = 12.25F;
     private final ItemRenderer itemRenderer;
     private final float scale;
@@ -89,7 +91,6 @@ public class XianJianEntityRenderer<T extends ThrownEntity> extends EntityRender
                     ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), ((XianJianEntity) entity).getAmount()));
                 }
             }
-
 
         }
         entity.getWorld().addParticle(

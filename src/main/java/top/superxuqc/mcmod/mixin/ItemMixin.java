@@ -10,11 +10,13 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,7 +53,6 @@ public abstract class ItemMixin implements ItemWithEntity {
 
     @Unique
     private List<Entity> entityOfItem;
-
 
     @Override
     @Unique
@@ -121,23 +122,35 @@ public abstract class ItemMixin implements ItemWithEntity {
                     world.spawnEntity(qiEntity);
                 }
             }
-            System.out.println(isXianJian);
+//            System.out.println(isXianJian);
             if (isXianJian) {
-                if (this.entityOfItem == null || this.entityOfItem.isEmpty()) {
-                    XianJianEntity xianJianEntity = new XianJianEntity(user, world, user.getStackInHand(hand));
-                    xianJianEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0F, 0.1F, 1.0F);
-                    System.out.println(xianJianEntity.getPos());
-                    world.spawnEntity(xianJianEntity);
-                    this.addEntitiesOfItem(xianJianEntity);
+                if (world instanceof ServerWorld) {
+                    if (this.entityOfItem != null && !this.entityOfItem.isEmpty()) {
+                        this.entityOfItem.forEach(v -> {v.discard();});
+                        this.entityOfItem.clear();
+                    }
+                    // 适配 附魔互乘
+                    int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.HUCHENG, user.getStackInHand(hand));
+                    int amout = EnchantmentHelper.getLevel(ModEnchantmentRegister.AMPLIFY, user.getStackInHand(hand));
+                    if (level > 0) {
+                        for (int i = 0; i < level * level; i++) {
+                            spawnXianjianEntity(world, user, hand, amout + 5);
+                        }
+                    } else {
+                        spawnXianjianEntity(world, user, hand, amout + 5);
+                    }
                 }
-                // TODO 互乘
-//                else if () {
-//
-//                }
             }
             ItemStack itemStack = user.getStackInHand(hand);
             cr.setReturnValue(TypedActionResult.success(itemStack, world.isClient()));
         }
+    }
+
+    private void spawnXianjianEntity(World world, PlayerEntity user, Hand hand, int amount) {
+        XianJianEntity entity = new XianJianEntity(user, world, user.getStackInHand(hand), amount);
+        entity.setVelocity(user, user.getPitch(), user.getYaw(), 0F, 0.1F, 1.0F);
+        this.addEntitiesOfItem(entity);
+        world.spawnEntity(entity);
     }
 
 

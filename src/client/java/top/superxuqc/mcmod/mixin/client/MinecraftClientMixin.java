@@ -32,7 +32,6 @@ import top.superxuqc.mcmod.entity.SwordQiEntity;
 import top.superxuqc.mcmod.item.QiSwordItem;
 import top.superxuqc.mcmod.network.payload.EntityVelocityChangePayload;
 import top.superxuqc.mcmod.network.payload.FollowProjectilePayload;
-import top.superxuqc.mcmod.network.payload.HitCheckPayload;
 import top.superxuqc.mcmod.register.ModEnchantmentRegister;
 import top.superxuqc.mcmod.util.ViewUtils;
 
@@ -83,7 +82,7 @@ public abstract class MinecraftClientMixin {
         }
         int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.XIAN_JIAN, mainHandStack);
         if (level > 0) {
-            Vec3d targetPos = ViewUtils.findTargetPos(MinecraftClient.getInstance(), 20, 20, c.getTickDelta());
+            Vec3d targetPos = ViewUtils.findTargetPos(MinecraftClient.getInstance(), 5, 20, c.getTickDelta());
             ClientPlayNetworking.send(new EntityVelocityChangePayload(targetPos, -1));
         }
 

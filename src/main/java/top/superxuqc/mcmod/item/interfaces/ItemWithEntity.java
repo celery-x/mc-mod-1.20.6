@@ -1,10 +1,15 @@
 package top.superxuqc.mcmod.item.interfaces;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
 public interface ItemWithEntity {
+
+    default void setEntityVelocity(Vec3d entitiesVelocity) {
+    }
+
     default Entity getEntityOfItem() {
         return null;
     }
