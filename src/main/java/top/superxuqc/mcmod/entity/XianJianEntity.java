@@ -50,6 +50,7 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
         super(ModEntryTypes.XIAN_JIAN_TYPE,owner, world, itemStack);
         this.stack = itemStack.copy();
         resetPos();
+
         setAmount(amount);
     }
 
@@ -75,6 +76,8 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
         }
         setPosition(x, y, z);
         setNoGravity(true);
+        resetPosition();
+        center = calculateCircleZone();
     }
 
 //    private void lookupTarget() {
@@ -99,9 +102,40 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
         builder.add(AMOUNT, 5);
     }
 
+    int speed = 2;
+
+    int r = 20;
+
+    Vec3d center = null;
     @Override
     public void tick() {
         super.tick();
+        if (!this.getWorld().isClient()) {
+            Vec3d vec3d = calculateCircleIndex(age);
+            setVelocity(vec3d.subtract(this.getPos()));
+        }
+    }
+
+    private Vec3d calculateCircleZone() {
+        double newZ = Math.cos(prevYaw) * r + prevZ;
+        double newX = Math.sin(prevYaw) * r + prevX;
+        double newY = prevY;
+        return new Vec3d(newX, newY, newZ);
+    }
+
+    private Vec3d calculateCircleIndex(double d) {
+        if (center == null) {
+            return new Vec3d(0, 0, 0);
+        }
+        double newZ = Math.cos(d) * r + center.z;
+        double newX = Math.sin(d) * r + center.x;
+        double newY = center.y;
+        return new Vec3d(newX, newY, newZ);
+    }
+
+    private Vec3d calculateCircleIndex(int age) {
+        double d = (speed / (Math.PI * r * 2)) * 2 * Math.PI;
+        return calculateCircleIndex(d * age);
     }
 
     private HashSet<Vec3i> passedList = new HashSet<Vec3i>();
