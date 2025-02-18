@@ -35,6 +35,22 @@ public class ModEnchantmentRegister {
                     Enchantment.constantCost(50),
                     8, EquipmentSlot.MAINHAND));
 
+    public static final Enchantment SWORD_DANCE =
+            new Enchantment(
+                    Enchantment.properties(ModTarKeys.CAN_HIT_ENTITY_ITEMS,
+                            1, 1,
+                            Enchantment.constantCost(25),
+                            Enchantment.constantCost(50),
+                            8, EquipmentSlot.MAINHAND));
+
+    public static final Enchantment AIR_CLAW =
+            new Enchantment(
+                    Enchantment.properties(ModTarKeys.CAN_HIT_ENTITY_ITEMS,
+                            1, 1,
+                            Enchantment.constantCost(25),
+                            Enchantment.constantCost(50),
+                            8, EquipmentSlot.MAINHAND));
+
     public static final Enchantment TOW_WAY_FOIL =
             new Enchantment(
                     Enchantment.properties(ModTarKeys.CAN_HIT_ENTITY_ITEMS,
@@ -148,6 +164,8 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "amplify"), AMPLIFY);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "xian_jian"), XIAN_JIAN);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "tow_way_foil"), TOW_WAY_FOIL);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "sword_dance"), SWORD_DANCE);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "air_claw"), AIR_CLAW);
     }
 
 }

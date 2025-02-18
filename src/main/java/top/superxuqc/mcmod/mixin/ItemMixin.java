@@ -1,6 +1,7 @@
 package top.superxuqc.mcmod.mixin;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -130,14 +131,20 @@ public abstract class ItemMixin implements ItemWithEntity {
                         this.entityOfItem.clear();
                     }
                     // 适配 附魔互乘
-                    int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.HUCHENG, user.getStackInHand(hand));
-                    int amout = EnchantmentHelper.getLevel(ModEnchantmentRegister.AMPLIFY, user.getStackInHand(hand));
+                    ItemStack stack = user.getStackInHand(hand);
+                    int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.HUCHENG, stack);
+                    int amout = EnchantmentHelper.getLevel(ModEnchantmentRegister.AMPLIFY, stack);
+                    checkEnchantment(stack);
+
+                    int follow = EnchantmentHelper.getLevel(ModEnchantmentRegister.SWORD_DANCE, stack);
+                    int tian = EnchantmentHelper.getLevel(ModEnchantmentRegister.AIR_CLAW, stack);
+
                     if (level > 0) {
                         for (int i = 0; i < level * level; i++) {
-                            spawnXianjianEntity(world, user, hand, amout + 5);
+                            spawnXianjianEntity(world, user, hand, amout + 5, follow > 0, tian > 0);
                         }
                     } else {
-                        spawnXianjianEntity(world, user, hand, amout + 5);
+                        spawnXianjianEntity(world, user, hand, amout + 5, follow > 0, tian > 0);
                     }
                 }
             }
@@ -146,8 +153,27 @@ public abstract class ItemMixin implements ItemWithEntity {
         }
     }
 
-    private void spawnXianjianEntity(World world, PlayerEntity user, Hand hand, int amount) {
-        XianJianEntity entity = new XianJianEntity(user, world, user.getStackInHand(hand), amount);
+    @Unique
+    private void checkEnchantment(ItemStack stack) {
+        ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(EnchantmentHelper.getEnchantments(stack));
+        int follow = EnchantmentHelper.getLevel(ModEnchantmentRegister.FOLLOW_PROJECTILE, stack);
+        int dao = EnchantmentHelper.getLevel(ModEnchantmentRegister.SWORD_DANCE, stack);
+        if (follow > 0) {
+            builder.set(ModEnchantmentRegister.XIAN_JIAN, 0);
+            builder.set(ModEnchantmentRegister.FOLLOW_PROJECTILE, 0);
+            builder.set(ModEnchantmentRegister.SWORD_DANCE, 1);
+        }
+        int tian = EnchantmentHelper.getLevel(ModEnchantmentRegister.TIAN_ZAI, stack);
+        if (tian > 0 && (follow > 0 || dao > 0)) {
+            builder.set(ModEnchantmentRegister.XIAN_JIAN, 0);
+            builder.set(ModEnchantmentRegister.TIAN_ZAI, 0);
+            builder.set(ModEnchantmentRegister.AIR_CLAW, 1);
+        }
+        EnchantmentHelper.set(stack, builder.build());
+    }
+
+    private void spawnXianjianEntity(World world, PlayerEntity user, Hand hand, int amount, boolean follow, boolean tianZai) {
+        XianJianEntity entity = new XianJianEntity(user, world, user.getStackInHand(hand), amount, follow, tianZai);
         entity.setVelocity(user, user.getPitch(), user.getYaw(), 0F, 0.1F, 1.0F);
         this.addEntitiesOfItem(entity);
         world.spawnEntity(entity);

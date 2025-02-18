@@ -9,6 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 import top.superxuqc.mcmod.common.VelocityUtils;
 import top.superxuqc.mcmod.entity.NoneEntity;
+import top.superxuqc.mcmod.entity.XianJianEntity;
 import top.superxuqc.mcmod.item.interfaces.ItemWithEntity;
 import top.superxuqc.mcmod.network.payload.EntityVelocityChangePayload;
 
@@ -38,7 +39,14 @@ public class ServerEntityVelocityChangePayloadHandler implements ServerPlayNetwo
                                 //Entity entityById = world.getEntityById(v);
                                 Vector3f calculate = VelocityUtils.calculate(v, entity);
                                 Vec3d multiply = new Vec3d(calculate);
-                                v.setVelocity(multiply);
+                                if (v instanceof XianJianEntity xianJian && !xianJian.isFollow()) {
+                                    if (!xianJian.isFolloWed()) {
+                                        xianJian.setVelocity(multiply);
+                                        xianJian.setFolloWed(true);
+                                    }
+                                } else {
+                                    v.setVelocity(multiply);
+                                }
                             }
                         });
                     }

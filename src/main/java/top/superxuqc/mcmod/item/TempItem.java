@@ -121,7 +121,7 @@ public class TempItem extends Item implements ItemWithEntity {
     }
 
     private void spawnXianjianEntity(World world, PlayerEntity user, Hand hand) {
-        XianJianEntity entity = new XianJianEntity(user, world, user.getStackInHand(hand), 5);
+        XianJianEntity entity = new XianJianEntity(user, world, user.getStackInHand(hand), 5, false, false);
         entity.setVelocity(user, user.getPitch(), user.getYaw(), 0F, 0.1F, 1.0F);
         this.addEntitiesOfItem(entity);
         world.spawnEntity(entity);

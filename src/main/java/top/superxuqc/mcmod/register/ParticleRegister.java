@@ -14,7 +14,7 @@ import top.superxuqc.mcmod.particle.JianQiParticleEffect;
 import java.util.function.Function;
 
 public class ParticleRegister {
-    public static ParticleType<JianQiParticleEffect> JIANQI = register("dust", false, type -> JianQiParticleEffect.CODEC, type -> JianQiParticleEffect.PACKET_CODEC);
+    public static ParticleType<JianQiParticleEffect> JIANQI = register("dust", true, type -> JianQiParticleEffect.CODEC, type -> JianQiParticleEffect.PACKET_CODEC);
 
     public static void init() {
         Registry.register(Registries.PARTICLE_TYPE, new Identifier(MyModInitializer.MOD_ID, "jianqi"), JIANQI);

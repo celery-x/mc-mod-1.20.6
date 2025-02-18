@@ -1,14 +1,17 @@
 package top.superxuqc.mcmod.entity;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.GiantEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -18,12 +21,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.joml.Vector3f;
+import top.superxuqc.mcmod.common.SpawnLivingEntityUtils;
 import top.superxuqc.mcmod.common.VelocityUtils;
 import top.superxuqc.mcmod.enchantment.FollowProjectileEnchantment;
 import top.superxuqc.mcmod.register.ModEnchantmentRegister;
 import top.superxuqc.mcmod.register.ModEntryTypes;
 
 import java.util.HashSet;
+import java.util.List;
 
 public class XianJianEntity extends PersistentProjectileEntity implements FlyingItemEntity {
 
@@ -45,13 +50,37 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
         this.dataTracker.set(AMOUNT, amount);
     }
 
+    private boolean follow = false;
 
-    public XianJianEntity(LivingEntity owner, World world, ItemStack itemStack, int amount) {
+    private boolean folloWed = false;
+
+    public boolean isFolloWed() {
+        return folloWed;
+    }
+
+    public void setFolloWed(boolean folloWed) {
+        this.folloWed = folloWed;
+    }
+
+    public boolean isFollow() {
+        return follow;
+    }
+
+    public void setFollow(boolean follow) {
+        this.follow = follow;
+    }
+
+    private boolean tianZai = false;
+
+    public XianJianEntity(LivingEntity owner, World world, ItemStack itemStack, int amount, boolean follow, boolean tianZai) {
         super(ModEntryTypes.XIAN_JIAN_TYPE,owner, world, itemStack);
+        this.follow = follow;
+        this.tianZai = tianZai;
         this.stack = itemStack.copy();
         resetPos();
 
         setAmount(amount);
+
     }
 
     @Override
@@ -77,12 +106,26 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
         setPosition(x, y, z);
         setNoGravity(true);
         resetPosition();
-        center = calculateCircleZone();
+        if (tianZai) {
+            this.prevYaw = 0;
+            center = calculateCircleZone();
+            calculateCircleStartR();
+        }
     }
 
-//    private void lookupTarget() {
-//        raycast()
-//    }
+    private int MAX_AGE = Integer.MAX_VALUE;
+
+    private void calculateCircleStartR() {
+        double x = this.getX();
+        double z = this.getZ();
+        double dx = x - center.x;
+        double dz = z - center.z;
+        double dr = Math.atan2(dx, dz) + Math.PI;
+        double v = speed / (Math.PI * 2 * r) * 2 * Math.PI;
+        age = (int) (dr / v);
+        double lifeTime = Math.PI * 2 / v;
+        MAX_AGE = (int) (age + lifeTime) + 1;
+    }
 
     @Override
     protected void onCollision(HitResult hitResult) {
@@ -110,9 +153,29 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
     @Override
     public void tick() {
         super.tick();
-        if (!this.getWorld().isClient()) {
+        if (!this.getWorld().isClient() && tianZai) {
+            if (age > MAX_AGE) {
+                discard();
+            }
             Vec3d vec3d = calculateCircleIndex(age);
             setVelocity(vec3d.subtract(this.getPos()));
+            generateRandomEntity(vec3d, 2);
+        }
+    }
+
+    public void generateRandomEntity(Vec3d pos, int times) {
+        List<Entity> entityModIS = SpawnLivingEntityUtils.spawnHostileByPlayerTimes(this.getWorld(), this.getBlockPos(), this.getOwner().getUuid(), times);
+        for (Entity entityModI : entityModIS) {
+            if (entityModI instanceof GiantEntity) {
+                continue;
+            }
+            double newx = pos.getX() + this.getWorld().random.nextInt(4) - 4;
+            double newy = pos.getY() + this.getWorld().random.nextInt(2);
+            double newz = pos.getZ() + this.getWorld().random.nextInt(4) - 4;
+            System.out.println("Tian zai shengcheng");
+            entityModI.setPosition(newx, newy, newz);
+            this.getWorld().spawnEntity(entityModI);
+            SpawnLivingEntityUtils.addClearableEntity(entityModI);
         }
     }
 
