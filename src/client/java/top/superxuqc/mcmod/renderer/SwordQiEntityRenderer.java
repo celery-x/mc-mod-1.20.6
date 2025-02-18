@@ -21,7 +21,6 @@ import top.superxuqc.mcmod.common.particle.*;
 import top.superxuqc.mcmod.entity.SwordQiEntity;
 import top.superxuqc.mcmod.keymouse.KeyBindRegister;
 import top.superxuqc.mcmod.network.payload.HitCheckPayload;
-import top.superxuqc.mcmod.particle.JianQiParticle;
 import top.superxuqc.mcmod.particle.JianQiParticleEffect;
 
 public class SwordQiEntityRenderer<T extends Entity & FlyingItemEntity> extends EntityRenderer<T> {

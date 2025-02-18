@@ -29,10 +29,15 @@ import top.superxuqc.mcmod.register.ModEntryTypes;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class XianJianEntity extends PersistentProjectileEntity implements FlyingItemEntity {
 
     private static final TrackedData<Integer> AMOUNT = DataTracker.registerData(XianJianEntity.class, TrackedDataHandlerRegistry.INTEGER);
+
+    private static final TrackedData<Boolean> TIAN_ZAI = DataTracker.registerData(XianJianEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> MAX_AGE = DataTracker.registerData(XianJianEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Vector3f> CENTER = DataTracker.registerData(XianJianEntity.class, TrackedDataHandlerRegistry.VECTOR3F);
 
     private ItemStack stack = this.getDefaultItemStack();
 
@@ -47,7 +52,34 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
     }
 
     public void setAmount(int amount) {
+
         this.dataTracker.set(AMOUNT, amount);
+    }
+
+    public boolean isTianZai() {
+        return this.dataTracker.get(TIAN_ZAI);
+    }
+
+    public void setTianZai(boolean tianZai) {
+        this.tianZai = tianZai;
+        this.dataTracker.set(TIAN_ZAI, tianZai);
+    }
+
+    public int getMaxAge() {
+        return this.dataTracker.get(MAX_AGE);
+    }
+
+    public void setMaxAge(int max) {
+        this.dataTracker.set(MAX_AGE, max);
+        this.maxAge = max;
+    }
+
+    public Vector3f getCenter() {
+        return this.dataTracker.get(CENTER);
+    }
+
+    public void setCenter(Vec3d center) {
+        this.dataTracker.set(CENTER, new Vector3f((float) center.x, (float) center.y, (float) center.z));
     }
 
     private boolean follow = false;
@@ -75,7 +107,7 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
     public XianJianEntity(LivingEntity owner, World world, ItemStack itemStack, int amount, boolean follow, boolean tianZai) {
         super(ModEntryTypes.XIAN_JIAN_TYPE,owner, world, itemStack);
         this.follow = follow;
-        this.tianZai = tianZai;
+        setTianZai(tianZai);
         this.stack = itemStack.copy();
         resetPos();
 
@@ -89,31 +121,35 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
     }
 
     private void resetPos() {
-        double x = this.getX() + getWorld().random.nextInt( + 16) - 8;
-        double y = this.getY() + getWorld().random.nextInt(16) - 8;
-        double z = this.getZ() + getWorld().random.nextInt(16) - 8;
-        int Max = 10;
-        int times = 0;
-        while (!getWorld().getBlockState(new BlockPos((int) x, (int) y, (int) z)).isAir()) {
-            x = this.getX() + getWorld().random.nextInt( + 16) - 8;
+        double x = this.getX();
+        double y = this.getY();
+        double z = this.getZ();
+        setNoGravity(true);
+        if (!tianZai) {
+            x = this.getX() + getWorld().random.nextInt(+16) - 8;
             y = this.getY() + getWorld().random.nextInt(16) - 8;
             z = this.getZ() + getWorld().random.nextInt(16) - 8;
-            times++;
-            if (times > Max) {
-                break;
+            int Max = 10;
+            int times = 0;
+            while (!getWorld().getBlockState(new BlockPos((int) x, (int) y, (int) z)).isAir()) {
+                x = this.getX() + getWorld().random.nextInt(+16) - 8;
+                y = this.getY() + getWorld().random.nextInt(16) - 8;
+                z = this.getZ() + getWorld().random.nextInt(16) - 8;
+                times++;
+                if (times > Max) {
+                    break;
+                }
             }
         }
         setPosition(x, y, z);
-        setNoGravity(true);
         resetPosition();
-        if (tianZai) {
-            this.prevYaw = 0;
-            center = calculateCircleZone();
-            calculateCircleStartR();
-        }
+        this.prevYaw = 0;
+        center = calculateCircleZone();
+        setCenter(center);
+        calculateCircleStartR();
     }
 
-    private int MAX_AGE = Integer.MAX_VALUE;
+    private int maxAge = Integer.MAX_VALUE;
 
     private void calculateCircleStartR() {
         double x = this.getX();
@@ -124,13 +160,13 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
         double v = speed / (Math.PI * 2 * r) * 2 * Math.PI;
         age = (int) (dr / v);
         double lifeTime = Math.PI * 2 / v;
-        MAX_AGE = (int) (age + lifeTime) + 1;
+        setMaxAge((int) (age + lifeTime) + 1);
     }
 
     @Override
     protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
-        if (hitResult.getType() != HitResult.Type.MISS) {
+        //super.onCollision(hitResult);
+        if (!this.getWorld().isClient() && !tianZai && hitResult.getType() != HitResult.Type.MISS) {
             discard();
         }
     }
@@ -143,39 +179,58 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(AMOUNT, 5);
+        builder.add(TIAN_ZAI, false);
+        builder.add(MAX_AGE, 20 * 360);
+        builder.add(CENTER, new Vector3f());
     }
 
     int speed = 2;
 
     int r = 20;
 
+    private List<Vec3d> entitySpawnPos = new CopyOnWriteArrayList<>();
+
     Vec3d center = null;
+
+    @Override
+    protected void age() {
+
+    }
+
     @Override
     public void tick() {
         super.tick();
         if (!this.getWorld().isClient() && tianZai) {
-            if (age > MAX_AGE) {
-                discard();
-            }
             Vec3d vec3d = calculateCircleIndex(age);
+            if (age < maxAge && age % 4 == 0) {
+                entitySpawnPos.add(vec3d);
+            }
+            if (age >= maxAge && age % 10 == 0) {
+                generateRandomEntity();
+            }
             setVelocity(vec3d.subtract(this.getPos()));
-            generateRandomEntity(vec3d, 2);
+        }
+        if (age > maxAge * 11) {
+            discard();
         }
     }
 
-    public void generateRandomEntity(Vec3d pos, int times) {
-        List<Entity> entityModIS = SpawnLivingEntityUtils.spawnHostileByPlayerTimes(this.getWorld(), this.getBlockPos(), this.getOwner().getUuid(), times);
-        for (Entity entityModI : entityModIS) {
-            if (entityModI instanceof GiantEntity) {
-                continue;
+    public void generateRandomEntity() {
+        for (Vec3d pos : entitySpawnPos) {
+            int times = 1;
+            List<Entity> entityModIS = SpawnLivingEntityUtils.spawnHostileByPlayerTimes(this.getWorld(), this.getBlockPos(), this.getOwner().getUuid(), times);
+            for (Entity entityModI : entityModIS) {
+                if (entityModI instanceof GiantEntity) {
+                    continue;
+                }
+                double newx = pos.getX() + this.getWorld().random.nextInt(4) - 4;
+                double newy = pos.getY() + this.getWorld().random.nextInt(2);
+                double newz = pos.getZ() + this.getWorld().random.nextInt(4) - 4;
+                System.out.println("Tian zai shengcheng");
+                entityModI.setPosition(newx, newy, newz);
+                this.getWorld().spawnEntity(entityModI);
+                SpawnLivingEntityUtils.addClearableEntity(entityModI);
             }
-            double newx = pos.getX() + this.getWorld().random.nextInt(4) - 4;
-            double newy = pos.getY() + this.getWorld().random.nextInt(2);
-            double newz = pos.getZ() + this.getWorld().random.nextInt(4) - 4;
-            System.out.println("Tian zai shengcheng");
-            entityModI.setPosition(newx, newy, newz);
-            this.getWorld().spawnEntity(entityModI);
-            SpawnLivingEntityUtils.addClearableEntity(entityModI);
         }
     }
 

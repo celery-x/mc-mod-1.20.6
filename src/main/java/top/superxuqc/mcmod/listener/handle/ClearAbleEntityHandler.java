@@ -21,7 +21,7 @@ public class ClearAbleEntityHandler implements ServerLifecycleEvents.ServerStopp
             ServerWorld world = minecraftServer.getWorld(k);
             for (Integer i : v) {
                 Entity entityById = world.getEntityById(i);
-                if (entityById.isAlive() && !entityById.isRemoved()) {
+                if (entityById != null && entityById.isAlive() && !entityById.isRemoved()) {
                     entityById.discard();
                 }
             }

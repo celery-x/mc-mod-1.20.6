@@ -29,12 +29,24 @@ public class JianQiParticleEffect implements ParticleEffect {
 
     private final Vector3f color;
 
+    private final int age;
+
+    public JianQiParticleEffect(Vector3f color, int age) {
+        this.color = color;
+        this.age = age;
+    }
+
     public JianQiParticleEffect(Vector3f color) {
         this.color = color;
+        this.age = 3;
     }
 
     public Vector3f getColor() {
         return color;
+    }
+
+    public int getAge() {
+        return age;
     }
 
     @Override

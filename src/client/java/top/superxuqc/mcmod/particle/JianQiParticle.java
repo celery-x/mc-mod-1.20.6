@@ -26,7 +26,7 @@ public class JianQiParticle extends AnimatedParticle {
         this.velocityY = velocityY;
         this.velocityZ = velocityZ;
         this.scale *= 0.75F;
-        this.maxAge = 3;
+        this.maxAge = effect.getAge();
         Vector3f color = effect.getColor();
         this.setColor(color.x , color.y, color.z);
         this.setSpriteForAge(spriteProvider);

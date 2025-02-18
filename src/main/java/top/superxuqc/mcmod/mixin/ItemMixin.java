@@ -123,21 +123,21 @@ public abstract class ItemMixin implements ItemWithEntity {
                     world.spawnEntity(qiEntity);
                 }
             }
+            ItemStack stack = user.getStackInHand(hand);
+            int follow = EnchantmentHelper.getLevel(ModEnchantmentRegister.SWORD_DANCE, stack);
+            int tian = EnchantmentHelper.getLevel(ModEnchantmentRegister.AIR_CLAW, stack);
 //            System.out.println(isXianJian);
-            if (isXianJian) {
+            if (isXianJian || follow > 0 || tian > 0) {
                 if (world instanceof ServerWorld) {
                     if (this.entityOfItem != null && !this.entityOfItem.isEmpty()) {
                         this.entityOfItem.forEach(v -> {v.discard();});
                         this.entityOfItem.clear();
                     }
                     // 适配 附魔互乘
-                    ItemStack stack = user.getStackInHand(hand);
+
                     int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.HUCHENG, stack);
                     int amout = EnchantmentHelper.getLevel(ModEnchantmentRegister.AMPLIFY, stack);
                     checkEnchantment(stack);
-
-                    int follow = EnchantmentHelper.getLevel(ModEnchantmentRegister.SWORD_DANCE, stack);
-                    int tian = EnchantmentHelper.getLevel(ModEnchantmentRegister.AIR_CLAW, stack);
 
                     if (level > 0) {
                         for (int i = 0; i < level * level; i++) {
