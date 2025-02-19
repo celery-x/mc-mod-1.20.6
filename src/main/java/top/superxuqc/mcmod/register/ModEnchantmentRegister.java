@@ -1,6 +1,7 @@
 package top.superxuqc.mcmod.register;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.FrostWalkerEnchantment;
 import net.minecraft.enchantment.InfinityEnchantment;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.EquipmentSlot;
@@ -34,6 +35,11 @@ public class ModEnchantmentRegister {
                     Enchantment.constantCost(25),
                     Enchantment.constantCost(50),
                     8, EquipmentSlot.MAINHAND));
+
+    public static final Enchantment FIRE_WALKER =
+            new FireWalkerEnchantment(
+                    Enchantment.properties(ItemTags.FOOT_ARMOR_ENCHANTABLE, 2, 2, Enchantment.leveledCost(10, 10), Enchantment.leveledCost(25, 10), 4, EquipmentSlot.FEET)
+            );
 
     public static final Enchantment SWORD_DANCE =
             new Enchantment(
@@ -166,6 +172,7 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "tow_way_foil"), TOW_WAY_FOIL);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "sword_dance"), SWORD_DANCE);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "air_claw"), AIR_CLAW);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "fire_walk"), FIRE_WALKER);
     }
 
 }

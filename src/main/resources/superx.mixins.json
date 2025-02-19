@@ -17,7 +17,8 @@
     "MiningToolItemMixin",
     "BlockStateMixin",
     "EnderPearlEntityMixin",
-    "AnvilScreenHandlerMixin"
+    "AnvilScreenHandlerMixin",
+    "LivingEntityMixin"
   ],
   "client": [
 
