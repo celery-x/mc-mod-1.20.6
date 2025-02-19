@@ -40,7 +40,7 @@ public class FireWalkerEnchantment extends Enchantment {
             BlockPos.Mutable mutable = new BlockPos.Mutable();
 
             // blockPos2 是要替换的位置 blockstate2 是要替换的位置的state
-            for (BlockPos blockPos2 : BlockPos.iterate(blockPos.add(-i, -1, -i), blockPos.add(i, 0, i))) {
+            for (BlockPos blockPos2 : BlockPos.iterate(blockPos.add(-i, -i, -i), blockPos.add(i, i, i))) {
                 if (blockPos2.isWithinDistance(entity.getPos(), (double) i)) {
                     mutable.set(blockPos2.getX(), blockPos2.getY(), blockPos2.getZ());
                     BlockState blockState2 = world.getBlockState(mutable);

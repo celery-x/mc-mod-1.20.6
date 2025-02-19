@@ -80,7 +80,11 @@ public abstract class MinecraftClientMixin {
                 ClientPlayNetworking.send(new FollowProjectilePayload(entity.getId()));
             }
         }
-        int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.XIAN_JIAN, mainHandStack);
+        int level = EnchantmentHelper.getLevel(ModEnchantmentRegister.XIAN_JIAN, mainHandStack)
+        + EnchantmentHelper.getLevel(ModEnchantmentRegister.SWORD_DANCE, mainHandStack)
+        + EnchantmentHelper.getLevel(ModEnchantmentRegister.AIR_CLAW, mainHandStack);
+
+        System.out.println(level);
         if (level > 0) {
             Vec3d targetPos = ViewUtils.findTargetPos(MinecraftClient.getInstance(), 5, 20, c.getTickDelta());
             ClientPlayNetworking.send(new EntityVelocityChangePayload(targetPos, -1));

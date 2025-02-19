@@ -38,7 +38,7 @@ public class ModEnchantmentRegister {
 
     public static final Enchantment FIRE_WALKER =
             new FireWalkerEnchantment(
-                    Enchantment.properties(ItemTags.FOOT_ARMOR_ENCHANTABLE, 2, 2, Enchantment.leveledCost(10, 10), Enchantment.leveledCost(25, 10), 4, EquipmentSlot.FEET)
+                    Enchantment.properties(ItemTags.FOOT_ARMOR_ENCHANTABLE, 2, 1, Enchantment.leveledCost(10, 10), Enchantment.leveledCost(25, 10), 4, EquipmentSlot.FEET)
             );
 
     public static final Enchantment SWORD_DANCE =

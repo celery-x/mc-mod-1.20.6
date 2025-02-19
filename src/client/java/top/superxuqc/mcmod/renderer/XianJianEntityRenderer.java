@@ -26,7 +26,9 @@ import top.superxuqc.mcmod.network.payload.HitCheckPayload;
 import top.superxuqc.mcmod.particle.JianQiParticleEffect;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class XianJianEntityRenderer<T extends PersistentProjectileEntity> extends EntityRenderer<T> {
@@ -56,22 +58,16 @@ public class XianJianEntityRenderer<T extends PersistentProjectileEntity> extend
         return this.lit ? 15 : super.getBlockLight(entity, pos);
     }
 
-    private int age = 0;
-
     Vector3f center;
 
-    List<NoneEntity> circlePos = new CopyOnWriteArrayList<>();
+    Set<NoneEntity> circlePos = new HashSet<>();
 
     @Override
     public void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        age++;
         if (entity instanceof XianJianEntity xianJian && xianJian.isTianZai()) {
             center = ((XianJianEntity) entity).getCenter();
             int maxAge = xianJian.getMaxAge();
-            if (age < maxAge) {
-                for (float[] args : XianJianArg.ARG) {
-                    addParticle(entity, args);
-                }
+            if (entity.age < maxAge * 5) {
                 NoneEntity noneEntity = new NoneEntity(entity.getWorld());
                 Vec3d pos = entity.getPos();
                 noneEntity.setPos(pos.x, pos.y, pos.z);
@@ -81,11 +77,12 @@ public class XianJianEntityRenderer<T extends PersistentProjectileEntity> extend
                 noneEntity.setPitch((float) v);
                 circlePos.add(noneEntity);
             }
-        } else {
-            for (float[] args : XianJianArg.ARG) {
-                addParticle(entity, args);
-            }
         }
+
+        for (float[] args : XianJianArg.ARG) {
+            addParticle(entity, args);
+        }
+
         if (!circlePos.isEmpty()) {
             for (NoneEntity circlePo : circlePos) {
                 //entity.getWorld().createExplosion(circlePo, circlePo.getX(), circlePo.getY(), circlePo.getZ(), 1.0F, World.ExplosionSourceType.TNT);

@@ -8,6 +8,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.GiantEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -186,7 +188,7 @@ public class XianJianEntity extends PersistentProjectileEntity implements Flying
 
     int speed = 2;
 
-    int r = 20;
+    int r = 50;
 
     private List<Vec3d> entitySpawnPos = new CopyOnWriteArrayList<>();
 

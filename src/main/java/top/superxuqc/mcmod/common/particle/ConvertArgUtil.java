@@ -4,7 +4,7 @@ import java.io.*;
 
 public class ConvertArgUtil {
     public static void main(String[] args) throws IOException {
-        File file = new File("D://li.mcfunction");
+        File file = new File("D://121.mcfunction");
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         String line;

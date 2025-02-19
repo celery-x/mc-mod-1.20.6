@@ -50,6 +50,8 @@ public class MyModInitializer implements ModInitializer {
                 entries.add(ModItemRegister.REPULSIVE_FORCE_ITEM);
                 entries.add(ModItemRegister.ATTRACTION_ITEM);
                 entries.add(ModItemRegister.TEMP);
+                ItemStack stack = EnchantedBookItem.forEnchantment(new EnchantmentLevelEntry(ModEnchantmentRegister.FIRE_WALKER, 1));
+                entries.add(stack);
 
 
                 // 注册附魔书

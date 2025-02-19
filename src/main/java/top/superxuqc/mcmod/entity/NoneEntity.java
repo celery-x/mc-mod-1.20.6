@@ -35,4 +35,24 @@ public class NoneEntity extends Entity {
     protected void writeCustomDataToNbt(NbtCompound nbt) {
 
     }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (o instanceof NoneEntity e) {
+//            return
+//                    (int)e.getX() == (int) this.getX() &&
+//                    (int)e.getY() == (int) this.getY() &&
+//                    (int)e.getZ() == (int) this.getZ();
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int dx = (int) this.getX();
+//        int dy = (int) this.getY();
+//        int dz = (int) this.getZ();
+//        return Integer.hashCode(dx + dy + dz);
+//    }
 }
