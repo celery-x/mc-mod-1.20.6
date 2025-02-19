@@ -13,8 +13,10 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
 
 public class FireWalkerEnchantment extends Enchantment {
@@ -27,13 +29,18 @@ public class FireWalkerEnchantment extends Enchantment {
         return true;
     }
 
+    @Override
+    public boolean isCursed() {
+        return true;
+    }
+
     public static void evaporateWater(LivingEntity entity, World world, BlockPos blockPos, int level) {
         if (entity.isOnGround()) {
             int i = Math.min(16, 2 + level);
             BlockPos.Mutable mutable = new BlockPos.Mutable();
 
             // blockPos2 是要替换的位置 blockstate2 是要替换的位置的state
-            for (BlockPos blockPos2 : BlockPos.iterate(blockPos.add(-i, -1, -i), blockPos.add(i, -1, i))) {
+            for (BlockPos blockPos2 : BlockPos.iterate(blockPos.add(-i, -1, -i), blockPos.add(i, 0, i))) {
                 if (blockPos2.isWithinDistance(entity.getPos(), (double) i)) {
                     mutable.set(blockPos2.getX(), blockPos2.getY(), blockPos2.getZ());
                     BlockState blockState2 = world.getBlockState(mutable);
@@ -45,6 +52,9 @@ public class FireWalkerEnchantment extends Enchantment {
                             world.playSound(
                                     entity, blockPos2, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F
                             );
+                            if (blockState2.isOf(Blocks.WATER)) {
+                                world.syncWorldEvent(WorldEvents.CRAFTER_SHOOTS, blockPos2, Direction.UP.getId());
+                            }
                             world.setBlockState(blockPos2, blockState);
                         }
                     } else if (blockState2.isIn(BlockTags.ICE)) {
