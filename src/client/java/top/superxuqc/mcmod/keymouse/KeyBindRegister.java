@@ -139,6 +139,9 @@ public class KeyBindRegister {
     }
 
     private static void tp(Entity entity, Entity target) {
+        if (target == null) {
+            return;
+        }
         BlockPos pos = target.getBlockPos();
         if(pos == null) {
             return;
@@ -186,29 +189,29 @@ public class KeyBindRegister {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyKP1Binding.wasPressed()) {
                 //client.player.teleport();
-//                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[0]);
-                type = 1;
+                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[0]);
+                //type = 1;
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyKP2Binding.wasPressed()) {
                 //client.player.teleport();
-                //tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[1]);
-                type = 2;
+                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[1]);
+                //type = 2;
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyKP3Binding.wasPressed()) {
                 //client.player.teleport();
-//                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[2]);
-                type = 3;
+                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[2]);
+                //type = 3;
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyKP4Binding.wasPressed()) {
                 //client.player.teleport();
-//                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[3]);
-                type = 4;
+                tp(FeiLeiShenEntity.player, FeiLeiShenEntity.POS[3]);
+                //type = 4;
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
