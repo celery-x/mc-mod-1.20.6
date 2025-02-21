@@ -5,8 +5,7 @@
 	"client": [
       "TntEntityRendererMixin",
 		"PlayerEntityMixin",
-		"MinecraftClientMixin",
-		"EntityRendererMixin"
+		"MinecraftClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

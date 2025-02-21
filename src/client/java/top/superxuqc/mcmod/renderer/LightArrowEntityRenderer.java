@@ -40,9 +40,6 @@ public class LightArrowEntityRenderer<T extends PersistentProjectileEntity> exte
                     hitCheck(entity, args);
                     addParticle(entity, args);
                 }
-                if (!generateParticle) {
-                    generateParticle = true;
-                }
             }
         }
     }

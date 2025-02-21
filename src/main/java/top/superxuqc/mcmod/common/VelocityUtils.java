@@ -2,6 +2,7 @@ package top.superxuqc.mcmod.common;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
@@ -45,7 +46,9 @@ public class VelocityUtils {
 
     public static Vec3d toRealPos(Entity entity, float dx, float dy, float dz) {
         Vec2f vec2f = entity.getRotationClient();
-        vec2f = new Vec2f(-vec2f.x, -vec2f.y);
+        if (!(entity instanceof PlayerEntity)) {
+            vec2f = new Vec2f(-vec2f.x, -vec2f.y);
+        }
         Vec3d vec3d = entity.getPos();
         float f = MathHelper.cos((vec2f.y + 90.0F) * (float) (Math.PI / 180.0));
         float g = MathHelper.sin((vec2f.y + 90.0F) * (float) (Math.PI / 180.0));

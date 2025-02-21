@@ -18,7 +18,8 @@
     "BlockStateMixin",
     "EnderPearlEntityMixin",
     "AnvilScreenHandlerMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "BowItemMixin"
   ],
   "client": [
 

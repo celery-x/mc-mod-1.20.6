@@ -15,6 +15,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import top.superxuqc.mcmod.common.LoadParticleConfigUtil;
 import top.superxuqc.mcmod.listener.ModServerEventListener;
 import top.superxuqc.mcmod.network.S2CPayloadRegister;
 import top.superxuqc.mcmod.network.SeverPayloadHandlerRegister;
@@ -106,6 +107,7 @@ public class MyModInitializer implements ModInitializer {
     @Override
     public void onInitialize() {
         //Registry.register(Registries.ITEM, Identifier.of("tutorial", "custom_item"), CUSTOM_ITEM);
+        LoadParticleConfigUtil.initParticle();
         ModItemRegister.init();
         ModBlocksRegister.init();
         ModEntityRegister.init();
