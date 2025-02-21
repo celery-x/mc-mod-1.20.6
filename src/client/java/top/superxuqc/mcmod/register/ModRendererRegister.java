@@ -21,6 +21,7 @@ public class ModRendererRegister {
         EntityRendererRegistry.register(ModEntryTypes.NoneViewEntity, NoneViewEntityRenderer::new);
         EntityRendererRegistry.register(ModEntryTypes.ATTRACTION_ENTITY_TYPE, (c) -> new FlyingItemEntityRenderer<>(c, 3, false));
         EntityRendererRegistry.register(ModEntryTypes.XIAN_JIAN_TYPE, XianJianEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntryTypes.LIGHT_ARROW, LightArrowEntityRenderer::new);
 //        EntityRendererRegistry.register(ModEntryTypes.XIAN_JIAN_TYPE, FlyingItemEntityRenderer::new);
     }
 
