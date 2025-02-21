@@ -156,6 +156,14 @@ public class ModEnchantmentRegister {
         }
     };
 
+    public static Enchantment YU_XU_GONG_ARSENAL = new Enchantment(
+            Enchantment.properties(ItemTags.BOW_ENCHANTABLE,
+                    1, 1,
+                    Enchantment.constantCost(25),
+                    Enchantment.constantCost(50),
+                    8, EquipmentSlot.MAINHAND)
+    );
+
     public static void init() {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "hucheng"),HUCHENG);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "feilei"),FeiLei);
@@ -173,6 +181,7 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "sword_dance"), SWORD_DANCE);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "air_claw"), AIR_CLAW);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "fire_walk"), FIRE_WALKER);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "yu_xu_gong_arsenal"), YU_XU_GONG_ARSENAL);
     }
 
 }
