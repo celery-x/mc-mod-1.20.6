@@ -32,6 +32,7 @@ import top.superxuqc.mcmod.enchantment.ScareSelfEnchantment;
 import top.superxuqc.mcmod.entity.SwordQiEntity;
 import top.superxuqc.mcmod.entity.XianJianEntity;
 import top.superxuqc.mcmod.item.interfaces.ItemWithEntity;
+import top.superxuqc.mcmod.item.interfaces.TickAble;
 import top.superxuqc.mcmod.register.ModEnchantmentRegister;
 import top.superxuqc.mcmod.register.ModEntryTypes;
 import top.superxuqc.mcmod.register.SoundRegister;
@@ -228,6 +229,14 @@ public abstract class ItemMixin implements ItemWithEntity {
         }
 
         nowTick++;
+    }
+
+    @Inject(at = @At("HEAD"), method = "Lnet/minecraft/item/Item;usageTick(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;I)V", cancellable = true)
+    public void usageTickMixin(World world, LivingEntity user, ItemStack stack, int remainingUseTicks, CallbackInfo ci) {
+        if ((Object)this instanceof BowItem item) {
+            ((TickAble)item).tick(world, user, stack, remainingUseTicks);
+            ci.cancel();
+        }
     }
 
     private void spawnScareSelf(CopyOnWriteArrayList<EntityType> list, World world, BlockPos pos) {

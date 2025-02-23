@@ -8,18 +8,24 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import top.superxuqc.mcmod.common.particle.BigBoomArg;
+import top.superxuqc.mcmod.common.particle.LightArrowArg;
 import top.superxuqc.mcmod.common.particle.SpaceCrackArg;
 import top.superxuqc.mcmod.common.particle.XianJianArg;
 import top.superxuqc.mcmod.entity.LightArrowEntity;
 import top.superxuqc.mcmod.entity.NoneEntity;
 import top.superxuqc.mcmod.entity.LightArrowEntity;
 import top.superxuqc.mcmod.network.payload.HitCheckPayload;
+import top.superxuqc.mcmod.particle.BoomParticleEffect;
 import top.superxuqc.mcmod.particle.JianQiParticleEffect;
+import top.superxuqc.mcmod.particle.PaintParticleEffect;
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,9 +42,14 @@ public class LightArrowEntityRenderer<T extends PersistentProjectileEntity> exte
     public void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         if (entity instanceof LightArrowEntity lightArrowEntity) {
             if (lightArrowEntity.isAlive()) {
-                for (float[] args : XianJianArg.ARG) {
-                    hitCheck(entity, args);
-                    addParticle(entity, args);
+                //renderBoom(entity, BigBoomArg.ARG, entity.getWorld());
+                if (((LightArrowEntity) entity).getBoom()) {
+                    //renderBoom(entity, BigBoomArg.ARG, entity.getWorld());
+                } else {
+                    for (float[] args : LightArrowArg.ARG) {
+                        hitCheck(entity, args);
+                        addParticle(entity, args, 1);
+                    }
                 }
             }
         }
@@ -49,23 +60,50 @@ public class LightArrowEntityRenderer<T extends PersistentProjectileEntity> exte
         return SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE;
     }
 
-    private void addParticle(T entity, float[] args) {
+    private void renderBoom(T entity, float[][] args, World world) {
+        Vec3d vec3d = entity.getVelocity().normalize();
+        NoneEntity noneEntity = new NoneEntity(world);
+        for (int i = 0; i < 10; i++) {
+            System.out.println(i);
+            Vec3d add = entity.getPos().add(vec3d.multiply(i));
+            System.out.println(add);
+            noneEntity.setPos(add.x, add.y, add.z);
+            for (float[] arg : args) {
+                addBoomParticle(noneEntity, arg, 20 * 10);
+            }
+        }
+
+    }
+
+    private void addParticle(Entity entity, float[] args, int age) {
         Vec3d realPos = toRealPos(entity, args[3], args[4], args[5]);
         if (!generateParticle) {
-            Vec3d velocity = entity.getVelocity();
             entity.getWorld().addParticle(
 //                ParticleTypes.END_ROD,
-                    new JianQiParticleEffect(new Vector3f(args[0], args[1], args[2]), 20 * 30),
-                    realPos.x, realPos.y, realPos.z, velocity.x, velocity.y, velocity.z);
+                    //new JianQiParticleEffect(new Vector3f(args[0], args[1], args[2]), 20 * 30),
+                    new PaintParticleEffect(new Vector3f(1, 1, 0.55f), age, 0.1f),
+                    realPos.x, realPos.y, realPos.z, 0, 0, 0);
         }
     }
+
+    private void addBoomParticle(Entity entity, float[] args, int age) {
+        Vec3d realPos = toRealPos(entity, args[3], args[4], args[5]);
+        if (!generateParticle) {
+            entity.getWorld().addParticle(
+//                ParticleTypes.END_ROD,
+                    //new JianQiParticleEffect(new Vector3f(args[0], args[1], args[2]), 20 * 30),
+                    new BoomParticleEffect(new Vector3f(1, 1, 0.55f), age, 0.5f),
+                    realPos.x, realPos.y, realPos.z, 0, 0, 0);
+        }
+    }
+
 
     @NotNull
     private void hitCheck(T entity, float[] args) {
         Vec3d realPos = toRealPos(entity, args[3], args[4], args[5]);
         if (entity.getWorld().isClient && entity instanceof LightArrowEntity) {
             Vec3i passed;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 1; i++) {
                 passed = ((LightArrowEntity) entity).passed(realPos.x, realPos.y + i, realPos.z);
                 if (passed != null) {
                     ClientPlayNetworking.send(new HitCheckPayload(new BlockPos(passed), (int) ((LightArrowEntity) entity).getDamage()));

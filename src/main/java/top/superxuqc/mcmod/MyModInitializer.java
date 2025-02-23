@@ -52,7 +52,9 @@ public class MyModInitializer implements ModInitializer {
                 entries.add(ModItemRegister.ATTRACTION_ITEM);
                 entries.add(ModItemRegister.TEMP);
                 ItemStack stack = EnchantedBookItem.forEnchantment(new EnchantmentLevelEntry(ModEnchantmentRegister.FIRE_WALKER, 1));
+                ItemStack stack1 = EnchantedBookItem.forEnchantment(new EnchantmentLevelEntry(ModEnchantmentRegister.YU_XU_GONG_ARSENAL, 1));
                 entries.add(stack);
+                entries.add(stack1);
 
 
                 // 注册附魔书

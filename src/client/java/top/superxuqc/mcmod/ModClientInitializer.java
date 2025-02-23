@@ -4,13 +4,20 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.world.ClientWorld;
+import org.jetbrains.annotations.Nullable;
 import top.superxuqc.mcmod.entity.ModArrowEntity;
 import top.superxuqc.mcmod.keymouse.KeyBindRegister;
 import top.superxuqc.mcmod.network.C2SPayloadRegister;
 import top.superxuqc.mcmod.network.ClientPayloadHandlerRegister;
 import top.superxuqc.mcmod.network.S2CPayloadRegister;
 import top.superxuqc.mcmod.network.SeverPayloadHandlerRegister;
+import top.superxuqc.mcmod.particle.BoomParticleFactory;
 import top.superxuqc.mcmod.particle.JianQiParticle;
+import top.superxuqc.mcmod.particle.PaintParticleEffect;
+import top.superxuqc.mcmod.particle.PaintParticleFactory;
 import top.superxuqc.mcmod.register.ModBlocksRegister;
 import top.superxuqc.mcmod.register.ModEntryTypes;
 import top.superxuqc.mcmod.register.ModRendererRegister;
@@ -44,6 +51,8 @@ public class ModClientInitializer implements ClientModInitializer {
 		);
 
 		ParticleFactoryRegistry.getInstance().register(ParticleRegister.JIANQI, JianQiParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(ParticleRegister.PAINT, PaintParticleFactory::new);
+		ParticleFactoryRegistry.getInstance().register(ParticleRegister.BOOM, BoomParticleFactory::new);
 
 		// init network
 		C2SPayloadRegister.init();
