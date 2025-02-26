@@ -19,7 +19,8 @@
     "EnderPearlEntityMixin",
     "AnvilScreenHandlerMixin",
     "LivingEntityMixin",
-    "BowItemMixin"
+    "BowItemMixin",
+    "GoatHornItemMixin"
   ],
   "client": [
 

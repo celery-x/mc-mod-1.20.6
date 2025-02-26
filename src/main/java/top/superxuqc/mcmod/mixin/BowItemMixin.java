@@ -111,7 +111,7 @@ public class BowItemMixin implements TickAble {
 
 
     @Override
-    public void tick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+    public void project$tick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
 
         if (isYuXuGong(stack)) {
             boolean sneaky = user.isSneaky();

@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.*;
 import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -55,6 +56,9 @@ public class MyModInitializer implements ModInitializer {
                 ItemStack stack1 = EnchantedBookItem.forEnchantment(new EnchantmentLevelEntry(ModEnchantmentRegister.YU_XU_GONG_ARSENAL, 1));
                 entries.add(stack);
                 entries.add(stack1);
+//                for (int i = 0; i < 10; i++) {
+//                    entries.add(EnchantedBookItem.forEnchantment(new EnchantmentLevelEntry(Enchantments.CHANNELING, i)));
+//                }
 
 
                 // 注册附魔书
@@ -65,9 +69,9 @@ public class MyModInitializer implements ModInitializer {
                         ModTarKeys.CAN_HIT_ENTITY_ITEMS
                 );
                 displayContext.lookup().getOptionalWrapper(RegistryKeys.ENCHANTMENT).ifPresent(registryWrapper -> {
-//                    addMaxLevelEnchantedBooks(entries, registryWrapper, set, ItemGroup.StackVisibility.PARENT_TAB_ONLY, displayContext.enabledFeatures());
-//                    addAllLevelEnchantedBooks(entries, registryWrapper, set, ItemGroup.StackVisibility.SEARCH_TAB_ONLY, displayContext.enabledFeatures());
-                    addAllLevelEnchantedBooks(entries, registryWrapper, set, ItemGroup.StackVisibility.PARENT_TAB_ONLY, displayContext.enabledFeatures());
+                    addMaxLevelEnchantedBooks(entries, registryWrapper, set, ItemGroup.StackVisibility.PARENT_TAB_ONLY, displayContext.enabledFeatures());
+                    addAllLevelEnchantedBooks(entries, registryWrapper, set, ItemGroup.StackVisibility.SEARCH_TAB_ONLY, displayContext.enabledFeatures());
+//                    addAllLevelEnchantedBooks(entries, registryWrapper, set, ItemGroup.StackVisibility.PARENT_TAB_ONLY, displayContext.enabledFeatures());
                 });
             })
             .build();

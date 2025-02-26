@@ -30,7 +30,15 @@ public class ModEnchantmentRegister {
 
     public static final Enchantment CHENG_JIAN =
             new Enchantment(
-            Enchantment.properties(ModTarKeys.CAN_HIT_ENTITY_ITEMS,
+                    Enchantment.properties(ModTarKeys.CAN_HIT_ENTITY_ITEMS,
+                            1, 10,
+                            Enchantment.constantCost(25),
+                            Enchantment.constantCost(50),
+                            8, EquipmentSlot.MAINHAND));
+
+    public static final Enchantment MORE_CHANNELING =
+            new Enchantment(
+                    Enchantment.properties(ModTarKeys.MOD_ITEM_ENCHANT_TAG,
                     1, 10,
                     Enchantment.constantCost(25),
                     Enchantment.constantCost(50),
@@ -177,11 +185,12 @@ public class ModEnchantmentRegister {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "cheng_jian_protection"), CHENG_JIAN_PROTECTION);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "amplify"), AMPLIFY);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "xian_jian"), XIAN_JIAN);
-        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "tow_way_foil"), TOW_WAY_FOIL);
+//        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "tow_way_foil"), TOW_WAY_FOIL);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "sword_dance"), SWORD_DANCE);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "air_claw"), AIR_CLAW);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "fire_walk"), FIRE_WALKER);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "yu_xu_gong_arsenal"), YU_XU_GONG_ARSENAL);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MyModInitializer.MOD_ID, "more_channeling"), MORE_CHANNELING);
     }
 
 }

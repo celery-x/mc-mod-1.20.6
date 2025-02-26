@@ -180,18 +180,19 @@ public class ProjectileEntityMixin implements CanHuChengEntity {
                 entity.discard();
             }
         }
-        if ((Object) this instanceof ThrownItemEntity entity) {
-            ItemStack stack = entity.getStack();
-            int level2 = EnchantmentHelper.getLevel(ModEnchantmentRegister.TOW_WAY_FOIL, stack);
-            if (level2 > 0) {
-                if (hitResult instanceof EntityHitResult entityHitResult) {
-                    Entity entity1 = entityHitResult.getEntity();
-                    if (entity1 instanceof LivingEntity livingEntity) {
-
-                    }
-                }
-            }
-        }
+        // TODO 二向箔
+//        if ((Object) this instanceof ThrownItemEntity entity) {
+//            ItemStack stack = entity.getStack();
+//            int level2 = EnchantmentHelper.getLevel(ModEnchantmentRegister.TOW_WAY_FOIL, stack);
+//            if (level2 > 0) {
+//                if (hitResult instanceof EntityHitResult entityHitResult) {
+//                    Entity entity1 = entityHitResult.getEntity();
+//                    if (entity1 instanceof LivingEntity livingEntity) {
+//
+//                    }
+//                }
+//            }
+//        }
     }
 
     public void generateRandomEntity(PersistentProjectileEntity father, int times) {

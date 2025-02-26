@@ -26,6 +26,7 @@ public class ChuanXinZhouRenderer extends MobEntityRenderer<ChuanXinZhouEntity, 
     @Override
     public void render(ChuanXinZhouEntity mobEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         matrixStack.scale(0.05f, 0.05f, 0.05f);
+
         super.render(mobEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }
 

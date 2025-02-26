@@ -7,5 +7,8 @@ import net.minecraft.world.World;
 public interface TickAble {
     default void tick(){};
 
-    default void tick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks){};
+    default void project$tick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+    }
+
+    ;
 }
